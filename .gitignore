@@ -1,0 +1,9 @@
+.DS_Store
+.idea/
+.yardoc
+Gemfile.lock
+pkg
+bin/periphery
+bin/lib_InternalSwiftSyntaxParser.dylib
+xcuserdata
+project.xcworkspace

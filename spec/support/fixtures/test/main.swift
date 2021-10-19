@@ -1,0 +1,3 @@
+enum UnusedEnum {
+    case unused
+}
