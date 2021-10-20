@@ -14,7 +14,7 @@ module Danger
         periphery.binary_path = binary("periphery")
         json = File.read(File.dirname(__FILE__) + '/support/fixtures/github_pr.json') # example json: `curl https://api.github.com/repos/danger/danger-plugin-template/pulls/18 > github_pr.json`
         allow(periphery.github).to receive(:pr_json).and_return(json)
-        allow(periphery).to receive(:git_top_level).and_return fixtures_path.to_s
+        allow(Pathname).to receive(:getwd).and_return fixtures_path
       end
 
       context "when .swift files not in diff" do
@@ -41,7 +41,7 @@ module Danger
           allow(periphery.git).to receive(:renamed_files).and_return []
           allow(periphery.git).to receive(:modified_files).and_return []
           allow(periphery.git).to receive(:deleted_files).and_return []
-          allow(periphery.git).to receive(:added_files).and_return [fixture("test/main.swift")]
+          allow(periphery.git).to receive(:added_files).and_return ["test/main.swift"]
         end
 
         it "reports unused code" do

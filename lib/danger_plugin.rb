@@ -46,9 +46,5 @@ module Danger
       post_rename_modified_files = git.modified_files.map { |modified_file| renamed_files_hash[modified_file] || modified_file }
       (post_rename_modified_files - git.deleted_files) + git.added_files
     end
-
-    def git_top_level
-      `git rev-parse --show-toplevel`.strip
-    end
   end
 end
