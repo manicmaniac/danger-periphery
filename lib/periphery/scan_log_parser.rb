@@ -9,7 +9,7 @@ module Periphery
 
     private
 
-    def relative_path(path, base = Dir.pwd)
+    def relative_path(path, base = Pathname.getwd)
       Pathname.new(path).relative_path_from(base).to_s
     end
   end

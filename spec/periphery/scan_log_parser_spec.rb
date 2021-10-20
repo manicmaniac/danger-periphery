@@ -33,7 +33,7 @@ module Periphery
           EOS
         end
 
-        before { allow(Dir).to receive(:pwd).and_return "/Users/manicmaniac/danger-periphery" }
+        before { allow(Pathname).to receive(:getwd).and_return Pathname.new("/Users/manicmaniac/danger-periphery") }
 
         it "parses all warnings without garbages" do
           expect(subject).to eq [
