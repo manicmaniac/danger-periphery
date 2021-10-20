@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-rubocop.lint
+rubocop.lint inline_comment: true
 
 periphery.binary_path = "bin/periphery"
 periphery.scan(
