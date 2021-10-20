@@ -4,7 +4,7 @@ module Periphery
   describe ScanLogParser do
     describe "#parse" do
       subject { described_class.new.parse(string) }
-      
+
       context "with empty string" do
         let(:string) { "" }
 
@@ -39,7 +39,7 @@ module Periphery
           expect(subject).to eq [
             ScanLogEntry.new("main.swift", 1, 1, "warning: Typealias 'UnusedTypeAlias' is unused"),
             ScanLogEntry.new("main.swift", 2, 1, "warning: Class 'UnusedClass' is unused"),
-            ScanLogEntry.new("main.swift", 3, 1, "warning: Protocol 'UnusedProtocol' is unused"),
+            ScanLogEntry.new("main.swift", 3, 1, "warning: Protocol 'UnusedProtocol' is unused")
           ]
         end
       end

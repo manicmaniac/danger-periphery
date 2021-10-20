@@ -14,7 +14,7 @@ module Periphery
           {
             project: fixture("test.xcodeproj"),
             targets: "test",
-            schemes: "test",
+            schemes: "test"
           }
         end
 
@@ -37,12 +37,12 @@ module Periphery
         let(:options) do
           {
             clean_build: true,
-            skip_build: true,
+            skip_build: true
           }
         end
 
         it "returns correct arguments" do
-          expect(subject).to eq %w[--clean-build --skip-build]
+          expect(subject).to eq %w(--clean-build --skip-build)
         end
       end
 
@@ -50,12 +50,12 @@ module Periphery
         let(:options) do
           {
             project: "test.xcodeproj",
-            targets: "test1,test2",
+            targets: "test1,test2"
           }
         end
 
         it "returns correct arguments" do
-          expect(subject).to eq %w[--project test.xcodeproj --targets test1,test2]
+          expect(subject).to eq %w(--project test.xcodeproj --targets test1,test2)
         end
       end
     end

@@ -1,4 +1,4 @@
-require File.expand_path("../spec_helper", __FILE__)
+require File.expand_path("spec_helper", __dir__)
 
 module Danger
   describe Danger::DangerPeriphery do
@@ -12,7 +12,7 @@ module Danger
 
       before do
         periphery.binary_path = binary("periphery")
-        json = File.read(File.dirname(__FILE__) + '/support/fixtures/github_pr.json') # example json: `curl https://api.github.com/repos/danger/danger-plugin-template/pulls/18 > github_pr.json`
+        json = File.read(File.dirname(__FILE__) + "/support/fixtures/github_pr.json") # example json: `curl https://api.github.com/repos/danger/danger-plugin-template/pulls/18 > github_pr.json`
         allow(periphery.github).to receive(:pr_json).and_return(json)
         allow(Pathname).to receive(:getwd).and_return fixtures_path
       end
@@ -29,7 +29,7 @@ module Danger
           periphery.scan(
             project: fixture("test.xcodeproj"),
             targets: "test",
-            schemes: "test",
+            schemes: "test"
           )
 
           expect(dangerfile.status_report[:warnings]).to be_empty
@@ -48,7 +48,7 @@ module Danger
           periphery.scan(
             project: fixture("test.xcodeproj"),
             targets: "test",
-            schemes: "test",
+            schemes: "test"
           )
 
           expect(dangerfile.status_report[:warnings]).to eq(["warning: Enum 'UnusedEnum' is unused"])
@@ -67,7 +67,7 @@ module Danger
           periphery.scan(
             project: fixture("test.xcodeproj"),
             targets: "test",
-            schemes: "test",
+            schemes: "test"
           )
 
           expect(dangerfile.status_report[:warnings]).to eq(["warning: Enum 'UnusedEnum' is unused"])
