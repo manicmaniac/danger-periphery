@@ -46,7 +46,7 @@ module Danger
         end
       end
 
-      context "when .swift files was added" do
+      context "when .swift files were added" do
         before do
           allow(periphery.git).to receive(:renamed_files).and_return []
           allow(periphery.git).to receive(:modified_files).and_return []
@@ -65,7 +65,7 @@ module Danger
         end
       end
 
-      context "when .swift files was modified" do
+      context "when .swift files were modified" do
         before do
           allow(periphery.git).to receive(:renamed_files).and_return []
           allow(periphery.git).to receive(:modified_files).and_return ["test/main.swift"]
