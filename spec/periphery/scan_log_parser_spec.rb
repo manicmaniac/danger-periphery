@@ -15,7 +15,7 @@ module Periphery
 
       context "with a valid string" do
         let(:string) do
-          <<~EOS
+          <<~LOG
           * Inspecting project...
           * Building danger-periphery...
           * Indexing...
@@ -32,7 +32,7 @@ module Periphery
             You can instruct it to do so with the --retain-public option.
           - Periphery is a very precise tool, false positives often turn out to be correct after further investigation.
           - If it really is a false positive, please report it - https://github.com/peripheryapp/periphery/issues.
-          EOS
+          LOG
         end
 
         before { allow(Pathname).to receive(:getwd).and_return Pathname.new("/Users/manicmaniac/danger-periphery") }
