@@ -5,19 +5,19 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "danger-periphery"
-  spec.version       = DangerPeriphery::VERSION
-  spec.authors       = ["Ryosuke Ito"]
-  spec.email         = ["rito.0305@gmail.com"]
-  spec.description   = "A Danger plugin to detect unused codes."
-  spec.summary       = spec.description
-  spec.homepage      = "https://github.com/manicmaniac/danger-periphery"
-  spec.license       = "MIT"
+  spec.name = "danger-periphery"
+  spec.version = DangerPeriphery::VERSION
+  spec.authors = ["Ryosuke Ito"]
+  spec.email = ["rito.0305@gmail.com"]
+  spec.description = "A Danger plugin to detect unused codes."
+  spec.summary = spec.description
+  spec.homepage = "https://github.com/manicmaniac/danger-periphery"
+  spec.license = "MIT"
   spec.required_ruby_version = ">= 2.3.0"
 
-  spec.files         = `git ls-files`.split($/)
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.files = `git ls-files`.split($/)
+  spec.executables = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "danger-plugin-api", "~> 1.0"
