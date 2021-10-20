@@ -4,32 +4,36 @@ require "periphery/runner"
 require "periphery/scan_log_parser"
 
 module Danger
-  # This is your plugin class. Any attributes or methods you expose here will
-  # be available from within your Dangerfile.
+  # Analyze Swift files and detect unused codes in your project.
+  # This is done using [Periphery](https://github.com/peripheryapp/periphery).
   #
-  # To be published on the Danger plugins site, you will need to have
-  # the public interface documented. Danger uses [YARD](http://yardoc.org/)
-  # for generating documentation from your plugin source, and you can verify
-  # by running `danger plugins lint` or `bundle exec rake spec`.
+  # @example Specifying options to Periphery.
   #
-  # You should replace these comments with a public description of your library.
+  #          periphery.scan(
+  #            project: "Foo.xcodeproj"
+  #            schemes: ["foo", "bar"],
+  #            targets: "foo",
+  #            clean_build: true
+  #          )
   #
-  # @example Ensure people are well warned about merging on Mondays
-  #
-  #          my_plugin.warn_on_mondays
-  #
-  # @see  Ryosuke Ito/danger-periphery
-  # @tags monday, weekends, time, rattata
-  #
+  # @see manicmaniac/danger-periphery
+  # @tags swift
   class DangerPeriphery < Plugin
-    # An attribute that you can read/write from your Dangerfile
-    #
-    # @return   String
+    # Path to Periphery executable.
+    # By default the value is nil and the executable is searched from $PATH.
+    # @return [String]
     attr_accessor :binary_path
 
-    # A method that you can call from your Dangerfile
-    # @return   [Array<String>]
+    # Scans Swift files.
+    # Raises an error when Periphery executable is not found.
     #
+    # @param [Hash] options Options passed to Periphery with the following translation rules.
+    #                       1. Replace all underscores with hyphens in each key.
+    #                       2. Prepend double hyphens to each key.
+    #                       3. If value is an array, transform it to comma-separated string.
+    #                       4. If value is true, drop value and treat it as option without argument.
+    #                       5. Override some options like --disable-update-check, --format, --quiet and so.
+    # @return [void]
     def scan(**options)
       output = Periphery::Runner.new(binary_path).scan(options.merge(disable_update_check: true, format: "xcode", quiet: true))
       entries = Periphery::ScanLogParser.new.parse(output)
