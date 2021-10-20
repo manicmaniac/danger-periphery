@@ -4,7 +4,7 @@ module Periphery
   class ScanLogParser
     def parse(string)
       string.lines.map do |line|
-        match = line.match(/^(?<path>.+):(?<line>\d+):(?<column>\d+): (?<message>.*)\n?$/)
+        match = line.match(/^(?<path>.+):(?<line>\d+):(?<column>\d+): warning: (?<message>.*)\n?$/)
         ScanLogEntry.new(relative_path(match[:path]), match[:line].to_i, match[:column].to_i, match[:message]) if match
       end.compact
     end
