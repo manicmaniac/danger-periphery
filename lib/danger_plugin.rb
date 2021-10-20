@@ -44,9 +44,7 @@ module Danger
       # Taken from https://github.com/ashfurrow/danger-ruby-swiftlint/blob/5184909aab00f12954088684bbf2ce5627e08ed6/lib/danger_plugin.rb#L214-L216
       renamed_files_hash = git.renamed_files.map { |rename| [rename[:before], rename[:after]] }.to_h
       post_rename_modified_files = git.modified_files.map { |modified_file| renamed_files_hash[modified_file] || modified_file }
-      files = (post_rename_modified_files - git.deleted_files) + git.added_files
-      top_level = git_top_level
-      files.map { |file| File.expand_path(file, top_level) }
+      (post_rename_modified_files - git.deleted_files) + git.added_files
     end
 
     def git_top_level

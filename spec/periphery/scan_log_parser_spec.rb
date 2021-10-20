@@ -33,11 +33,13 @@ module Periphery
           EOS
         end
 
+        before { allow(Dir).to receive(:pwd).and_return "/Users/manicmaniac/danger-periphery" }
+
         it "parses all warnings without garbages" do
           expect(subject).to eq [
-            ScanLogEntry.new("/Users/manicmaniac/danger-periphery/main.swift", 1, 1, "warning: Typealias 'UnusedTypeAlias' is unused"),
-            ScanLogEntry.new("/Users/manicmaniac/danger-periphery/main.swift", 2, 1, "warning: Class 'UnusedClass' is unused"),
-            ScanLogEntry.new("/Users/manicmaniac/danger-periphery/main.swift", 3, 1, "warning: Protocol 'UnusedProtocol' is unused"),
+            ScanLogEntry.new("main.swift", 1, 1, "warning: Typealias 'UnusedTypeAlias' is unused"),
+            ScanLogEntry.new("main.swift", 2, 1, "warning: Class 'UnusedClass' is unused"),
+            ScanLogEntry.new("main.swift", 3, 1, "warning: Protocol 'UnusedProtocol' is unused"),
           ]
         end
       end
