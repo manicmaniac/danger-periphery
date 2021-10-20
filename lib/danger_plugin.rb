@@ -30,7 +30,7 @@ module Danger
     # @return   [Array<String>]
     #
     def scan(**options)
-      output = Periphery::Runner.new(binary_path).scan(options)
+      output = Periphery::Runner.new(binary_path).scan(options.merge(disable_update_check: true, format: "xcode", quiet: true))
       entries = Periphery::ScanLogParser.new.parse(output)
       files = files_in_diff
       entries.
