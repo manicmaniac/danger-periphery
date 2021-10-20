@@ -65,7 +65,7 @@ module Periphery
         let(:options) do
           {
             project: "test.xcodeproj",
-            targets: %w[test1 test2]
+            targets: %w(test1 test2)
           }
         end
 
