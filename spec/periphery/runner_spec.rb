@@ -60,6 +60,19 @@ module Periphery
           expect(subject).to eq %w(--project test.xcodeproj --targets test1,test2)
         end
       end
+
+      context "with options that takes an array as argument" do
+        let(:options) do
+          {
+            project: "test.xcodeproj",
+            targets: %w[test1 test2]
+          }
+        end
+
+        it "returns correct arguments" do
+          expect(subject).to eq %w(--project test.xcodeproj --targets test1,test2)
+        end
+      end
     end
   end
 end
