@@ -1,0 +1,12 @@
+name: Lint
+on: [pull_request]
+jobs:
+  lint:
+    runs-on: macOS-11
+    env:
+      DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: bin/download_periphery
+      - run: bundle install
+      - run: bundle exec danger
