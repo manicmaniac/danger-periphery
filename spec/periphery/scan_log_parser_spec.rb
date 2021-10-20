@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "periphery/scan_log_parser"
 
 module Periphery

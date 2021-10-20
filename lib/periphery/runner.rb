@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "open3"
 
 module Periphery
@@ -17,9 +19,9 @@ module Periphery
 
     def scan_arguments(options)
       options.
-        reject { |_key, value| !value }.
+        select { |_key, value| value }.
         map { |key, value| value.kind_of?(TrueClass) ? [key, nil] : [key, value] }.
-        map { |key, value| ["--" + key.to_s.tr("_", "-"), value] }.
+        map { |key, value| ["--#{key.to_s.tr('_', '-')}", value] }.
         flatten.
         compact
     end
