@@ -61,7 +61,7 @@ module Danger
             schemes: "test"
           )
 
-          expect(dangerfile.status_report[:warnings]).to eq(["warning: Enum 'UnusedEnum' is unused"])
+          expect(dangerfile.status_report[:warnings]).to eq(["Enum 'UnusedEnum' is unused"])
         end
       end
 
@@ -80,7 +80,7 @@ module Danger
             schemes: "test"
           )
 
-          expect(dangerfile.status_report[:warnings]).to eq(["warning: Enum 'UnusedEnum' is unused"])
+          expect(dangerfile.status_report[:warnings]).to eq(["Enum 'UnusedEnum' is unused"])
         end
       end
     end
