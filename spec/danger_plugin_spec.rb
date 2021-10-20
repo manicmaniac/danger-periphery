@@ -19,6 +19,14 @@ module Danger
         allow(Pathname).to receive(:getwd).and_return fixtures_path
       end
 
+      context "when periphery is not installed" do
+        before { periphery.binary_path = "not_installed" }
+
+        it "fails with error" do
+          expect { periphery.scan }.to raise_error Errno::ENOENT
+        end
+      end
+
       context "when .swift files not in diff" do
         before do
           allow(periphery.git).to receive(:renamed_files).and_return []
