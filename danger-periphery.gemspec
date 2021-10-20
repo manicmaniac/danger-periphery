@@ -2,11 +2,11 @@
 
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "periphery/gem_version"
+require "version"
 
 Gem::Specification.new do |spec|
   spec.name          = "danger-periphery"
-  spec.version       = Periphery::VERSION
+  spec.version       = DangerPeriphery::VERSION
   spec.authors       = ["Ryosuke Ito"]
   spec.email         = ["rito.0305@gmail.com"]
   spec.description   = "A Danger plugin to detect unused codes."
