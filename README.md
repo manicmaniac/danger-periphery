@@ -6,11 +6,9 @@ A Danger plugin to detect unused codes.
 
 You need to install [Periphery](https://github.com/peripheryapp/periphery) beforehand.
 
-Currently `danger-periphery` is in early development stage so it's not published to rubygems.org yet.
-
 Write the following code in your Gemfile.
 
-    gem "danger-periphery", git: "https://github.com/manicmaniac/danger-periphery.git"
+    gem "danger-periphery"
 
 ## Usage
 
