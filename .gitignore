@@ -1,9 +1,10 @@
 .DS_Store
 .idea/
 .yardoc
+/tmp
 Gemfile.lock
-pkg
-bin/periphery
 bin/lib_InternalSwiftSyntaxParser.dylib
-xcuserdata
+bin/periphery
+pkg
 project.xcworkspace
+xcuserdata
