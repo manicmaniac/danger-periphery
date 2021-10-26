@@ -2,7 +2,6 @@
 .idea/
 .yardoc
 /tmp
-Gemfile.lock
 bin/lib_InternalSwiftSyntaxParser.dylib
 bin/periphery
 pkg
