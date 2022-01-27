@@ -8,7 +8,7 @@ RSpec::Core::RakeTask.new(:specs)
 
 task default: :specs
 
-task spec: [:specs, :rubocop, :spec_docs]
+task spec: %i(specs rubocop spec_docs)
 
 desc "Run RuboCop on the lib/specs directory"
 RuboCop::RakeTask.new(:rubocop)
