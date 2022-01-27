@@ -1,5 +1,7 @@
 # danger-periphery
 
+[![Test](https://github.com/manicmaniac/danger-periphery/actions/workflows/test.yml/badge.svg)](https://github.com/manicmaniac/danger-periphery/actions/workflows/test.yml)
+
 A Danger plugin to detect unused codes.
 
 ## Installation
