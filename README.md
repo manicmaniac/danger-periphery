@@ -1,5 +1,7 @@
 # danger-periphery
 
+[![Test](https://github.com/manicmaniac/danger-periphery/actions/workflows/test.yml/badge.svg)](https://github.com/manicmaniac/danger-periphery/actions/workflows/test.yml)
+
 A Danger plugin to detect unused codes.
 
 ## Installation
@@ -8,27 +10,35 @@ You need to install [Periphery](https://github.com/peripheryapp/periphery) befor
 
 Write the following code in your Gemfile.
 
-    gem "danger-periphery"
+```ruby
+gem "danger-periphery"
+```
 
 ## Usage
 
 If you already have `.periphery.yml`, the easiest way to use is just add this to your Dangerfile.
 
-    periphery.scan
+```ruby
+periphery.scan
+```
 
 You can specify the path to executable in this way.
 
-    periphery.binary_path = "bin/periphery"
+```ruby
+periphery.binary_path = "bin/periphery"
+```
 
 You can pass command line options to `periphery.scan` like the following.
 See `periphery scan -h` for available options.
 
-    periphery.scan(
-      project: "Foo.xcodeproj",
-      schemes: ["foo", "bar"],
-      targets: "foo",
-      clean_build: true
-    )
+```ruby
+periphery.scan(
+  project: "Foo.xcodeproj",
+  schemes: ["foo", "bar"],
+  targets: "foo",
+  clean_build: true
+)
+```
 
 ## Development
 
