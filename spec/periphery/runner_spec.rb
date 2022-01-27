@@ -16,11 +16,26 @@ module Periphery
           {
             project: fixture("test.xcodeproj"),
             targets: "test",
-            schemes: "test"
+            "schemes" => "test"
           }
         end
 
+        let(:command) do
+          [
+            binary_path,
+            "scan",
+            "--project",
+            fixture("test.xcodeproj"),
+            "--targets",
+            "test",
+            "--schemes",
+            "test"
+          ]
+        end
+
         it "runs scan without args" do
+          status = double(Process::Status, success?: true)
+          expect(Open3).to receive(:capture3).once.with(*command).and_return ["warning:", "", status]
           expect(subject).to include "warning:"
         end
       end

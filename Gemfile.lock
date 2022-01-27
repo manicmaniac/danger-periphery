@@ -149,6 +149,7 @@ GEM
     yard (0.9.26)
 
 PLATFORMS
+  ruby
   universal-darwin-20
 
 DEPENDENCIES
