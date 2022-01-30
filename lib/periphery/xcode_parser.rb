@@ -3,7 +3,7 @@
 require "periphery/scan_result"
 
 module Periphery
-  class ScanLogParser
+  class XcodeParser
     def parse(string)
       string.lines.map do |line|
         match = line.match(/^(?<path>.+):(?<line>\d+):(?<column>\d+): warning: (?<message>.*)\n?$/)

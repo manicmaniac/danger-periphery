@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "periphery/scan_log_parser"
+require "periphery/xcode_parser"
 
 module Periphery
-  describe ScanLogParser do
+  describe XcodeParser do
     describe "#parse" do
       subject { described_class.new.parse(string) }
 
