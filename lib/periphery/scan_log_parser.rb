@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require "periphery/scan_result"
+
 module Periphery
   class ScanLogParser
     def parse(string)
       string.lines.map do |line|
         match = line.match(/^(?<path>.+):(?<line>\d+):(?<column>\d+): warning: (?<message>.*)\n?$/)
-        ScanLogEntry.new(relative_path(match[:path]), match[:line].to_i, match[:column].to_i, match[:message]) if match
+        ScanResult.new(relative_path(match[:path]), match[:line].to_i, match[:column].to_i, match[:message]) if match
       end.compact
     end
 
@@ -15,6 +17,4 @@ module Periphery
       Pathname.new(path).relative_path_from(base).to_s
     end
   end
-
-  ScanLogEntry = Struct.new(:path, :line, :column, :message)
 end
