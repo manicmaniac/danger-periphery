@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "periphery/runner"
-require "periphery/scan_log_parser"
+require "periphery/checkstyle_parser"
 
 module Danger
   # Analyze Swift files and detect unused codes in your project.
@@ -35,8 +35,8 @@ module Danger
     #                       5. Override some options like --disable-update-check, --format, --quiet and so.
     # @return [void]
     def scan(**options)
-      output = Periphery::Runner.new(binary_path).scan(options.merge(disable_update_check: true, format: "xcode", quiet: true))
-      entries = Periphery::ScanLogParser.new.parse(output)
+      output = Periphery::Runner.new(binary_path).scan(options.merge(disable_update_check: true, format: "checkstyle", quiet: true))
+      entries = Periphery::CheckstyleParser.new.parse(output)
       files = files_in_diff
       entries.
         select { |entry| files.include?(entry.path) }.
