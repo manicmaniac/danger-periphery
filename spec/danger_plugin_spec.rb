@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "danger_helper"
-
 describe Danger::DangerPeriphery do
+  include DangerPluginHelper
+
   it "should be a plugin" do
     expect(Danger::DangerPeriphery.new(nil)).to be_a Danger::Plugin
   end
