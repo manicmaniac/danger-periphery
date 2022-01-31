@@ -10,8 +10,6 @@ require "rspec"
 
 RSpec.configure do |config|
   config.filter_gems_from_backtrace "bundler"
-  config.color = true
-  config.tty = true
 end
 
 def fixtures_path
