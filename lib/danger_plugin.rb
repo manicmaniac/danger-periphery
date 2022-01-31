@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require "periphery/runner"
-require "periphery/checkstyle_parser"
+require "periphery"
 
 module Danger
   # Analyze Swift files and detect unused codes in your project.
