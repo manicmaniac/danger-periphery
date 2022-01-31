@@ -24,6 +24,12 @@ module Danger
     # @return [String]
     attr_accessor :binary_path
 
+    OPTION_OVERRIDES = {
+      disable_update_check: true,
+      format: "checkstyle",
+      quiet: true
+    }.freeze
+
     # Scans Swift files.
     # Raises an error when Periphery executable is not found.
     #
@@ -35,21 +41,22 @@ module Danger
     #                       5. Override some options like --disable-update-check, --format, --quiet and so.
     # @return [void]
     def scan(**options)
-      output = Periphery::Runner.new(binary_path).scan(options.merge(disable_update_check: true, format: "checkstyle", quiet: true))
-      entries = Periphery::CheckstyleParser.new.parse(output)
-      files = files_in_diff
-      entries.
-        select { |entry| files.include?(entry.path) }.
+      output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES))
+      Periphery::CheckstyleParser.new.parse(output).
+        lazy.
+        select { |entry| files_in_diff.include?(entry.path) }.
         each { |entry| warn(entry.message, file: entry.path, line: entry.line) }
     end
 
     private
 
     def files_in_diff
-      # Taken from https://github.com/ashfurrow/danger-ruby-swiftlint/blob/5184909aab00f12954088684bbf2ce5627e08ed6/lib/danger_plugin.rb#L214-L216
-      renamed_files_hash = git.renamed_files.map { |rename| [rename[:before], rename[:after]] }.to_h
-      post_rename_modified_files = git.modified_files.map { |modified_file| renamed_files_hash[modified_file] || modified_file }
-      Set.new((post_rename_modified_files - git.deleted_files) + git.added_files)
+      @files_in_diff ||= begin
+        # Taken from https://github.com/ashfurrow/danger-ruby-swiftlint/blob/5184909aab00f12954088684bbf2ce5627e08ed6/lib/danger_plugin.rb#L214-L216
+        renamed_files_hash = git.renamed_files.map { |rename| [rename[:before], rename[:after]] }.to_h
+        post_rename_modified_files = git.modified_files.map { |modified_file| renamed_files_hash[modified_file] || modified_file }
+        Set.new((post_rename_modified_files - git.deleted_files) + git.added_files)
+      end
     end
   end
 end
