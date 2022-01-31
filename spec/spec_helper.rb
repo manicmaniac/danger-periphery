@@ -8,7 +8,6 @@ require "periphery"
 require "pry"
 require "rspec"
 
-# Use coloured output, it's the best.
 RSpec.configure do |config|
   config.filter_gems_from_backtrace "bundler"
   config.color = true
