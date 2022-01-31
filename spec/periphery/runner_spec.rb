@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "periphery/runner"
-
 module Periphery
   describe Runner do
     subject(:runner) { described_class.new(binary_path) }

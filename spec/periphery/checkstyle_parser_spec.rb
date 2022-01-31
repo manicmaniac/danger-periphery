@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "periphery/checkstyle_parser"
-
 module Periphery
   describe CheckstyleParser do
     subject(:parser) { described_class.new }
