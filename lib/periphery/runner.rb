@@ -22,10 +22,12 @@ module Periphery
 
     def scan_arguments(options)
       options.
+        lazy.
         select { |_key, value| value }.
         map { |key, value| value.kind_of?(TrueClass) ? [key, nil] : [key, value] }.
         map { |key, value| value.kind_of?(Array) ? [key, value.join(",")] : [key, value] }.
         map { |key, value| ["--#{key.to_s.tr('_', '-')}", value] }.
+        force.
         flatten.
         compact
     end
