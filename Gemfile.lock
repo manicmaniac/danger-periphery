@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    danger-periphery (0.0.1)
+    danger-periphery (0.1.0)
       danger-plugin-api (~> 1.0)
 
 GEM
