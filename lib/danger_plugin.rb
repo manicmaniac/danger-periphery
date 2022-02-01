@@ -23,11 +23,31 @@ module Danger
     # @return [String]
     attr_accessor :binary_path
 
+    # Proc object to process each warnings just before showing them.
+    # The Proc must receive 4 arguments: path, line, column, message
+    # and return one of:
+    #   - an array that contains 4 elements [path, line, column, message]
+    #   - true
+    #   - false
+    #   - nil
+    # If Proc returns an array, the warning will be raised based on returned elements.
+    # If Proc returns true, the warning will not be modified.
+    # If Proc returns false or nil, the warning will be ignored.
+    #
+    # By default the Proc returns true.
+    # @return [Proc]
+    attr_accessor :postprocessor
+
     OPTION_OVERRIDES = {
       disable_update_check: true,
       format: "checkstyle",
       quiet: true
     }.freeze
+
+    def initialize(dangerfile)
+      super(dangerfile)
+      @postprocessor = ->(path, line, column, message) { true }
+    end
 
     # Scans Swift files.
     # Raises an error when Periphery executable is not found.
@@ -45,7 +65,22 @@ module Danger
       Periphery::CheckstyleParser.new.parse(output).
         lazy.
         select { |entry| files.include?(entry.path) }.
-        each { |entry| warn(entry.message, file: entry.path, line: entry.line) }
+        map { |entry| postprocess(entry) }.
+        force.
+        compact.
+        each { |path, line, column, message| warn(message, file: path, line: line) }
+    end
+
+    # Convenience method to set `postprocessor` with block.
+    #
+    # @return [Proc]
+    #
+    # @example Ignore all warnings from files matching regular expression
+    #   periphery.process_warnings do |path, line, column, message|
+    #     !path.match(/.*\/generated\.swift/)
+    #   end
+    def process_warnings(&block)
+      @postprocessor = block
     end
 
     private
@@ -55,6 +90,17 @@ module Danger
       renamed_files_hash = git.renamed_files.map { |rename| [rename[:before], rename[:after]] }.to_h
       post_rename_modified_files = git.modified_files.map { |modified_file| renamed_files_hash[modified_file] || modified_file }
       (post_rename_modified_files - git.deleted_files) + git.added_files
+    end
+
+    def postprocess(entry)
+      result = @postprocessor.call(entry.path, entry.line, entry.column, entry.message)
+      if !result
+        nil
+      elsif result.kind_of?(TrueClass)
+        [entry.path, entry.line, entry.column, entry.message]
+      else
+        result
+      end
     end
   end
 end
