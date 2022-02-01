@@ -82,5 +82,65 @@ describe Danger::DangerPeriphery do
         expect(dangerfile.status_report[:warnings]).to include "Function 'unusedMethod()' is unused"
       end
     end
+
+    describe "#postprocessor" do
+      subject { dangerfile.status_report[:warnings] }
+
+      before do
+        allow(periphery.git).to receive(:renamed_files).and_return []
+        allow(periphery.git).to receive(:modified_files).and_return ["test/main.swift"]
+        allow(periphery.git).to receive(:deleted_files).and_return []
+        allow(periphery.git).to receive(:added_files).and_return []
+        periphery.postprocessor = postprocessor
+        periphery.scan(
+          project: fixture("test.xcodeproj"),
+          targets: "test",
+          schemes: "test"
+        )
+      end
+
+      context "when returns nil" do
+        let(:postprocessor) { ->(path, line, column, message) {} }
+
+        it "does not report warnings" do
+          expect(subject).to be_empty
+        end
+      end
+
+      context "when returns false" do
+        let(:postprocessor) { ->(path, line, column, message) { false } }
+
+        it "does not report warnings" do
+          expect(subject).to be_empty
+        end
+      end
+
+      context "when returns true" do
+        let(:postprocessor) { ->(path, line, column, message) { true } }
+
+        it "reports warnings" do
+          expect(subject).to include "Function 'unusedMethod()' is unused"
+        end
+      end
+
+      context "when returns a modified array" do
+        let(:postprocessor) do
+          ->(path, line, column, message) { [path, line, column, message.gsub(/Function/, "Foobar")] }
+        end
+
+        it "reports modified warnings" do
+          expect(subject).to include "Foobar 'unusedMethod()' is unused"
+        end
+      end
+    end
+
+    describe "#process_warnings" do
+      it "sets postprocessor" do
+        periphery.process_warnings do |path, line, column, message|
+          nil
+        end
+        expect { periphery.process_warnings { |*args| nil } }.to(change { periphery.postprocessor })
+      end
+    end
   end
 end
