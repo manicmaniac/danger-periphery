@@ -40,6 +40,37 @@ periphery.scan(
 )
 ```
 
+## Advanced Usage
+
+You can modify warnings as you like by passing a block to `process_warnings`.
+`process_warnings` takes a block that receives `[path, line, column, message]` as arguments and returns one of the following types.
+
+- `Array` that exactly contains `[path, line, column, message]`
+- `true`
+- `false`
+- `nil`
+
+If an `Array` is returned, danger-periphery uses the values in an array instead of the raw result produced by Periphery.
+`true` has the same meaning as `[path, line, column, message]`, the argument array as-is.
+
+If it returns `false` or `nil`, the processing warning will be suppressed.
+
+For example, if you want your team members to be careful with warnings, the following code may work.
+
+```ruby
+periphery.process_warnings do |path, line, column, message|
+  [path, line, column, "Pay attention please! #{message}"]
+end
+```
+
+Or if you want to suppress all `unused` warnings, to return `nil` or `false` in the block works.
+
+```ruby
+periphery.process_warnings do |path, line, column, message|
+    !message.match(/unused/i)
+end
+```
+
 ## Development
 
 1. Clone this repo
