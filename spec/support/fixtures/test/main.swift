@@ -11,13 +11,13 @@ class SomeClass: RedundantProtocol {
     private var assignOnlyProperty = 0
 
 
-    public func functionWithRedundantPublicAccessibility(_ unusedParameter: Int) {
+    public func methodWithRedundantPublicAccessibility(_ unusedParameter: Int) {
         assignOnlyProperty = 0
         _ = SomeEnum.usedCase
     }
 
-    func unusedFunction() {
+    func unusedMethod() {
     }
 }
 
-SomeClass().functionWithRedundantPublicAccessibility(0)
+SomeClass().methodWithRedundantPublicAccessibility(0)
