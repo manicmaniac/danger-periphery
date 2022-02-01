@@ -60,7 +60,7 @@ describe Danger::DangerPeriphery do
           schemes: "test"
         )
 
-        expect(dangerfile.status_report[:warnings]).to eq(["Enum 'UnusedEnum' is unused"])
+        expect(dangerfile.status_report[:warnings]).to include "Function 'unusedMethod()' is unused"
       end
     end
 
@@ -79,7 +79,7 @@ describe Danger::DangerPeriphery do
           schemes: "test"
         )
 
-        expect(dangerfile.status_report[:warnings]).to eq(["Enum 'UnusedEnum' is unused"])
+        expect(dangerfile.status_report[:warnings]).to include "Function 'unusedMethod()' is unused"
       end
     end
   end
