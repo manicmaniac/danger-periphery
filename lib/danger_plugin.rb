@@ -98,8 +98,10 @@ module Danger
         nil
       elsif result.kind_of?(TrueClass)
         [entry.path, entry.line, entry.column, entry.message]
-      else
+      elsif result.kind_of?(Array) && result.size == 4
         result
+      else
+        raise "Proc passed to postprocessor must return one of nil, true, false and Array that includes 4 elements."
       end
     end
   end
