@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require "periphery/runner"
-require "periphery/checkstyle_parser"
+require "periphery"
 
 module Danger
   # Analyze Swift files and detect unused codes in your project.
@@ -24,6 +23,12 @@ module Danger
     # @return [String]
     attr_accessor :binary_path
 
+    OPTION_OVERRIDES = {
+      disable_update_check: true,
+      format: "checkstyle",
+      quiet: true
+    }.freeze
+
     # Scans Swift files.
     # Raises an error when Periphery executable is not found.
     #
@@ -35,10 +40,10 @@ module Danger
     #                       5. Override some options like --disable-update-check, --format, --quiet and so.
     # @return [void]
     def scan(**options)
-      output = Periphery::Runner.new(binary_path).scan(options.merge(disable_update_check: true, format: "checkstyle", quiet: true))
-      entries = Periphery::CheckstyleParser.new.parse(output)
+      output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES))
       files = files_in_diff
-      entries.
+      Periphery::CheckstyleParser.new.parse(output).
+        lazy.
         select { |entry| files.include?(entry.path) }.
         each { |entry| warn(entry.message, file: entry.path, line: entry.line) }
     end

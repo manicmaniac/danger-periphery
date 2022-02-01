@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
+require "pathname"
+require "periphery/scan_result"
 require "rexml/parsers/baseparser"
 require "rexml/parsers/streamparser"
 require "rexml/streamlistener"
-require "pathname"
-require "periphery/scan_result"
 
 module Periphery
   class CheckstyleParser
