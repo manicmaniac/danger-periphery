@@ -85,5 +85,32 @@ describe Periphery::Runner do
         expect(subject).to eq %w(--project test.xcodeproj --targets test1,test2)
       end
     end
+
+    context "with options passed as symbol" do
+      let(:options) do
+        {
+          project: "test.xcodeproj",
+          targets: :test
+        }
+      end
+
+      it "returns correct arguments" do
+        expect(subject).to eq %w(--project test.xcodeproj --targets test)
+      end
+    end
+
+    context "with options passed as boolean" do
+      let(:options) do
+        {
+          project: "test.xcodeproj",
+          targets: "test",
+          clean_build: true
+        }
+      end
+
+      it "returns correct arguments" do
+        expect(subject).to eq %w(--project test.xcodeproj --targets test --clean-build)
+      end
+    end
   end
 end
