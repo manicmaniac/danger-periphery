@@ -124,6 +124,9 @@ Metrics/BlockLength:
 Style/MixinGrouping:
   Enabled: false
 
+Naming/BlockForwarding:
+  Enabled: true
+
 Naming/FileName:
   Enabled: false
 
@@ -145,10 +148,22 @@ Style/PercentLiteralDelimiters:
     "%W": ()
     "%x": ()
 
+Security/CompoundHash:
+  Enabled: true
+
 Security/YAMLLoad:
   Enabled: false
 
-Gemspec/DateAssignment:
+Gemspec/DeprecatedAttributeAssignment:
+  Enabled: true
+
+Gemspec/RequireMFA:
+  Enabled: true
+
+Layout/LineContinuationLeadingSpace:
+  Enabled: true
+
+Layout/LineContinuationSpacing:
   Enabled: true
 
 Layout/LineEndStringConcatenationIndentation:
@@ -164,6 +179,9 @@ Lint/AmbiguousOperatorPrecedence:
   Enabled: true
 
 Lint/AmbiguousRange:
+  Enabled: true
+
+Lint/ConstantOverwrittenInRescue:
   Enabled: true
 
 Lint/DeprecatedConstants:
@@ -190,6 +208,9 @@ Lint/IncompatibleIoSelectWithFiberScheduler:
 Lint/LambdaWithoutLiteralBlock:
   Enabled: true
 
+Lint/NonAtomicFileOperation:
+  Enabled: true
+
 Lint/NoReturnInBeginEndBlocks:
   Enabled: true
 
@@ -200,6 +221,9 @@ Lint/OrAssignmentToConstant:
   Enabled: true
 
 Lint/RedundantDirGlobSort:
+  Enabled: true
+
+Lint/RefinementImportMethods:
   Enabled: true
 
 Lint/RequireRelativeSelfPath:
@@ -220,6 +244,9 @@ Lint/UnexpectedBlockArity:
 Lint/UnmodifiedReduceAccumulator:
   Enabled: true
 
+Lint/UselessRuby2Keywords:
+  Enabled: true
+
 Security/IoMethods:
   Enabled: true
 
@@ -235,6 +262,18 @@ Style/DocumentDynamicEvalDefinition:
 Style/EndlessMethod:
   Enabled: true
 
+Style/EnvHome:
+  Enabled: true
+
+Style/FetchEnvVar:
+  Enabled: true
+
+Style/FileRead:
+  Enabled: true
+
+Style/FileWrite:
+  Enabled: true
+
 Style/HashConversion:
   Enabled: true
 
@@ -247,10 +286,19 @@ Style/IfWithBooleanLiteralBranches:
 Style/InPatternThen:
   Enabled: true
 
+Style/MapCompactWithConditionalBlock:
+  Enabled: true
+
+Style/MapToHash:
+  Enabled: true
+
 Style/MultilineInPatternThen:
   Enabled: true
 
 Style/NegatedIfElseCondition:
+  Enabled: true
+
+Style/NestedFileDirname:
   Enabled: true
 
 Style/NilLambda:
@@ -262,10 +310,19 @@ Style/NumberedParameters:
 Style/NumberedParametersLimit:
   Enabled: true
 
+Style/ObjectThen:
+  Enabled: true
+
+Style/OpenStructUse:
+  Enabled: true
+
 Style/QuotedSymbols:
   Enabled: true
 
 Style/RedundantArgument:
+  Enabled: true
+
+Style/RedundantInitialize:
   Enabled: true
 
 Style/RedundantSelfAssignmentBranch:
