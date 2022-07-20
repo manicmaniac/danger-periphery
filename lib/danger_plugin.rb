@@ -87,7 +87,7 @@ module Danger
 
     def files_in_diff
       # Taken from https://github.com/ashfurrow/danger-ruby-swiftlint/blob/5184909aab00f12954088684bbf2ce5627e08ed6/lib/danger_plugin.rb#L214-L216
-      renamed_files_hash = git.renamed_files.map { |rename| [rename[:before], rename[:after]] }.to_h
+      renamed_files_hash = git.renamed_files.to_h { |rename| [rename[:before], rename[:after]] }
       post_rename_modified_files = git.modified_files.map { |modified_file| renamed_files_hash[modified_file] || modified_file }
       (post_rename_modified_files - git.deleted_files) + git.added_files
     end
