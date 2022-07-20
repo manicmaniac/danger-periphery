@@ -79,6 +79,58 @@ describe Danger::DangerPeriphery do
       end
     end
 
+    context "with block" do
+      subject { dangerfile.status_report[:warnings] }
+
+      before do
+        allow(periphery.git).to receive(:renamed_files).and_return []
+        allow(periphery.git).to receive(:modified_files).and_return ["test/main.swift"]
+        allow(periphery.git).to receive(:deleted_files).and_return []
+        allow(periphery.git).to receive(:added_files).and_return []
+        periphery.scan(periphery_options, &block)
+      end
+
+      context "that returns nil" do
+        let(:block) { ->(violation) {} }
+
+        it "filters out all warnings" do
+          expect(subject).to be_empty
+        end
+      end
+
+      context "that returns false" do
+        let(:block) { ->(violation) { false } }
+
+        it "filters out all warnings" do
+          expect(subject).to be_empty
+        end
+      end
+
+      context "that returns true" do
+        let(:block) { ->(violation) { true } }
+
+        it "reports warnings without filtering anything" do
+          expect(subject).to include "Function 'unusedMethod()' is unused"
+        end
+      end
+
+      context "that returns truthy value" do
+        let(:block) { ->(violation) { 0 } }
+
+        it "reports warnings without filtering anything" do
+          expect(subject).to include "Function 'unusedMethod()' is unused"
+        end
+      end
+
+      context "that modifies the given violation" do
+        let(:block) { ->(violation) { violation.message.gsub!(/Function/, "Foobar") } }
+
+        it "reports modified warnings" do
+          expect(subject).to include "Foobar 'unusedMethod()' is unused"
+        end
+      end
+    end
+
     describe "#postprocessor" do
       subject { dangerfile.status_report[:warnings] }
 
