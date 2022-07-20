@@ -148,7 +148,7 @@ Style/PercentLiteralDelimiters:
 Security/YAMLLoad:
   Enabled: false
 
-Gemspec/DateAssignment:
+Gemspec/DeprecatedAttributeAssignment:
   Enabled: true
 
 Layout/LineEndStringConcatenationIndentation:
