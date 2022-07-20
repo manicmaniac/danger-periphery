@@ -3,6 +3,14 @@
 describe Danger::DangerPeriphery do
   include DangerPluginHelper
 
+  let(:periphery_options) do
+    {
+      project: fixture("test.xcodeproj"),
+      targets: "test",
+      schemes: "test"
+    }
+  end
+
   it "should be a plugin" do
     expect(Danger::DangerPeriphery.new(nil)).to be_a Danger::Plugin
   end
@@ -35,11 +43,7 @@ describe Danger::DangerPeriphery do
       end
 
       it "reports nothing" do
-        periphery.scan(
-          project: fixture("test.xcodeproj"),
-          targets: "test",
-          schemes: "test"
-        )
+        periphery.scan(periphery_options)
 
         expect(dangerfile.status_report[:warnings]).to be_empty
       end
@@ -54,11 +58,7 @@ describe Danger::DangerPeriphery do
       end
 
       it "reports unused code" do
-        periphery.scan(
-          project: fixture("test.xcodeproj"),
-          targets: "test",
-          schemes: "test"
-        )
+        periphery.scan(periphery_options)
 
         expect(dangerfile.status_report[:warnings]).to include "Function 'unusedMethod()' is unused"
       end
@@ -73,11 +73,7 @@ describe Danger::DangerPeriphery do
       end
 
       it "reports unused code" do
-        periphery.scan(
-          project: fixture("test.xcodeproj"),
-          targets: "test",
-          schemes: "test"
-        )
+        periphery.scan(periphery_options)
 
         expect(dangerfile.status_report[:warnings]).to include "Function 'unusedMethod()' is unused"
       end
@@ -92,11 +88,7 @@ describe Danger::DangerPeriphery do
         allow(periphery.git).to receive(:deleted_files).and_return []
         allow(periphery.git).to receive(:added_files).and_return []
         periphery.postprocessor = postprocessor
-        periphery.scan(
-          project: fixture("test.xcodeproj"),
-          targets: "test",
-          schemes: "test"
-        )
+        periphery.scan(periphery_options)
       end
 
       context "when returns nil" do
