@@ -42,6 +42,31 @@ periphery.scan(
 
 ## Advanced Usage
 
+### Postprocess warnings by passing block to `#scan`
+
+You can modify warnings as you like by passing a block to `scan`.
+`scan` takes a block that receives `ScanResult` instance as arguments.
+Each `ScanResult` instance corresponds with each entry of Danger warnings.
+If that block returns falsy value, danger-periphery suppresses the corresponding warning.
+
+For example, if you want your team members to be careful with warnings, the following code may work.
+
+```ruby
+periphery.scan do |violation|
+  violation.message = "Pay attention please! #{violation.message}"
+end
+```
+
+For another example, if you want to suppress warnings complaining about unused parameter of many of `didChangeValue(_ sender: Any)` methods, you can suppress this kind of warnings in the following way.
+
+```ruby
+periphery.scan do |violation|
+  ! violation.message.match(/Parameter 'sender' is unused/)
+end
+```
+
+### Postprocess warnings by calling `#process_warnings`
+
 You can modify warnings as you like by passing a block to `process_warnings`.
 `process_warnings` takes a block that receives `[path, line, column, message]` as arguments and returns one of the following types.
 
