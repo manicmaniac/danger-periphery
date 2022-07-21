@@ -3,6 +3,14 @@
 describe Danger::DangerPeriphery do
   include DangerPluginHelper
 
+  let(:periphery_options) do
+    {
+      project: fixture("test.xcodeproj"),
+      targets: "test",
+      schemes: "test"
+    }
+  end
+
   it "should be a plugin" do
     expect(Danger::DangerPeriphery.new(nil)).to be_a Danger::Plugin
   end
@@ -35,11 +43,7 @@ describe Danger::DangerPeriphery do
       end
 
       it "reports nothing" do
-        periphery.scan(
-          project: fixture("test.xcodeproj"),
-          targets: "test",
-          schemes: "test"
-        )
+        periphery.scan(periphery_options)
 
         expect(dangerfile.status_report[:warnings]).to be_empty
       end
@@ -54,11 +58,7 @@ describe Danger::DangerPeriphery do
       end
 
       it "reports unused code" do
-        periphery.scan(
-          project: fixture("test.xcodeproj"),
-          targets: "test",
-          schemes: "test"
-        )
+        periphery.scan(periphery_options)
 
         expect(dangerfile.status_report[:warnings]).to include "Function 'unusedMethod()' is unused"
       end
@@ -73,13 +73,61 @@ describe Danger::DangerPeriphery do
       end
 
       it "reports unused code" do
-        periphery.scan(
-          project: fixture("test.xcodeproj"),
-          targets: "test",
-          schemes: "test"
-        )
+        periphery.scan(periphery_options)
 
         expect(dangerfile.status_report[:warnings]).to include "Function 'unusedMethod()' is unused"
+      end
+    end
+
+    context "with block" do
+      subject { dangerfile.status_report[:warnings] }
+
+      before do
+        allow(periphery.git).to receive(:renamed_files).and_return []
+        allow(periphery.git).to receive(:modified_files).and_return ["test/main.swift"]
+        allow(periphery.git).to receive(:deleted_files).and_return []
+        allow(periphery.git).to receive(:added_files).and_return []
+        periphery.scan(periphery_options, &block)
+      end
+
+      context "that returns nil" do
+        let(:block) { ->(violation) {} }
+
+        it "filters out all warnings" do
+          expect(subject).to be_empty
+        end
+      end
+
+      context "that returns false" do
+        let(:block) { ->(violation) { false } }
+
+        it "filters out all warnings" do
+          expect(subject).to be_empty
+        end
+      end
+
+      context "that returns true" do
+        let(:block) { ->(violation) { true } }
+
+        it "reports warnings without filtering anything" do
+          expect(subject).to include "Function 'unusedMethod()' is unused"
+        end
+      end
+
+      context "that returns truthy value" do
+        let(:block) { ->(violation) { 0 } }
+
+        it "reports warnings without filtering anything" do
+          expect(subject).to include "Function 'unusedMethod()' is unused"
+        end
+      end
+
+      context "that modifies the given violation" do
+        let(:block) { ->(violation) { violation.message.gsub!(/Function/, "Foobar") } }
+
+        it "reports modified warnings" do
+          expect(subject).to include "Foobar 'unusedMethod()' is unused"
+        end
       end
     end
 
@@ -92,11 +140,7 @@ describe Danger::DangerPeriphery do
         allow(periphery.git).to receive(:deleted_files).and_return []
         allow(periphery.git).to receive(:added_files).and_return []
         periphery.postprocessor = postprocessor
-        periphery.scan(
-          project: fixture("test.xcodeproj"),
-          targets: "test",
-          schemes: "test"
-        )
+        periphery.scan(periphery_options)
       end
 
       context "when returns nil" do
