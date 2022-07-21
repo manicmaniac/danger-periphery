@@ -4,22 +4,28 @@ module ::Guard
   class Periphery < Plugin
     def initialize(options = {})
       opts = options.dup
-      @project = opts.delete(:project)
-      @targets = opts.delete(:targets)
-      @schemes = opts.delete(:schemes)
+      @command = [
+        "bin/periphery",
+        "scan",
+        "--project",
+        opts.delete(:project),
+        "--targets",
+        opts.delete(:targets),
+        "--schemes",
+        opts.delete(:schemes),
+        "--format",
+        "checkstyle"
+      ]
       super(opts)
     end
 
-    def run_on_modifications(_paths)
-      command = %W(
-        bin/periphery scan
-        --project '#{@project}'
-        --targets '#{@targets}'
-        --schemes '#{@schemes}'
-        --format checkstyle
-      ).join(" ")
-      puts(command)
-      system(command)
+    def run_all
+      UI.info(@command.shelljoin)
+      system(*@command)
+    end
+
+    def run_on_changes(_paths)
+      run_all
     end
   end
 end
