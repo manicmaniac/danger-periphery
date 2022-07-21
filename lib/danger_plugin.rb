@@ -59,13 +59,13 @@ module Danger
     #                       4. If value is true, drop value and treat it as option without argument.
     #                       5. Override some options like --disable-update-check, --format, --quiet and so.
     # @return [void]
-    def scan(**options)
+    def scan(**options, &block)
       output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES))
       files = files_in_diff
       Periphery::CheckstyleParser.new.parse(output).
         lazy.
         select { |entry| files.include?(entry.path) }.
-        map { |entry| postprocess(entry) }.
+        map { |entry| postprocess(entry, &block) }.
         force.
         compact.
         each { |path, line, column, message| warn(message, file: path, line: line) }
@@ -92,16 +92,22 @@ module Danger
       (post_rename_modified_files - git.deleted_files) + git.added_files
     end
 
-    def postprocess(entry)
-      result = @postprocessor.call(entry.path, entry.line, entry.column, entry.message)
-      if !result
-        nil
-      elsif result.kind_of?(TrueClass)
-        [entry.path, entry.line, entry.column, entry.message]
-      elsif result.kind_of?(Array) && result.size == 4
-        result
+    def postprocess(entry, &block)
+      if block
+        if block.call(entry)
+          [entry.path, entry.line, entry.column, entry.message]
+        end
       else
-        raise "Proc passed to postprocessor must return one of nil, true, false and Array that includes 4 elements."
+        result = @postprocessor.call(entry.path, entry.line, entry.column, entry.message)
+        if !result
+          nil
+        elsif result.kind_of?(TrueClass)
+          [entry.path, entry.line, entry.column, entry.message]
+        elsif result.kind_of?(Array) && result.size == 4
+          result
+        else
+          raise "Proc passed to postprocessor must return one of nil, true, false and Array that includes 4 elements."
+        end
       end
     end
   end
