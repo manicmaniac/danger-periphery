@@ -11,7 +11,7 @@ require "rspec"
 
 module FixtureHelper
   def fixtures_path
-    Pathname.new("../support/fixtures").expand_path(__FILE__)
+    Pathname.new("support/fixtures").expand_path(__dir__)
   end
 
   def fixture(filename)
@@ -19,7 +19,7 @@ module FixtureHelper
   end
 
   def binaries_path
-    Pathname.new("../../bin").expand_path(__FILE__)
+    Pathname.new("../bin").expand_path(__dir__)
   end
 
   def binary(filename)
