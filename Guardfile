@@ -30,7 +30,7 @@ module ::Guard
   end
 end
 
-guard :rspec, cmd: "bundle exec rspec" do
+guard :rspec, cmd: "bundle exec rspec -t ~slow", run_all: { cmd: "bundle exec rspec" } do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 

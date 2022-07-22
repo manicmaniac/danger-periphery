@@ -35,7 +35,7 @@ describe Danger::DangerPeriphery do
       end
     end
 
-    context "with a real periphery executable" do
+    context "with a real periphery executable", :slow do
       before { periphery.binary_path = binary("periphery") }
 
       context "when .swift files not in diff" do
