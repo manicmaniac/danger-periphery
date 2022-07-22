@@ -1,23 +1,23 @@
-protocol RedundantProtocol {
-}
-
-class SomeClass: RedundantProtocol {
-    enum SomeEnum {
-        case usedCase
-        case unusedCase
+    protocol RedundantProtocol {
     }
-
-    var unusedProperty = 0
-    private var assignOnlyProperty = 0
-
-
-    public func methodWithRedundantPublicAccessibility(_ unusedParameter: Int) {
-        assignOnlyProperty = 0
-        _ = SomeEnum.usedCase
+    
+    class SomeClass: RedundantProtocol {
+        enum SomeEnum {
+            case usedCase
+            case unusedCase
+        }
+    
+        var unusedProperty = 0
+        private var assignOnlyProperty = 0
+    
+    
+        public func methodWithRedundantPublicAccessibility(_ unusedParameter: Int) {
+            assignOnlyProperty = 0
+            _ = SomeEnum.usedCase
+        }
+    
+        func unusedMethod() {
+        }
     }
-
-    func unusedMethod() {
-    }
-}
-
-SomeClass().methodWithRedundantPublicAccessibility(0)
+    
+    SomeClass().methodWithRedundantPublicAccessibility(0)
