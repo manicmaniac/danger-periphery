@@ -21,8 +21,9 @@ describe Danger::DangerPeriphery do
 
     before do
       periphery.binary_path = fixture("mock-periphery")
-      json = File.read("#{File.dirname(__FILE__)}/support/fixtures/github_pr.json") # example json: `curl https://api.github.com/repos/danger/danger-plugin-template/pulls/18 > github_pr.json`
-      allow(periphery.github).to receive(:pr_json).and_return(json)
+      # example json: `curl -o github_pr.json https://api.github.com/repos/danger/danger-plugin-template/pulls/18
+      json = File.read(fixture("github_pr.json"))
+      allow(periphery.github).to receive(:pr_json).and_return json
       allow(Pathname).to receive(:getwd).and_return fixtures_path
     end
 
@@ -34,7 +35,7 @@ describe Danger::DangerPeriphery do
       end
     end
 
-    context "with a real periphery executable" do
+    context "with a real periphery executable", :slow do
       before { periphery.binary_path = binary("periphery") }
 
       context "when .swift files not in diff" do
