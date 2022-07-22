@@ -12,7 +12,7 @@ describe Danger::DangerPeriphery do
   end
 
   it 'is a plugin' do
-    expect(Danger::DangerPeriphery.new(nil)).to be_a Danger::Plugin
+    expect(described_class.new(nil)).to be_a Danger::Plugin
   end
 
   context 'with Dangerfile' do
@@ -188,7 +188,7 @@ describe Danger::DangerPeriphery do
         periphery.process_warnings do |_path, _line, _column, _message|
           nil
         end
-        expect { periphery.process_warnings { |*_args| nil } }.to(change { periphery.postprocessor })
+        expect { periphery.process_warnings { |*_args| nil } }.to(change(periphery, :postprocessor))
       end
     end
   end

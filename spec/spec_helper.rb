@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ROOT = Pathname.new(File.expand_path('..', __dir__))
-$:.unshift("#{ROOT}lib".to_s, "#{ROOT}spec".to_s)
+$LOAD_PATH.unshift("#{ROOT}lib".to_s, "#{ROOT}spec".to_s)
 
 require 'bundler/setup'
 require 'danger'
