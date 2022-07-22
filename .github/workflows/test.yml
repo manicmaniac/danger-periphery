@@ -1,0 +1,10 @@
+name: Test
+on: [push]
+jobs:
+  unit-test:
+    runs-on: macOS-11
+    steps:
+      - uses: actions/checkout@v2
+      - run: bin/download_periphery
+      - run: bundle install
+      - run: bundle exec rake

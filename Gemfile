@@ -2,6 +2,16 @@
 
 source "https://rubygems.org"
 
+gemspec
+
 gem "bundler", "~> 2.0"
 gem "danger"
-gem "danger-periphery", git: "https://github.com/manicmaniac/danger-periphery.git", ref: "c8a36631323cada7d54d4de4624618723f827449"
+gem "danger-rubocop"
+gem "guard"
+gem "guard-rspec"
+gem "listen"
+gem "pry"
+gem "rake"
+gem "rspec"
+gem "rubocop"
+gem "yard"
