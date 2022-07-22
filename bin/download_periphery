@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd "$(dirname "$0")"
-version="2.8.1"
+version="2.9.0"
 curl -Lo periphery.zip "https://github.com/peripheryapp/periphery/releases/download/$version/periphery-v$version.zip"
 unzip periphery.zip
 rm periphery.zip LICENSE.md
