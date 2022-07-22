@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "pathname"
-require "periphery/scan_result"
-require "rexml/parsers/streamparser"
-require "rexml/streamlistener"
+require 'pathname'
+require 'periphery/scan_result'
+require 'rexml/parsers/streamparser'
+require 'rexml/streamlistener'
 
 module Periphery
   class CheckstyleParser
@@ -19,22 +19,22 @@ module Periphery
 
       def tag_start(name, attrs)
         case name
-        when "file"
-          @current_file = relative_path(attrs["name"])
-        when "error"
+        when 'file'
+          @current_file = relative_path(attrs['name'])
+        when 'error'
           if @current_file
             @results << ScanResult.new(
               @current_file,
-              attrs["line"].to_i,
-              attrs["column"].to_i,
-              attrs["message"]
+              attrs['line'].to_i,
+              attrs['column'].to_i,
+              attrs['message']
             )
           end
         end
       end
 
       def tag_end(name)
-        @current_file = nil if name == "file"
+        @current_file = nil if name == 'file'
       end
 
       private

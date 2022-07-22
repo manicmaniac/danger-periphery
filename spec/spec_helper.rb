@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-ROOT = Pathname.new(File.expand_path("..", __dir__))
+ROOT = Pathname.new(File.expand_path('..', __dir__))
 $:.unshift("#{ROOT}lib".to_s, "#{ROOT}spec".to_s)
 
-require "bundler/setup"
-require "danger"
-require "danger_plugin"
-require "pry"
-require "rspec"
+require 'bundler/setup'
+require 'danger'
+require 'danger_plugin'
+require 'pry'
+require 'rspec'
 
 module FixtureHelper
   def fixtures_path
-    Pathname.new("support/fixtures").expand_path(__dir__)
+    Pathname.new('support/fixtures').expand_path(__dir__)
   end
 
   def fixture(filename)
@@ -19,7 +19,7 @@ module FixtureHelper
   end
 
   def binaries_path
-    Pathname.new("../bin").expand_path(__dir__)
+    Pathname.new('../bin').expand_path(__dir__)
   end
 
   def binary(filename)
@@ -29,8 +29,8 @@ end
 
 module DangerPluginHelper
   def self.included(_module)
-    if `git remote -v` == ""
-      puts "You cannot run tests without setting a local git remote on this repo"
+    if `git remote -v` == ''
+      puts 'You cannot run tests without setting a local git remote on this repo'
       puts "It's a weird side-effect of Danger's internals."
       exit(0)
     end
@@ -52,7 +52,7 @@ module DangerPluginHelper
 
     cork = Cork::Board.new(out: @output)
     def cork.string
-      out.string.gsub(/\e\[([;\d]+)?m/, "")
+      out.string.gsub(/\e\[([;\d]+)?m/, '')
     end
     cork
   end
@@ -62,11 +62,11 @@ module DangerPluginHelper
   # running a PR on TravisCI
   def testing_env
     {
-      "HAS_JOSH_K_SEAL_OF_APPROVAL" => "true",
-      "TRAVIS_PULL_REQUEST" => "800",
-      "TRAVIS_REPO_SLUG" => "artsy/eigen",
-      "TRAVIS_COMMIT_RANGE" => "759adcbd0d8f...13c4dc8bb61d",
-      "DANGER_GITHUB_API_TOKEN" => "123sbdq54erfsd3422gdfio"
+      'HAS_JOSH_K_SEAL_OF_APPROVAL' => 'true',
+      'TRAVIS_PULL_REQUEST' => '800',
+      'TRAVIS_REPO_SLUG' => 'artsy/eigen',
+      'TRAVIS_COMMIT_RANGE' => '759adcbd0d8f...13c4dc8bb61d',
+      'DANGER_GITHUB_API_TOKEN' => '123sbdq54erfsd3422gdfio'
     }
   end
 
@@ -78,6 +78,6 @@ module DangerPluginHelper
 end
 
 RSpec.configure do |config|
-  config.filter_gems_from_backtrace "bundler"
+  config.filter_gems_from_backtrace 'bundler'
   config.include FixtureHelper
 end

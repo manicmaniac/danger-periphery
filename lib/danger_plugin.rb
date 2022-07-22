@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "periphery"
+require 'periphery'
 
 module Danger
   # Analyze Swift files and detect unused codes in your project.
@@ -40,13 +40,13 @@ module Danger
 
     OPTION_OVERRIDES = {
       disable_update_check: true,
-      format: "checkstyle",
+      format: 'checkstyle',
       quiet: true
     }.freeze
 
     def initialize(dangerfile)
       super(dangerfile)
-      @postprocessor = ->(path, line, column, message) { true }
+      @postprocessor = ->(_path, _line, _column, _message) { true }
     end
 
     # Scans Swift files.
@@ -73,13 +73,13 @@ module Danger
     def scan(**options, &block)
       output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES))
       files = files_in_diff
-      Periphery::CheckstyleParser.new.parse(output).
-        lazy.
-        select { |entry| files.include?(entry.path) }.
-        map { |entry| postprocess(entry, &block) }.
-        force.
-        compact.
-        each { |path, line, column, message| warn(message, file: path, line: line) }
+      Periphery::CheckstyleParser.new.parse(output)
+                                 .lazy
+                                 .select { |entry| files.include?(entry.path) }
+                                 .map { |entry| postprocess(entry, &block) }
+                                 .force
+                                 .compact
+                                 .each { |path, line, _column, message| warn(message, file: path, line: line) }
     end
 
     # Convenience method to set {#postprocessor} with block.
@@ -99,25 +99,25 @@ module Danger
     def files_in_diff
       # Taken from https://github.com/ashfurrow/danger-ruby-swiftlint/blob/5184909aab00f12954088684bbf2ce5627e08ed6/lib/danger_plugin.rb#L214-L216
       renamed_files_hash = git.renamed_files.to_h { |rename| [rename[:before], rename[:after]] }
-      post_rename_modified_files = git.modified_files.map { |modified_file| renamed_files_hash[modified_file] || modified_file }
+      post_rename_modified_files = git.modified_files.map do |modified_file|
+        renamed_files_hash[modified_file] || modified_file
+      end
       (post_rename_modified_files - git.deleted_files) + git.added_files
     end
 
     def postprocess(entry, &block)
       if block
-        if block.call(entry)
-          [entry.path, entry.line, entry.column, entry.message]
-        end
+        [entry.path, entry.line, entry.column, entry.message] if block.call(entry)
       else
         result = @postprocessor.call(entry.path, entry.line, entry.column, entry.message)
         if !result
           nil
-        elsif result.kind_of?(TrueClass)
+        elsif result.is_a?(TrueClass)
           [entry.path, entry.line, entry.column, entry.message]
-        elsif result.kind_of?(Array) && result.size == 4
+        elsif result.is_a?(Array) && result.size == 4
           result
         else
-          raise "Proc passed to postprocessor must return one of nil, true, false and Array that includes 4 elements."
+          raise 'Proc passed to postprocessor must return one of nil, true, false and Array that includes 4 elements.'
         end
       end
     end
