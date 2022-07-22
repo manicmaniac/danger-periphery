@@ -4,7 +4,7 @@ require "periphery"
 
 module Danger
   # Analyze Swift files and detect unused codes in your project.
-  # This is done using [Periphery](https://github.com/peripheryapp/periphery).
+  # This is done using {https://github.com/peripheryapp/periphery Periphery}.
   #
   # @example Specifying options to Periphery.
   #
@@ -15,7 +15,7 @@ module Danger
   #            clean_build: true
   #          )
   #
-  # @see manicmaniac/danger-periphery
+  # @see file:README.md
   # @tags swift
   class DangerPeriphery < Plugin
     # Path to Periphery executable.
@@ -52,12 +52,23 @@ module Danger
     # Scans Swift files.
     # Raises an error when Periphery executable is not found.
     #
+    # @example Ignore all warnings from files matching regular expression
+    #   periphery.scan do |violation|
+    #     ! violation.path.match(/.*\/generated\.swift/)
+    #   end
+    #
     # @param [Hash] options Options passed to Periphery with the following translation rules.
     #                       1. Replace all underscores with hyphens in each key.
     #                       2. Prepend double hyphens to each key.
     #                       3. If value is an array, transform it to comma-separated string.
     #                       4. If value is true, drop value and treat it as option without argument.
-    #                       5. Override some options like --disable-update-check, --format, --quiet and so.
+    #                       5. Override some options listed in {OPTION_OVERRIDES}.
+    #                       Run +$ periphery help scan+ for available options.
+    #
+    # @param [Proc] block   Block to process each warning just before showing it.
+    #                       The Proc receives 1 {Periphery::ScanResult} instance as argument.
+    #                       If the Proc returns falsy value, the warning corresponding to the given ScanResult will be suppressed, otherwise not.
+    #
     # @return [void]
     def scan(**options, &block)
       output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES))
@@ -71,13 +82,13 @@ module Danger
         each { |path, line, column, message| warn(message, file: path, line: line) }
     end
 
-    # Convenience method to set `postprocessor` with block.
+    # Convenience method to set {#postprocessor} with block.
     #
     # @return [Proc]
     #
     # @example Ignore all warnings from files matching regular expression
     #   periphery.process_warnings do |path, line, column, message|
-    #     !path.match(/.*\/generated\.swift/)
+    #     ! path.match(/.*\/generated\.swift/)
     #   end
     def process_warnings(&block)
       @postprocessor = block
