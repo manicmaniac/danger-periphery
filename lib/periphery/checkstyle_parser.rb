@@ -2,7 +2,6 @@
 
 require "pathname"
 require "periphery/scan_result"
-require "rexml/parsers/baseparser"
 require "rexml/parsers/streamparser"
 require "rexml/streamlistener"
 
