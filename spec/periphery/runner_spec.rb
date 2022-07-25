@@ -8,32 +8,47 @@ describe Periphery::Runner do
   describe "#scan" do
     subject { runner.scan(options) }
 
-    context "with valid args" do
-      let(:options) do
-        {
-          project: fixture("test.xcodeproj"),
-          targets: "test",
-          "schemes" => "test"
-        }
-      end
+    let(:options) do
+      {
+        project: fixture("test.xcodeproj"),
+        targets: "test",
+        "schemes" => "test"
+      }
+    end
 
-      let(:command) do
-        [
-          binary_path,
-          "scan",
-          "--project",
-          fixture("test.xcodeproj"),
-          "--targets",
-          "test",
-          "--schemes",
-          "test"
-        ]
-      end
+    let(:command) do
+      [
+        binary_path,
+        "scan",
+        "--project",
+        fixture("test.xcodeproj"),
+        "--targets",
+        "test",
+        "--schemes",
+        "test"
+      ]
+    end
 
-      it "runs scan without args" do
-        status = double(Process::Status, success?: true)
-        expect(Open3).to receive(:capture3).once.with(*command).and_return ["warning:", "", status]
+    context "when periphery succeeds" do
+      it "returns scan result" do
+        status = instance_double(Process::Status, success?: true)
+        allow(Open3).to receive(:capture3).once.with(*command).and_return ["warning:", "", status]
         expect(subject).to include "warning:"
+      end
+    end
+
+    context "when periphery fails" do
+      it "raises an error" do
+        status = instance_double(Process::Status, success?: false, exitstatus: 42)
+        allow(Open3).to receive(:capture3).once.with(*command).and_return ["", "foo", status]
+        expect { subject }.to raise_error(RuntimeError, /42.*foo/)
+      end
+    end
+
+    context "when periphery executable is missing" do
+      it "raises an error" do
+        allow(Open3).to receive(:capture3).once.with(*command).and_raise(Errno::ENOENT, "/path/to/periphery")
+        expect { subject }.to raise_error(Errno::ENOENT, %r{/path/to/periphery})
       end
     end
   end
