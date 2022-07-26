@@ -74,13 +74,15 @@ module Danger
     def scan(**options, &block)
       output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES))
       files = files_in_diff
-      Periphery::CheckstyleParser.new.parse(output)
-                                 .lazy
-                                 .select { |entry| files.include?(entry.path) }
-                                 .map { |entry| postprocess(entry, &block) }
-                                 .force
-                                 .compact
-                                 .each { |path, line, _column, message| warn(message, file: path, line: line) }
+      Periphery::CheckstyleParser.new.parse(output).each do |entry|
+        next unless files.include?(entry.path)
+
+        result = postprocess(entry, &block)
+        next unless result
+
+        path, line, _column, message = result
+        warn(message, file: path, line: line)
+      end
     end
 
     # Convenience method to set {#postprocessor} with block.
@@ -108,18 +110,26 @@ module Danger
 
     def postprocess(entry, &block)
       if block
-        [entry.path, entry.line, entry.column, entry.message] if block.call(entry)
+        postprocess_with_block(entry, &block)
       else
-        result = @postprocessor.call(entry.path, entry.line, entry.column, entry.message)
-        if !result
-          nil
-        elsif result.is_a?(TrueClass)
-          [entry.path, entry.line, entry.column, entry.message]
-        elsif result.is_a?(Array) && result.size == 4
-          result
-        else
-          raise 'Proc passed to postprocessor must return one of nil, true, false and Array that includes 4 elements.'
-        end
+        postprocess_with_postprocessor(entry)
+      end
+    end
+
+    def postprocess_with_block(entry, &block)
+      [entry.path, entry.line, entry.column, entry.message] if block.call(entry)
+    end
+
+    def postprocess_with_postprocessor(entry)
+      result = @postprocessor.call(entry.path, entry.line, entry.column, entry.message)
+      if !result
+        nil
+      elsif result.is_a?(TrueClass)
+        [entry.path, entry.line, entry.column, entry.message]
+      elsif result.is_a?(Array) && result.size == 4
+        result
+      else
+        raise 'Proc passed to postprocessor must return one of nil, true, false and Array that includes 4 elements.'
       end
     end
   end
