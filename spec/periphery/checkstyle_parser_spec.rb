@@ -4,7 +4,7 @@ describe Periphery::CheckstyleParser do
   subject(:parser) { described_class.new }
 
   describe '#parse' do
-    subject { parser.parse(string) }
+    subject(:parse) { parser.parse(string) }
 
     context 'with vaild checkstyle xml' do
       let(:string) do
@@ -23,7 +23,7 @@ describe Periphery::CheckstyleParser do
       before { allow(Pathname).to receive(:getwd).and_return Pathname.new('/Users/manicmaniac/danger-periphery') }
 
       it 'parses all warnings' do
-        expect(subject).to eq [
+        expect(parse).to eq [
           Periphery::ScanResult.new('main.swift', 1, 1, "Typealias 'UnusedTypeAlias' is unused"),
           Periphery::ScanResult.new('main.swift', 2, 1, "Class 'UnusedClass' is unused"),
           Periphery::ScanResult.new('main.swift', 3, 1, "Protocol 'UnusedProtocol' is unused")

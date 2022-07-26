@@ -6,7 +6,7 @@ describe Periphery::Runner do
   let(:binary_path) { binary('periphery') }
 
   describe '#scan' do
-    subject { runner.scan(options) }
+    subject(:scan) { runner.scan(options) }
 
     let(:options) do
       {
@@ -33,7 +33,7 @@ describe Periphery::Runner do
       it 'returns scan result' do
         status = instance_double(Process::Status, success?: true)
         allow(Open3).to receive(:capture3).once.with(*command).and_return ['warning:', '', status]
-        expect(subject).to include 'warning:'
+        expect(scan).to include 'warning:'
       end
     end
 
@@ -41,20 +41,20 @@ describe Periphery::Runner do
       it 'raises an error' do
         status = instance_double(Process::Status, success?: false, exitstatus: 42)
         allow(Open3).to receive(:capture3).once.with(*command).and_return ['', 'foo', status]
-        expect { subject }.to raise_error(RuntimeError, /42.*foo/)
+        expect { scan }.to raise_error(RuntimeError, /42.*foo/)
       end
     end
 
     context 'when periphery executable is missing' do
       it 'raises an error' do
         allow(Open3).to receive(:capture3).once.with(*command).and_raise(Errno::ENOENT, '/path/to/periphery')
-        expect { subject }.to raise_error(Errno::ENOENT, %r{/path/to/periphery})
+        expect { scan }.to raise_error(Errno::ENOENT, %r{/path/to/periphery})
       end
     end
   end
 
   describe '#scan_arguments' do
-    subject { runner.scan_arguments(options) }
+    subject(:scan_arguments) { runner.scan_arguments(options) }
 
     context 'with empty options' do
       let(:options) { {} }
@@ -71,7 +71,7 @@ describe Periphery::Runner do
       end
 
       it 'returns correct arguments' do
-        expect(subject).to eq %w[--clean-build --skip-build]
+        expect(scan_arguments).to eq %w[--clean-build --skip-build]
       end
     end
 
@@ -84,7 +84,7 @@ describe Periphery::Runner do
       end
 
       it 'returns correct arguments' do
-        expect(subject).to eq %w[--project test.xcodeproj --targets test1,test2]
+        expect(scan_arguments).to eq %w[--project test.xcodeproj --targets test1,test2]
       end
     end
 
@@ -97,7 +97,7 @@ describe Periphery::Runner do
       end
 
       it 'returns correct arguments' do
-        expect(subject).to eq %w[--project test.xcodeproj --targets test1,test2]
+        expect(scan_arguments).to eq %w[--project test.xcodeproj --targets test1,test2]
       end
     end
 
@@ -110,7 +110,7 @@ describe Periphery::Runner do
       end
 
       it 'returns correct arguments' do
-        expect(subject).to eq %w[--project test.xcodeproj --targets test]
+        expect(scan_arguments).to eq %w[--project test.xcodeproj --targets test]
       end
     end
 
@@ -124,7 +124,7 @@ describe Periphery::Runner do
       end
 
       it 'returns correct arguments' do
-        expect(subject).to eq %w[--project test.xcodeproj --targets test --clean-build]
+        expect(scan_arguments).to eq %w[--project test.xcodeproj --targets test --clean-build]
       end
     end
   end

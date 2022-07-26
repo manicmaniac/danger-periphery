@@ -85,7 +85,7 @@ describe Danger::DangerPeriphery do
     end
 
     context 'with block' do
-      subject { dangerfile.status_report[:warnings] }
+      subject(:warnings) { dangerfile.status_report[:warnings] }
 
       before do
         allow(periphery.git).to receive(:renamed_files).and_return []
@@ -99,7 +99,7 @@ describe Danger::DangerPeriphery do
         let(:block) { ->(violation) {} }
 
         it 'filters out all warnings' do
-          expect(subject).to be_empty
+          expect(warnings).to be_empty
         end
       end
 
@@ -107,7 +107,7 @@ describe Danger::DangerPeriphery do
         let(:block) { ->(_violation) { false } }
 
         it 'filters out all warnings' do
-          expect(subject).to be_empty
+          expect(warnings).to be_empty
         end
       end
 
@@ -115,7 +115,7 @@ describe Danger::DangerPeriphery do
         let(:block) { ->(_violation) { true } }
 
         it 'reports warnings without filtering anything' do
-          expect(subject).to include "Function 'unusedMethod()' is unused"
+          expect(warnings).to include "Function 'unusedMethod()' is unused"
         end
       end
 
@@ -123,7 +123,7 @@ describe Danger::DangerPeriphery do
         let(:block) { ->(_violation) { 0 } }
 
         it 'reports warnings without filtering anything' do
-          expect(subject).to include "Function 'unusedMethod()' is unused"
+          expect(warnings).to include "Function 'unusedMethod()' is unused"
         end
       end
 
@@ -131,13 +131,13 @@ describe Danger::DangerPeriphery do
         let(:block) { ->(violation) { violation.message.gsub!(/Function/, 'Foobar') } }
 
         it 'reports modified warnings' do
-          expect(subject).to include "Foobar 'unusedMethod()' is unused"
+          expect(warnings).to include "Foobar 'unusedMethod()' is unused"
         end
       end
     end
 
     describe '#postprocessor' do
-      subject { dangerfile.status_report[:warnings] }
+      subject(:warnings) { dangerfile.status_report[:warnings] }
 
       before do
         allow(periphery.git).to receive(:renamed_files).and_return []
@@ -152,7 +152,7 @@ describe Danger::DangerPeriphery do
         let(:postprocessor) { ->(path, line, column, message) {} }
 
         it 'does not report warnings' do
-          expect(subject).to be_empty
+          expect(warnings).to be_empty
         end
       end
 
@@ -160,7 +160,7 @@ describe Danger::DangerPeriphery do
         let(:postprocessor) { ->(_path, _line, _column, _message) { false } }
 
         it 'does not report warnings' do
-          expect(subject).to be_empty
+          expect(warnings).to be_empty
         end
       end
 
@@ -168,7 +168,7 @@ describe Danger::DangerPeriphery do
         let(:postprocessor) { ->(_path, _line, _column, _message) { true } }
 
         it 'reports warnings' do
-          expect(subject).to include "Function 'unusedMethod()' is unused"
+          expect(warnings).to include "Function 'unusedMethod()' is unused"
         end
       end
 
@@ -178,7 +178,7 @@ describe Danger::DangerPeriphery do
         end
 
         it 'reports modified warnings' do
-          expect(subject).to include "Foobar 'unusedMethod()' is unused"
+          expect(warnings).to include "Foobar 'unusedMethod()' is unused"
         end
       end
     end
@@ -188,7 +188,7 @@ describe Danger::DangerPeriphery do
         periphery.process_warnings do |_path, _line, _column, _message|
           nil
         end
-        expect { periphery.process_warnings { |*_args| nil } }.to(change(periphery, :postprocessor))
+        expect { periphery.process_warnings { |*_args| nil } }.to change(periphery, :postprocessor)
       end
     end
   end
