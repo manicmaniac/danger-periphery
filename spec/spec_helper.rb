@@ -29,11 +29,11 @@ end
 
 module DangerPluginHelper
   def self.included(_module)
-    if `git remote -v` == ''
-      puts 'You cannot run tests without setting a local git remote on this repo'
-      puts "It's a weird side-effect of Danger's internals."
-      exit(0)
-    end
+    return if `git remote -v` != ''
+
+    puts 'You cannot run tests without setting a local git remote on this repo'
+    puts "It's a weird side-effect of Danger's internals."
+    exit(0)
   end
 
   # These functions are a subset of https://github.com/danger/danger/blob/master/spec/spec_helper.rb
