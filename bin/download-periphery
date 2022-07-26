@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'open-uri'
+require 'zip'
+
+VERSION = '2.9.0'
+
+Dir.chdir(__dir__) do
+  URI.open("https://github.com/peripheryapp/periphery/releases/download/#{VERSION}/periphery-v#{VERSION}.zip") do |src|
+    entry = Zip::File.open_buffer(src).get_entry('periphery')
+    entry.restore_permissions = true
+    entry.extract
+  end
+end
