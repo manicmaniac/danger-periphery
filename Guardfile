@@ -1,20 +1,15 @@
 # frozen_string_literal: true
 
 module ::Guard
-  class Periphery < Plugin
+  class Periphery < Plugin # :nodoc:
     def initialize(options = {})
       opts = options.dup
       @command = [
-        "bin/periphery",
-        "scan",
-        "--project",
-        opts.delete(:project),
-        "--targets",
-        opts.delete(:targets),
-        "--schemes",
-        opts.delete(:schemes),
-        "--format",
-        "checkstyle"
+        'bin/periphery', 'scan',
+        '--project', opts.delete(:project),
+        '--targets', opts.delete(:targets),
+        '--schemes', opts.delete(:schemes),
+        '--format', 'checkstyle'
       ]
       super(opts)
     end
@@ -30,8 +25,8 @@ module ::Guard
   end
 end
 
-guard :rspec, cmd: "bundle exec rspec -t ~slow", run_all: { cmd: "bundle exec rspec" } do
-  require "guard/rspec/dsl"
+guard :rspec, cmd: 'bundle exec rspec -t ~slow', run_all: { cmd: 'bundle exec rspec' } do
+  require 'guard/rspec/dsl'
   dsl = Guard::RSpec::Dsl.new(self)
 
   rspec = dsl.rspec
@@ -43,6 +38,6 @@ guard :rspec, cmd: "bundle exec rspec -t ~slow", run_all: { cmd: "bundle exec rs
   dsl.watch_spec_files_for(ruby.lib_files)
 end
 
-guard :periphery, project: "spec/support/fixtures/test.xcodeproj", targets: "test", schemes: "test" do
-  watch("spec/support/fixtures/test/main.swift")
+guard :periphery, project: 'spec/support/fixtures/test.xcodeproj', targets: 'test', schemes: 'test' do
+  watch('spec/support/fixtures/test/main.swift')
 end

@@ -2,17 +2,17 @@
 # frozen_string_literal: true
 
 puts <<~XML
-<?xml version="1.0" encoding="utf-8"?>
-<checkstyle version="4.3">
-        <file name="#{__dir__}/test/main.swift">
-                <error line="1" column="10" severity="warning" message="Protocol &apos;RedundantProtocol&apos; is redundant as it&apos;s never used as an existential type"/>
-                <error line="4" column="18" severity="warning" message="Protocol &apos;RedundantProtocol&apos; conformance is redundant"/>
-                <error line="7" column="14" severity="warning" message="Enum case &apos;unusedCase&apos; is unused"/>
-                <error line="10" column="9" severity="warning" message="Property &apos;unusedProperty&apos; is unused"/>
-                <error line="11" column="17" severity="warning" message="Property &apos;assignOnlyProperty&apos; is assigned, but never used"/>
-                <error line="14" column="17" severity="warning" message="Function &apos;methodWithRedundantPublicAccessibility(_:)&apos; is declared public, but not used outside of test"/>
-                <error line="14" column="58" severity="warning" message="Parameter &apos;unusedParameter&apos; is unused"/>
-                <error line="19" column="10" severity="warning" message="Function &apos;unusedMethod()&apos; is unused"/>
-        </file>
-</checkstyle>
+  <?xml version="1.0" encoding="utf-8"?>
+  <checkstyle version="4.3">
+          <file name="#{__dir__}/test/main.swift">
+                  <error line="1" column="10" severity="warning" message="Protocol &apos;RedundantProtocol&apos; is redundant as it&apos;s never used as an existential type"/>
+                  <error line="4" column="18" severity="warning" message="Protocol &apos;RedundantProtocol&apos; conformance is redundant"/>
+                  <error line="7" column="14" severity="warning" message="Enum case &apos;unusedCase&apos; is unused"/>
+                  <error line="10" column="9" severity="warning" message="Property &apos;unusedProperty&apos; is unused"/>
+                  <error line="11" column="17" severity="warning" message="Property &apos;assignOnlyProperty&apos; is assigned, but never used"/>
+                  <error line="14" column="17" severity="warning" message="Function &apos;methodWithRedundantPublicAccessibility(_:)&apos; is declared public, but not used outside of test"/>
+                  <error line="14" column="58" severity="warning" message="Parameter &apos;unusedParameter&apos; is unused"/>
+                  <error line="19" column="10" severity="warning" message="Function &apos;unusedMethod()&apos; is unused"/>
+          </file>
+  </checkstyle>
 XML
