@@ -7,3 +7,4 @@ bin/periphery
 pkg
 project.xcworkspace
 xcuserdata
+/coverage/
