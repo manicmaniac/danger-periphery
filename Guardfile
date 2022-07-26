@@ -1,20 +1,15 @@
 # frozen_string_literal: true
 
 module ::Guard
-  class Periphery < Plugin
+  class Periphery < Plugin # :nodoc:
     def initialize(options = {})
       opts = options.dup
       @command = [
-        'bin/periphery',
-        'scan',
-        '--project',
-        opts.delete(:project),
-        '--targets',
-        opts.delete(:targets),
-        '--schemes',
-        opts.delete(:schemes),
-        '--format',
-        'checkstyle'
+        'bin/periphery', 'scan',
+        '--project', opts.delete(:project),
+        '--targets', opts.delete(:targets),
+        '--schemes', opts.delete(:schemes),
+        '--format', 'checkstyle'
       ]
       super(opts)
     end

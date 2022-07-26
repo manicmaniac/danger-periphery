@@ -67,7 +67,8 @@ module Danger
     #
     # @param [Proc] block   Block to process each warning just before showing it.
     #                       The Proc receives 1 {Periphery::ScanResult} instance as argument.
-    #                       If the Proc returns falsy value, the warning corresponding to the given ScanResult will be suppressed, otherwise not.
+    #                       If the Proc returns falsy value, the warning corresponding to the given ScanResult will be
+    #                       suppressed, otherwise not.
     #
     # @return [void]
     def scan(**options, &block)
