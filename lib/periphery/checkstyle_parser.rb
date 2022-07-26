@@ -6,8 +6,10 @@ require 'rexml/parsers/streamparser'
 require 'rexml/streamlistener'
 
 module Periphery
+  # Parses {https://checkstyle.sourceforge.io/ Checkstyle} format XML produced by Periphery with
+  # +--format=checkstyle+ option.
   class CheckstyleParser
-    class Listener
+    class Listener # :nodoc:
       include REXML::StreamListener
 
       attr_reader :results
@@ -23,12 +25,7 @@ module Periphery
           @current_file = relative_path(attrs['name'])
         when 'error'
           if @current_file
-            @results << ScanResult.new(
-              @current_file,
-              attrs['line'].to_i,
-              attrs['column'].to_i,
-              attrs['message']
-            )
+            @results << ScanResult.new(@current_file, attrs['line'].to_i, attrs['column'].to_i, attrs['message'])
           end
         end
       end
