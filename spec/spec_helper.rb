@@ -5,9 +5,14 @@ $LOAD_PATH.unshift("#{ROOT}lib".to_s, "#{ROOT}spec".to_s)
 
 require 'bundler/setup'
 require 'danger'
-require 'danger_plugin'
 require 'pry'
 require 'rspec'
+require 'simplecov'
+SimpleCov.start do
+  load_profile 'test_frameworks'
+  enable_coverage :branch
+end
+require 'danger_plugin'
 
 module FixtureHelper
   def fixtures_path
