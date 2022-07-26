@@ -74,7 +74,7 @@ describe Danger::DangerPeriphery do
       periphery.scan(periphery_options, &block)
     end
 
-    context 'that returns nil' do
+    context 'when the block returns nil' do
       let(:block) { ->(violation) {} }
 
       it 'filters out all warnings' do
@@ -82,7 +82,7 @@ describe Danger::DangerPeriphery do
       end
     end
 
-    context 'that returns false' do
+    context 'when the block returns false' do
       let(:block) { ->(_violation) { false } }
 
       it 'filters out all warnings' do
@@ -90,7 +90,7 @@ describe Danger::DangerPeriphery do
       end
     end
 
-    context 'that returns true' do
+    context 'when the block returns true' do
       let(:block) { ->(_violation) { true } }
 
       it 'reports warnings without filtering anything' do
@@ -98,7 +98,7 @@ describe Danger::DangerPeriphery do
       end
     end
 
-    context 'that returns truthy value' do
+    context 'when the block returns truthy value' do
       let(:block) { ->(_violation) { 0 } }
 
       it 'reports warnings without filtering anything' do
@@ -106,7 +106,7 @@ describe Danger::DangerPeriphery do
       end
     end
 
-    context 'that modifies the given violation' do
+    context 'when the block modifies the given violation' do
       let(:block) { ->(violation) { violation.message.gsub!(/Function/, 'Foobar') } }
 
       it 'reports modified warnings' do
