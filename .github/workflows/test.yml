@@ -5,7 +5,7 @@ jobs:
     runs-on: macOS-11
     steps:
       - uses: actions/checkout@v2
-      - run: bin/download_periphery
+      - run: bin/download-periphery
       - run: bundle install
       - uses: paambaati/codeclimate-action@v3.0.0
         env:

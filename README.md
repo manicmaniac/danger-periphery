@@ -103,7 +103,7 @@ end
 
 1. Clone this repo
 2. Run `bundle install` to setup dependencies.
-3. Run `bin/download_periphery` to install Periphery.
+3. Run `bin/download-periphery` to install Periphery.
 4. Run `bundle exec rake spec` to run the tests.
 5. Use `bundle exec guard` to automatically have tests run as you make changes.
 6. Make your changes.
