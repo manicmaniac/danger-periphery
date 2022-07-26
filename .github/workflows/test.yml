@@ -5,8 +5,8 @@ jobs:
     runs-on: macOS-11
     steps:
       - uses: actions/checkout@v2
-      - run: bin/download-periphery
       - run: bundle install
+      - run: bin/download-periphery
       - uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
