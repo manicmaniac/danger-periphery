@@ -15,10 +15,6 @@ describe Danger::DangerPeriphery do
     }
   end
   let(:periphery_executable) { fixture('mock-periphery') }
-  let(:renamed_files) { [] }
-  let(:modified_files) { [] }
-  let(:deleted_files) { [] }
-  let(:added_files) { [] }
 
   before do
     periphery.binary_path = periphery_executable
@@ -26,10 +22,10 @@ describe Danger::DangerPeriphery do
     json = File.read(fixture('github_pr.json'))
     allow(periphery.github).to receive(:pr_json).and_return json
     allow(Pathname).to receive(:getwd).and_return fixtures_path
-    allow(periphery.git).to receive(:renamed_files).and_return renamed_files
-    allow(periphery.git).to receive(:modified_files).and_return modified_files
-    allow(periphery.git).to receive(:deleted_files).and_return deleted_files
-    allow(periphery.git).to receive(:added_files).and_return added_files
+    allow(periphery.git).to receive(:renamed_files).and_return []
+    allow(periphery.git).to receive(:modified_files).and_return []
+    allow(periphery.git).to receive(:deleted_files).and_return []
+    allow(periphery.git).to receive(:added_files).and_return []
   end
 
   it 'is a plugin' do
@@ -56,7 +52,7 @@ describe Danger::DangerPeriphery do
     end
 
     context 'when .swift files were added' do
-      let(:added_files) { ['test/main.swift'] }
+      before { allow(periphery.git).to receive(:added_files).and_return ['test/main.swift'] }
 
       it 'reports unused code' do
         expect(warnings).to include "Function 'unusedMethod()' is unused"
@@ -64,7 +60,7 @@ describe Danger::DangerPeriphery do
     end
 
     context 'when .swift files were modified' do
-      let(:modified_files) { ['test/main.swift'] }
+      before { allow(periphery.git).to receive(:modified_files).and_return ['test/main.swift'] }
 
       it 'reports unused code' do
         expect(warnings).to include "Function 'unusedMethod()' is unused"
@@ -73,9 +69,10 @@ describe Danger::DangerPeriphery do
   end
 
   context 'with block' do
-    let(:modified_files) { ['test/main.swift'] }
-
-    before { periphery.scan(periphery_options, &block) }
+    before do
+      allow(periphery.git).to receive(:modified_files).and_return ['test/main.swift']
+      periphery.scan(periphery_options, &block)
+    end
 
     context 'that returns nil' do
       let(:block) { ->(violation) {} }
@@ -119,9 +116,8 @@ describe Danger::DangerPeriphery do
   end
 
   describe '#postprocessor' do
-    let(:modified_files) { ['test/main.swift'] }
-
     before do
+      allow(periphery.git).to receive(:modified_files).and_return ['test/main.swift']
       periphery.postprocessor = postprocessor
       periphery.scan(periphery_options)
     end
