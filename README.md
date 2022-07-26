@@ -6,6 +6,8 @@
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/1006dd155fc527b2b687/test_coverage)](https://codeclimate.com/github/manicmaniac/danger-periphery/test_coverage)
 
+[![Gem Version](https://badge.fury.io/rb/danger-periphery.svg)](https://badge.fury.io/rb/danger-periphery)
+
 A Danger plugin to detect unused codes.
 
 ## Installation
