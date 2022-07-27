@@ -7,6 +7,8 @@
 
 A Danger plugin to detect unused codes.
 
+<img width="899" alt="image" src="https://user-images.githubusercontent.com/1672393/181256005-40842f99-d504-4be8-a0e5-5df144f939d7.png">
+
 ## Installation
 
 You need to install [Periphery](https://github.com/peripheryapp/periphery) beforehand.
