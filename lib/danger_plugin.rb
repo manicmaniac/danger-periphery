@@ -23,6 +23,8 @@ module Danger
     # @return [String]
     attr_accessor :binary_path
 
+    # @deprecated Use {#scan} with block instead.
+    #
     # Proc object to process each warnings just before showing them.
     # The Proc must receive 4 arguments: path, line, column, message
     # and return one of:
@@ -85,14 +87,11 @@ module Danger
       end
     end
 
+    # @deprecated Use {#scan} with block instead.
+    #
     # Convenience method to set {#postprocessor} with block.
     #
     # @return [Proc]
-    #
-    # @example Ignore all warnings from files matching regular expression
-    #   periphery.process_warnings do |path, line, column, message|
-    #     ! path.match(/.*\/generated\.swift/)
-    #   end
     def process_warnings(&block)
       deprecate_in_favor_of_scan
       @postprocessor = block
