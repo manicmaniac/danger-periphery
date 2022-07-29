@@ -140,13 +140,15 @@ module Danger
 
     def deprecate_in_favor_of_scan
       caller_method_name = caller(1, 1)[0].sub(/.*`(.*)'.*/, '\1')
+      caller_location = caller_locations(2, 1)[0]
       message = [
-        "NOTE: #{self.class}##{caller_method_name} is deprecated; ",
-        "use #{self.class}#scan with block instead. ",
-        "It will be removed from future releases.\n",
-        "#{self.class}##{caller_method_name} called from #{caller_locations(2, 1)[0]}"
-      ]
-      Kernel.warn(message.join)
+        "`#{self.class}##{caller_method_name}` is deprecated; ",
+        "use `#{self.class}#scan` with block instead. ",
+        'It will be removed from future releases.'
+      ].join
+      location_message = "#{self.class}##{caller_method_name} called from #{caller_location}"
+      Kernel.warn("NOTE: #{message}\n#{location_message}")
+      warn(message, file: caller_location.path, line: caller_location.lineno)
     end
   end
 end
