@@ -56,7 +56,7 @@ module Danger
     #
     # @example Ignore all warnings from files matching regular expression
     #   periphery.scan do |violation|
-    #     ! violation.path.match(/.*\/generated\.swift/)
+    #     !violation.path.match(/.*\/generated\.swift/)
     #   end
     #
     # @param [Hash] options Options passed to Periphery with the following translation rules.
