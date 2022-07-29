@@ -124,6 +124,12 @@ describe Danger::DangerPeriphery do
     end
   end
 
+  describe '#postprocessor=' do
+    it 'warns that it is deprecated' do
+      expect { periphery.postprocessor = proc {} }.to output(/NOTE:/).to_stderr
+    end
+  end
+
   describe '#process_warnings' do
     it 'sets postprocessor' do
       periphery.process_warnings do |_path, _line, _column, _message|
