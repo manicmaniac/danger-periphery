@@ -94,24 +94,12 @@ module Danger
     #     ! path.match(/.*\/generated\.swift/)
     #   end
     def process_warnings(&block)
-      message = [
-        "NOTE: #{self.class}##{__method__} is deprecated; ",
-        "use #{self.class}#scan with block instead. ",
-        "It will be removed from future releases.\n",
-        "#{self.class}##{__callee__} called from #{caller_locations(1, 1)[0]}"
-      ].join
-      Kernel.warn(message)
+      deprecate_in_favor_of_scan
       @postprocessor = block
     end
 
     def postprocessor=(postprocessor)
-      message = [
-        "NOTE: #{self.class}##{__method__} is deprecated; ",
-        "use #{self.class}#scan with block instead. ",
-        "It will be removed from future releases.\n",
-        "#{self.class}##{__callee__} called from #{caller_locations(1, 1)[0]}"
-      ]
-      Kernel.warn(message)
+      deprecate_in_favor_of_scan
       @postprocessor = postprocessor
     end
 
@@ -149,6 +137,17 @@ module Danger
       else
         raise 'Proc passed to postprocessor must return one of nil, true, false and Array that includes 4 elements.'
       end
+    end
+
+    def deprecate_in_favor_of_scan
+      caller_method_name = caller(1, 1)[0].sub(/.*`(.*)'.*/, '\1')
+      message = [
+        "NOTE: #{self.class}##{caller_method_name} is deprecated; ",
+        "use #{self.class}#scan with block instead. ",
+        "It will be removed from future releases.\n",
+        "#{self.class}##{caller_method_name} called from #{caller_locations(2, 1)[0]}"
+      ]
+      Kernel.warn(message.join)
     end
   end
 end

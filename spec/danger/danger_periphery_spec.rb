@@ -126,7 +126,7 @@ describe Danger::DangerPeriphery do
 
   describe '#postprocessor=' do
     it 'warns that it is deprecated' do
-      expect { periphery.postprocessor = proc {} }.to output(/NOTE:/).to_stderr
+      expect { periphery.postprocessor = proc {} }.to output(/NOTE:.*postprocessor/).to_stderr
     end
   end
 
@@ -139,7 +139,7 @@ describe Danger::DangerPeriphery do
     end
 
     it 'warns that it is deprecated' do
-      expect { periphery.process_warnings { |*_args| nil } }.to output(/NOTE:/).to_stderr
+      expect { periphery.process_warnings { |*_args| nil } }.to output(/NOTE:.*process_warnings/).to_stderr
     end
   end
 end
