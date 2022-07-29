@@ -148,7 +148,8 @@ module Danger
       ].join
       location_message = "#{self.class}##{caller_method_name} called from #{caller_location}"
       Kernel.warn("NOTE: #{message}\n#{location_message}")
-      warn(message, file: caller_location.path, line: caller_location.lineno)
+      issue_reference = 'See manicmaniac/danger-periphery#37 for detail.'
+      warn("#{message}\n#{issue_reference}", file: caller_location.path, line: caller_location.lineno)
     end
   end
 end
