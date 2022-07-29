@@ -66,7 +66,7 @@ For another example, if you want to suppress warnings complaining about unused p
 
 ```ruby
 periphery.scan do |violation|
-  ! violation.message.match(/Parameter 'sender' is unused/)
+  !violation.message.match(/Parameter 'sender' is unused/)
 end
 ```
 

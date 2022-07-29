@@ -3,12 +3,6 @@
 rubocop.lint inline_comment: true
 
 periphery.binary_path = 'bin/periphery'
-periphery.process_warnings do |_path, _line, _column, message|
-  !message.match(/unused/i)
+periphery.scan(project: 'spec/support/fixtures/test.xcodeproj', schemes: 'test', targets: 'test') do |violation|
+  !violation.mesage.include?('unused')
 end
-
-periphery.scan(
-  project: 'spec/support/fixtures/test.xcodeproj',
-  schemes: 'test',
-  targets: 'test'
-)
