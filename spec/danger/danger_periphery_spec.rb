@@ -85,6 +85,7 @@ describe Danger::DangerPeriphery do
 
   describe '#postprocessor' do
     before do
+      allow(Kernel).to receive(:warn)
       periphery.postprocessor = postprocessor
       periphery.scan(periphery_options)
     end
@@ -93,7 +94,7 @@ describe Danger::DangerPeriphery do
       let(:postprocessor) { ->(path, line, column, message) {} }
 
       it 'does not report warnings' do
-        expect(warnings).to be_empty
+        expect(warnings).to match [/deprecated/]
       end
     end
 
@@ -101,7 +102,7 @@ describe Danger::DangerPeriphery do
       let(:postprocessor) { ->(_path, _line, _column, _message) { false } }
 
       it 'does not report warnings' do
-        expect(warnings).to be_empty
+        expect(warnings).to match [/deprecated/]
       end
     end
 
@@ -132,9 +133,7 @@ describe Danger::DangerPeriphery do
 
   describe '#process_warnings' do
     it 'sets postprocessor' do
-      periphery.process_warnings do |_path, _line, _column, _message|
-        nil
-      end
+      allow(Kernel).to receive(:warn)
       expect { periphery.process_warnings { |*_args| nil } }.to change(periphery, :postprocessor)
     end
 
