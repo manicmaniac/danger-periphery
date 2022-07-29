@@ -23,6 +23,8 @@ module Danger
     # @return [String]
     attr_accessor :binary_path
 
+    # @deprecated Use {#scan} with block instead.
+    #
     # Proc object to process each warnings just before showing them.
     # The Proc must receive 4 arguments: path, line, column, message
     # and return one of:
@@ -36,7 +38,7 @@ module Danger
     #
     # By default the Proc returns true.
     # @return [Proc]
-    attr_accessor :postprocessor
+    attr_reader :postprocessor
 
     OPTION_OVERRIDES = {
       disable_update_check: true,
@@ -85,16 +87,19 @@ module Danger
       end
     end
 
+    # @deprecated Use {#scan} with block instead.
+    #
     # Convenience method to set {#postprocessor} with block.
     #
     # @return [Proc]
-    #
-    # @example Ignore all warnings from files matching regular expression
-    #   periphery.process_warnings do |path, line, column, message|
-    #     ! path.match(/.*\/generated\.swift/)
-    #   end
     def process_warnings(&block)
+      deprecate_in_favor_of_scan
       @postprocessor = block
+    end
+
+    def postprocessor=(postprocessor)
+      deprecate_in_favor_of_scan
+      @postprocessor = postprocessor
     end
 
     private
@@ -131,6 +136,17 @@ module Danger
       else
         raise 'Proc passed to postprocessor must return one of nil, true, false and Array that includes 4 elements.'
       end
+    end
+
+    def deprecate_in_favor_of_scan
+      caller_method_name = caller(1, 1)[0].sub(/.*`(.*)'.*/, '\1')
+      message = [
+        "NOTE: #{self.class}##{caller_method_name} is deprecated; ",
+        "use #{self.class}#scan with block instead. ",
+        "It will be removed from future releases.\n",
+        "#{self.class}##{caller_method_name} called from #{caller_locations(2, 1)[0]}"
+      ]
+      Kernel.warn(message.join)
     end
   end
 end
