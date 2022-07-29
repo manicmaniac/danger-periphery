@@ -142,8 +142,7 @@ module Danger
       caller_method_name = caller(1, 1)[0].sub(/.*`(.*)'.*/, '\1')
       caller_location = caller_locations(2, 1)[0]
       message = [
-        "`#{self.class}##{caller_method_name}` is deprecated; ",
-        "use `#{self.class}#scan` with block instead. ",
+        "`#{self.class}##{caller_method_name}` is deprecated; use `#{self.class}#scan` with block instead. ",
         'It will be removed from future releases.'
       ].join
       location_message = "#{self.class}##{caller_method_name} called from #{caller_location}"
