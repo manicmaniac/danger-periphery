@@ -131,5 +131,9 @@ describe Danger::DangerPeriphery do
       end
       expect { periphery.process_warnings { |*_args| nil } }.to change(periphery, :postprocessor)
     end
+
+    it 'warns that it is deprecated' do
+      expect { periphery.process_warnings { |*_args| nil } }.to output(/NOTE:/).to_stderr
+    end
   end
 end

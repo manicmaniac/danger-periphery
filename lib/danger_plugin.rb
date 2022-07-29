@@ -94,6 +94,13 @@ module Danger
     #     ! path.match(/.*\/generated\.swift/)
     #   end
     def process_warnings(&block)
+      message = [
+        "NOTE: #{self.class}##{__method__} is deprecated; ",
+        "use #{self.class}#scan with block instead. ",
+        "It will be removed from future releases.\n",
+        "#{self.class}##{__callee__} called from #{caller_locations(1, 1)[0]}"
+      ].join
+      Kernel.warn(message)
       @postprocessor = block
     end
 
