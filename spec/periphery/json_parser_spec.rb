@@ -28,7 +28,8 @@ describe Periphery::JsonParser do
       path = '/path/to/main.swift'
       expected = [
         Periphery::ScanResult.new(path, 1, 10,
-                                  "Protocol 'RedundantProtocol' is redundant as it's never used as an existential type"),
+                                  ["Protocol 'RedundantProtocol' is redundant ",
+                                   "as it's never used as an existential type"].join),
         Periphery::ScanResult.new(path, 4, 25, "Protocol 'RedundantProtocol' conformance is redundant"),
         Periphery::ScanResult.new(path, 4, 14,
                                   "Class 'SomeClass' is declared public, but not used outside of the module"),
@@ -36,7 +37,8 @@ describe Periphery::JsonParser do
         Periphery::ScanResult.new(path, 10, 9, "Property 'unusedProperty' is unused"),
         Periphery::ScanResult.new(path, 11, 17, "Property 'assignOnlyProperty' is assigned, but never used"),
         Periphery::ScanResult.new(path, 14, 17,
-                                  "Function 'methodWithRedundantPublicAccessibility(_:)' is declared public, but not used outside of the module"),
+                                  ["Function 'methodWithRedundantPublicAccessibility(_:)' is declared public, ",
+                                   'but not used outside of the module'].join),
         Periphery::ScanResult.new(path, 14, 58, "Parameter 'unusedParameter' is unused"),
         Periphery::ScanResult.new(path, 19, 10, "Function 'unusedMethod()' is unused")
       ]
