@@ -3,7 +3,7 @@
 describe Periphery::JsonParser do
   subject(:parser) { described_class.new }
 
-  before { allow(Pathname).to receive(:getwd).and_return '/path/to' }
+  before { allow(Pathname).to receive(:getwd).and_return Pathname.new('/path/to') }
 
   describe '#parse' do
     subject(:parse) { parser.parse(string) }
