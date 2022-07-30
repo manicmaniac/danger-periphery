@@ -45,8 +45,13 @@ describe Danger::DangerPeriphery do
     end
 
     it 'behaves almost same' do
-      checkstyle_warnings = warnings[:checkstyle].join("\n")
-      json_warnings = warnings[:json].join("\n").gsub('the module', 'test')
+      # There's 2 known differences
+      # 1. The order of warnings is not the same
+      # 2. JSON output doesn't contain information about the current module name
+      # To pass the test, sorting the result (1) and substituting module name occurrences (2) are needed.
+      # Optionally converting the result array to newline-separated text emits better diff.
+      checkstyle_warnings = warnings[:checkstyle].sort.join("\n")
+      json_warnings = warnings[:json].sort.join("\n").gsub('the module', 'test')
       expect(checkstyle_warnings).to eq json_warnings
     end
   end
