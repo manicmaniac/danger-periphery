@@ -31,6 +31,26 @@ describe Danger::DangerPeriphery do
     expect(described_class.new(nil)).to be_a Danger::Plugin
   end
 
+  describe 'checkstyle and json format' do
+    let!(:warnings) { Hash.new { |hash, key| hash[key] = [] } }
+
+    before do
+      allow(periphery).to receive(:warn) do |message, file:, line:|
+        warnings[periphery.instance_variable_get(:@format)] << "#{file}:#{line} #{message}"
+      end
+      %i[checkstyle json].each do |format|
+        periphery.format = format
+        periphery.scan
+      end
+    end
+
+    it 'behaves almost same' do
+      checkstyle_warnings = warnings[:checkstyle].join("\n")
+      json_warnings = warnings[:json].join("\n").gsub('the module', 'test')
+      expect(checkstyle_warnings).to eq json_warnings
+    end
+  end
+
   context 'when periphery is not installed' do
     let(:periphery_executable) { 'not_installed' }
 
