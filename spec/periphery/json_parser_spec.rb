@@ -3,6 +3,8 @@
 describe Periphery::JsonParser do
   subject(:parser) { described_class.new }
 
+  before { allow(Pathname).to receive(:getwd).and_return '/path/to' }
+
   describe '#parse' do
     subject(:parse) { parser.parse(string) }
 
@@ -25,7 +27,7 @@ describe Periphery::JsonParser do
     context 'with valid json' do
       let(:string) { File.read(fixture('scan.json')) }
 
-      path = '/path/to/main.swift'
+      path = 'main.swift'
       expected = [
         Periphery::ScanResult.new(path, 1, 10,
                                   ["Protocol 'RedundantProtocol' is redundant ",
@@ -59,7 +61,7 @@ describe Periphery::JsonParser do
       let(:location) { '/path/to/main.swift:1:42' }
 
       it 'returns path, line and column' do
-        expect(parse_location).to eq ['/path/to/main.swift', 1, 42]
+        expect(parse_location).to eq ['main.swift', 1, 42]
       end
     end
 

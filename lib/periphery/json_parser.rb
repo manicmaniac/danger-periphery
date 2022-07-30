@@ -16,10 +16,14 @@ module Periphery
 
     private
 
+    def relative_path(path, base = Pathname.getwd)
+      Pathname.new(path).relative_path_from(base).to_s
+    end
+
     # Parses a string like '/path/to/file.swift:19:10'
     def parse_location(location)
       location.scan(/^(.+):(\d+):(\d+)$/) do |path, line, column|
-        return [path, line.to_i, column.to_i]
+        return [relative_path(path), line.to_i, column.to_i]
       end
       raise ArgumentError, "#{location} is not in a valid format"
     end
@@ -31,7 +35,7 @@ module Periphery
       # https://github.com/peripheryapp/periphery/blob/2.9.0/Sources/Frontend/Formatters/JsonFormatter.swift#L27
       # https://github.com/peripheryapp/periphery/blob/2.9.0/Sources/Frontend/Formatters/JsonFormatter.swift#L42
       hint = hints[0]
-      "#{display_name(kind).capitalize} '#{name}' #{describe_hint(hint)}"
+      +"#{display_name(kind).capitalize} '#{name}' #{describe_hint(hint)}"
     end
 
     def display_name(kind)

@@ -42,7 +42,7 @@ module Danger
 
     OPTION_OVERRIDES = {
       disable_update_check: true,
-      format: 'checkstyle',
+      format: 'json',
       quiet: true
     }.freeze
 
@@ -76,7 +76,7 @@ module Danger
     def scan(**options, &block)
       output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES))
       files = files_in_diff
-      Periphery::CheckstyleParser.new.parse(output).each do |entry|
+      Periphery::JsonParser.new.parse(output).each do |entry|
         next unless files.include?(entry.path)
 
         result = postprocess(entry, &block)
