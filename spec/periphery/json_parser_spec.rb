@@ -173,7 +173,7 @@ describe Periphery::JsonParser do
     context 'with nil' do
       let(:kind) { nil }
 
-      it { is_expected.to be_nil }
+      it { is_expected.to be_empty }
     end
   end
 end

@@ -27,32 +27,11 @@ module Periphery
     def compose_message(name, kind, hints)
       return 'unused' unless name
 
-      message = ''.dup
-      message += display_name(kind).capitalize if kind
-      message += ' '
-      message += "'#{name}'"
-      message += ' '
-
       # Assumes hints contains only one item.
       # https://github.com/peripheryapp/periphery/blob/2.9.0/Sources/Frontend/Formatters/JsonFormatter.swift#L27
       # https://github.com/peripheryapp/periphery/blob/2.9.0/Sources/Frontend/Formatters/JsonFormatter.swift#L42
-      case hints[0]
-      when 'unused'
-        message += 'is unused'
-      when 'assignOnlyProperty'
-        message += 'is assigned, but never used'
-      when 'redundantProtocol'
-        message += "is redundant as it's never used as an existential type"
-      when 'redundantConformance'
-        message += 'conformance is redundant'
-      when 'redundantPublicAccessibility'
-        # FIXME: There's no information about the name of module in JSON output,
-        #        unlike other formatters can output `outside of FooModule`.
-        #        This is known problem and may be fixed in future Periphery's release.
-        #        See the status of https://github.com/peripheryapp/periphery/pull/519
-        message += 'is declared public, but not used outside of the module'
-      end
-      message
+      hint = hints[0]
+      "#{display_name(kind).capitalize} '#{name}' #{describe_hint(hint)}"
     end
 
     def display_name(kind)
@@ -61,8 +40,23 @@ module Periphery
       when 'function.constructor' then 'initializer'
       when 'var.parameter' then 'parameter'
       when 'generic_type_param' then 'generic type parameter'
-      when nil then nil
+      when nil then ''
       else kind.start_with?('var') ? 'property' : kind.split('.', 2)[0]
+      end
+    end
+
+    def describe_hint(hint)
+      case hint
+      when 'unused' then 'is unused'
+      when 'assignOnlyProperty' then 'is assigned, but never used'
+      when 'redundantProtocol' then "is redundant as it's never used as an existential type"
+      when 'redundantConformance' then 'conformance is redundant'
+      # FIXME: There's no information about the name of module in JSON output,
+      #        unlike other formatters can output `outside of FooModule`.
+      #        This is known problem and may be fixed in future Periphery's release.
+      #        See the status of https://github.com/peripheryapp/periphery/pull/519
+      when 'redundantPublicAccessibility' then 'is declared public, but not used outside of the module'
+      else ''
       end
     end
   end
