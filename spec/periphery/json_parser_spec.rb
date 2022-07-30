@@ -25,24 +25,27 @@ describe Periphery::JsonParser do
     context 'with valid json' do
       let(:string) { File.read(fixture('scan.json')) }
 
+      path = '/path/to/main.swift'
+      expected = [
+        Periphery::ScanResult.new(path, 1, 10,
+                                  "Protocol 'RedundantProtocol' is redundant as it's never used as an existential type"),
+        Periphery::ScanResult.new(path, 4, 25, "Protocol 'RedundantProtocol' conformance is redundant"),
+        Periphery::ScanResult.new(path, 4, 14,
+                                  "Class 'SomeClass' is declared public, but not used outside of the module"),
+        Periphery::ScanResult.new(path, 7, 14, "Enum case 'unusedCase' is unused"),
+        Periphery::ScanResult.new(path, 10, 9, "Property 'unusedProperty' is unused"),
+        Periphery::ScanResult.new(path, 11, 17, "Property 'assignOnlyProperty' is assigned, but never used"),
+        Periphery::ScanResult.new(path, 14, 17,
+                                  "Function 'methodWithRedundantPublicAccessibility(_:)' is declared public, but not used outside of the module"),
+        Periphery::ScanResult.new(path, 14, 58, "Parameter 'unusedParameter' is unused"),
+        Periphery::ScanResult.new(path, 19, 10, "Function 'unusedMethod()' is unused")
+      ]
+
       it 'returns correct ScanResults' do
         path = '/path/to/main.swift'
 
         # To use readable text diff, convert the result to flat text.
-        expect(parse.flat_map(&:to_a).join("\n")).to eq [
-          Periphery::ScanResult.new(path, 1, 10,
-                                    "Protocol 'RedundantProtocol' is redundant as it's never used as an existential type"),
-          Periphery::ScanResult.new(path, 4, 25, "Protocol 'RedundantProtocol' conformance is redundant"),
-          Periphery::ScanResult.new(path, 4, 14,
-                                    "Class 'SomeClass' is declared public, but not used outside of the module"),
-          Periphery::ScanResult.new(path, 7, 14, "Enum case 'unusedCase' is unused"),
-          Periphery::ScanResult.new(path, 10, 9, "Property 'unusedProperty' is unused"),
-          Periphery::ScanResult.new(path, 11, 17, "Property 'assignOnlyProperty' is assigned, but never used"),
-          Periphery::ScanResult.new(path, 14, 17,
-                                    "Function 'methodWithRedundantPublicAccessibility(_:)' is declared public, but not used outside of the module"),
-          Periphery::ScanResult.new(path, 14, 58, "Parameter 'unusedParameter' is unused"),
-          Periphery::ScanResult.new(path, 19, 10, "Function 'unusedMethod()' is unused")
-        ].flat_map(&:to_a).join("\n")
+        expect(parse.flat_map(&:to_a).join("\n")).to eq expected.flat_map(&:to_a).join("\n")
       end
     end
   end
