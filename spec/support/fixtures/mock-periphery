@@ -1,139 +1,163 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-puts <<~JSON
-  [
-    {
-      "location": "#{__dir__}/test/main.swift:1:10",
-      "modifiers": [],
-      "kind": "protocol",
-      "attributes": [],
-      "accessibility": "internal",
-      "hints": [
-        "redundantProtocol"
-      ],
-      "name": "RedundantProtocol",
-      "ids": [
-        "s:4test17RedundantProtocolP"
-      ]
-    },
-    {
-      "ids": [
-        "s:4test17RedundantProtocolP"
-      ],
-      "kind": "protocol",
-      "accessibility": "",
-      "hints": [
-        "redundantConformance"
-      ],
-      "modifiers": [],
-      "name": "RedundantProtocol",
-      "attributes": [],
-      "location": "#{__dir__}/test/main.swift:4:25"
-    },
-    {
-      "kind": "class",
-      "ids": [
-        "s:4test9SomeClassC"
-      ],
-      "attributes": [],
-      "location": "#{__dir__}/test/main.swift:4:14",
-      "modifiers": [
-        "public"
-      ],
-      "hints": [
-        "redundantPublicAccessibility"
-      ],
-      "accessibility": "public",
-      "name": "SomeClass"
-    },
-    {
-      "modifiers": [],
-      "location": "#{__dir__}/test/main.swift:7:14",
-      "accessibility": "internal",
-      "attributes": [],
-      "kind": "enumelement",
-      "ids": [
-        "s:4test9SomeClassC0B4EnumO10unusedCaseyA2EmF"
-      ],
-      "name": "unusedCase",
-      "hints": [
-        "unused"
-      ]
-    },
-    {
-      "kind": "var.instance",
-      "attributes": [],
-      "accessibility": "internal",
-      "name": "unusedProperty",
-      "ids": [
-        "s:4test9SomeClassC14unusedPropertySivp"
-      ],
-      "hints": [
-        "unused"
-      ],
-      "modifiers": [],
-      "location": "#{__dir__}/test/main.swift:10:9"
-    },
-    {
-      "name": "assignOnlyProperty",
-      "ids": [
-        "s:4test9SomeClassC18assignOnlyProperty33_9F9099C659B8A128A78BAA9A7C0E0368LLSivp"
-      ],
-      "hints": [
-        "assignOnlyProperty"
-      ],
-      "kind": "var.instance",
-      "attributes": [],
-      "accessibility": "private",
-      "location": "#{__dir__}/test/main.swift:11:17",
-      "modifiers": [
-        "private"
-      ]
-    },
-    {
-      "kind": "function.method.instance",
-      "accessibility": "public",
-      "name": "methodWithRedundantPublicAccessibility(_:)",
-      "hints": [
-        "redundantPublicAccessibility"
-      ],
-      "location": "#{__dir__}/test/main.swift:14:17",
-      "ids": [
-        "s:4test9SomeClassC38methodWithRedundantPublicAccessibilityyySiF"
-      ],
-      "modifiers": [
-        "public"
-      ],
-      "attributes": []
-    },
-    {
-      "kind": "var.parameter",
-      "name": "unusedParameter",
-      "accessibility": "internal",
-      "ids": [
-        "methodWithRedundantPublicAccessibility(_ unusedParameter:)-unusedParameter-#{__dir__}/test/main.swift:14:58"
-      ],
-      "modifiers": [],
-      "hints": [
-        "unused"
-      ],
-      "location": "#{__dir__}/test/main.swift:14:58",
-      "attributes": []
-    },
-    {
-      "location": "#{__dir__}/test/main.swift:19:10",
-      "accessibility": "internal",
-      "name": "unusedMethod()",
-      "modifiers": [],
-      "hints": [
-        "unused"
-      ],
-      "ids": [
-        "s:4test9SomeClassC12unusedMethodyyF"
-      ],
-      "attributes": [],
-      "kind": "function.method.instance"
-    }
-  ]
-JSON
+def format_equal?(format)
+  ARGV.include?("--format=#{format}") || ARGV.each_cons(2).include?(['--format', format.to_s])
+end
+
+if format_equal?(:checkstyle)
+  puts <<~XML
+    <?xml version="1.0" encoding="utf-8"?>
+    <checkstyle version="4.3">
+            <file name="#{__dir__}/test/main.swift">
+                    <error line="1" column="10" severity="warning" message="Protocol &apos;RedundantProtocol&apos; is redundant as it&apos;s never used as an existential type"/>
+                    <error line="4" column="18" severity="warning" message="Protocol &apos;RedundantProtocol&apos; conformance is redundant"/>
+                    <error line="7" column="14" severity="warning" message="Enum case &apos;unusedCase&apos; is unused"/>
+                    <error line="10" column="9" severity="warning" message="Property &apos;unusedProperty&apos; is unused"/>
+                    <error line="11" column="17" severity="warning" message="Property &apos;assignOnlyProperty&apos; is assigned, but never used"/>
+                    <error line="14" column="17" severity="warning" message="Function &apos;methodWithRedundantPublicAccessibility(_:)&apos; is declared public, but not used outside of test"/>
+                    <error line="14" column="58" severity="warning" message="Parameter &apos;unusedParameter&apos; is unused"/>
+                    <error line="19" column="10" severity="warning" message="Function &apos;unusedMethod()&apos; is unused"/>
+            </file>
+    </checkstyle>
+  XML
+elsif format_equal?(:json)
+  puts <<~JSON
+    [
+      {
+        "location": "#{__dir__}/test/main.swift:1:10",
+        "modifiers": [],
+        "kind": "protocol",
+        "attributes": [],
+        "accessibility": "internal",
+        "hints": [
+          "redundantProtocol"
+        ],
+        "name": "RedundantProtocol",
+        "ids": [
+          "s:4test17RedundantProtocolP"
+        ]
+      },
+      {
+        "ids": [
+          "s:4test17RedundantProtocolP"
+        ],
+        "kind": "protocol",
+        "accessibility": "",
+        "hints": [
+          "redundantConformance"
+        ],
+        "modifiers": [],
+        "name": "RedundantProtocol",
+        "attributes": [],
+        "location": "#{__dir__}/test/main.swift:4:25"
+      },
+      {
+        "kind": "class",
+        "ids": [
+          "s:4test9SomeClassC"
+        ],
+        "attributes": [],
+        "location": "#{__dir__}/test/main.swift:4:14",
+        "modifiers": [
+          "public"
+        ],
+        "hints": [
+          "redundantPublicAccessibility"
+        ],
+        "accessibility": "public",
+        "name": "SomeClass"
+      },
+      {
+        "modifiers": [],
+        "location": "#{__dir__}/test/main.swift:7:14",
+        "accessibility": "internal",
+        "attributes": [],
+        "kind": "enumelement",
+        "ids": [
+          "s:4test9SomeClassC0B4EnumO10unusedCaseyA2EmF"
+        ],
+        "name": "unusedCase",
+        "hints": [
+          "unused"
+        ]
+      },
+      {
+        "kind": "var.instance",
+        "attributes": [],
+        "accessibility": "internal",
+        "name": "unusedProperty",
+        "ids": [
+          "s:4test9SomeClassC14unusedPropertySivp"
+        ],
+        "hints": [
+          "unused"
+        ],
+        "modifiers": [],
+        "location": "#{__dir__}/test/main.swift:10:9"
+      },
+      {
+        "name": "assignOnlyProperty",
+        "ids": [
+          "s:4test9SomeClassC18assignOnlyProperty33_9F9099C659B8A128A78BAA9A7C0E0368LLSivp"
+        ],
+        "hints": [
+          "assignOnlyProperty"
+        ],
+        "kind": "var.instance",
+        "attributes": [],
+        "accessibility": "private",
+        "location": "#{__dir__}/test/main.swift:11:17",
+        "modifiers": [
+          "private"
+        ]
+      },
+      {
+        "kind": "function.method.instance",
+        "accessibility": "public",
+        "name": "methodWithRedundantPublicAccessibility(_:)",
+        "hints": [
+          "redundantPublicAccessibility"
+        ],
+        "location": "#{__dir__}/test/main.swift:14:17",
+        "ids": [
+          "s:4test9SomeClassC38methodWithRedundantPublicAccessibilityyySiF"
+        ],
+        "modifiers": [
+          "public"
+        ],
+        "attributes": []
+      },
+      {
+        "kind": "var.parameter",
+        "name": "unusedParameter",
+        "accessibility": "internal",
+        "ids": [
+          "methodWithRedundantPublicAccessibility(_ unusedParameter:)-unusedParameter-#{__dir__}/test/main.swift:14:58"
+        ],
+        "modifiers": [],
+        "hints": [
+          "unused"
+        ],
+        "location": "#{__dir__}/test/main.swift:14:58",
+        "attributes": []
+      },
+      {
+        "location": "#{__dir__}/test/main.swift:19:10",
+        "accessibility": "internal",
+        "name": "unusedMethod()",
+        "modifiers": [],
+        "hints": [
+          "unused"
+        ],
+        "ids": [
+          "s:4test9SomeClassC12unusedMethodyyF"
+        ],
+        "attributes": [],
+        "kind": "function.method.instance"
+      }
+    ]
+  JSON
+else
+  raise "Neither :json nor :checkstyle format are specified; #{ARGV}"
+end

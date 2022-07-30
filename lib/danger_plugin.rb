@@ -40,15 +40,20 @@ module Danger
     # @return [Proc]
     attr_reader :postprocessor
 
+    # For internal use only.
+    #
+    # @return [Symbol]
+    attr_writer :format
+
     OPTION_OVERRIDES = {
       disable_update_check: true,
-      format: 'json',
       quiet: true
     }.freeze
 
     def initialize(dangerfile)
       super(dangerfile)
       @postprocessor = ->(_path, _line, _column, _message) { true }
+      @format = :checkstyle
     end
 
     # Scans Swift files.
@@ -74,9 +79,9 @@ module Danger
     #
     # @return [void]
     def scan(**options, &block)
-      output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES))
+      output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES).merge(format: @format))
       files = files_in_diff
-      Periphery::JsonParser.new.parse(output).each do |entry|
+      parser.parse(output).each do |entry|
         next unless files.include?(entry.path)
 
         result = postprocess(entry, &block)
@@ -149,6 +154,17 @@ module Danger
       Kernel.warn("NOTE: #{message}\n#{location_message}")
       issue_reference = 'See manicmaniac/danger-periphery#37 for detail.'
       warn("#{message}\n#{issue_reference}", file: caller_location.path, line: caller_location.lineno)
+    end
+
+    def parser
+      case @format
+      when :checkstyle
+        Periphery::CheckstyleParser.new
+      when :json
+        Periphery::JsonParser.new
+      else
+        raise ArgumentError, "#{format} is unsupported"
+      end
     end
   end
 end
