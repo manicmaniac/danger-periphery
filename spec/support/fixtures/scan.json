@@ -1,0 +1,164 @@
+[
+  {
+    "location" : "\/path\/to\/main.swift:1:10",
+    "modifiers" : [
+
+    ],
+    "kind" : "protocol",
+    "attributes" : [
+
+    ],
+    "accessibility" : "internal",
+    "hints" : [
+      "redundantProtocol"
+    ],
+    "name" : "RedundantProtocol",
+    "ids" : [
+      "s:4test17RedundantProtocolP"
+    ]
+  },
+  {
+    "ids" : [
+      "s:4test17RedundantProtocolP"
+    ],
+    "kind" : "protocol",
+    "accessibility" : "",
+    "hints" : [
+      "redundantConformance"
+    ],
+    "modifiers" : [
+
+    ],
+    "name" : "RedundantProtocol",
+    "attributes" : [
+
+    ],
+    "location" : "\/path\/to\/main.swift:4:25"
+  },
+  {
+    "kind" : "class",
+    "ids" : [
+      "s:4test9SomeClassC"
+    ],
+    "attributes" : [
+
+    ],
+    "location" : "\/path\/to\/main.swift:4:14",
+    "modifiers" : [
+      "public"
+    ],
+    "hints" : [
+      "redundantPublicAccessibility"
+    ],
+    "accessibility" : "public",
+    "name" : "SomeClass"
+  },
+  {
+    "modifiers" : [
+
+    ],
+    "location" : "\/path\/to\/main.swift:7:14",
+    "accessibility" : "internal",
+    "attributes" : [
+
+    ],
+    "kind" : "enumelement",
+    "ids" : [
+      "s:4test9SomeClassC0B4EnumO10unusedCaseyA2EmF"
+    ],
+    "name" : "unusedCase",
+    "hints" : [
+      "unused"
+    ]
+  },
+  {
+    "kind" : "var.instance",
+    "attributes" : [
+
+    ],
+    "accessibility" : "internal",
+    "name" : "unusedProperty",
+    "ids" : [
+      "s:4test9SomeClassC14unusedPropertySivp"
+    ],
+    "hints" : [
+      "unused"
+    ],
+    "modifiers" : [
+
+    ],
+    "location" : "\/path\/to\/main.swift:10:9"
+  },
+  {
+    "name" : "assignOnlyProperty",
+    "ids" : [
+      "s:4test9SomeClassC18assignOnlyProperty33_9F9099C659B8A128A78BAA9A7C0E0368LLSivp"
+    ],
+    "hints" : [
+      "assignOnlyProperty"
+    ],
+    "kind" : "var.instance",
+    "attributes" : [
+
+    ],
+    "accessibility" : "private",
+    "location" : "\/path\/to\/main.swift:11:17",
+    "modifiers" : [
+      "private"
+    ]
+  },
+  {
+    "kind" : "function.method.instance",
+    "accessibility" : "public",
+    "name" : "methodWithRedundantPublicAccessibility(_:)",
+    "hints" : [
+      "redundantPublicAccessibility"
+    ],
+    "location" : "\/path\/to\/main.swift:14:17",
+    "ids" : [
+      "s:4test9SomeClassC38methodWithRedundantPublicAccessibilityyySiF"
+    ],
+    "modifiers" : [
+      "public"
+    ],
+    "attributes" : [
+
+    ]
+  },
+  {
+    "kind" : "var.parameter",
+    "name" : "unusedParameter",
+    "accessibility" : "internal",
+    "ids" : [
+      "methodWithRedundantPublicAccessibility(_ unusedParameter:)-unusedParameter-\/path\/to\/main.swift:14:58"
+    ],
+    "modifiers" : [
+
+    ],
+    "hints" : [
+      "unused"
+    ],
+    "location" : "\/path\/to\/main.swift:14:58",
+    "attributes" : [
+
+    ]
+  },
+  {
+    "location" : "\/path\/to\/main.swift:19:10",
+    "accessibility" : "internal",
+    "name" : "unusedMethod()",
+    "modifiers" : [
+
+    ],
+    "hints" : [
+      "unused"
+    ],
+    "ids" : [
+      "s:4test9SomeClassC12unusedMethodyyF"
+    ],
+    "attributes" : [
+
+    ],
+    "kind" : "function.method.instance"
+  }
+]
