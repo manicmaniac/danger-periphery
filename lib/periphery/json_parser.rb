@@ -57,20 +57,12 @@ module Periphery
 
     def display_name(kind)
       case kind
-      when 'enumelement'
-        'enum case'
-      when 'function.constructor'
-        'initializer'
-      when 'var.parameter'
-        'parameter'
-      when 'generic_type_param'
-        'generic type parameter'
-      when nil
-        nil
-      else
-        return 'property' if kind.start_with?('var')
-
-        kind.split('.', 2).first
+      when 'enumelement' then 'enum case'
+      when 'function.constructor' then 'initializer'
+      when 'var.parameter' then 'parameter'
+      when 'generic_type_param' then 'generic type parameter'
+      when nil then nil
+      else kind.start_with?('var') ? 'property' : kind.split('.', 2)[0]
       end
     end
   end
