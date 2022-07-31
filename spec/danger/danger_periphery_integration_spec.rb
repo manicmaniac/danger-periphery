@@ -12,6 +12,7 @@ describe Danger::DangerPeriphery, :slow do
            '-project', fixture('test.xcodeproj'),
            '-scheme', 'test',
            '-configuration', 'Debug',
+           '-destination', 'platform=macOS',
            '-derivedDataPath', @derived_data_path)
   end
 
