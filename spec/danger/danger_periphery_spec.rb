@@ -181,22 +181,22 @@ describe Danger::DangerPeriphery do
   describe '#format' do
     subject(:parser) { periphery.send(:parser) }
 
-    before { periphery.format = format }
+    it { is_expected.to be_a_kind_of Periphery::CheckstyleParser }
 
     context 'with checkstyle' do
-      let(:format) { :checkstyle }
+      before { periphery.format = :checkstyle }
 
       it { is_expected.to be_a_kind_of Periphery::CheckstyleParser }
     end
 
     context 'with json' do
-      let(:format) { :json }
+      before { periphery.format = :json }
 
       it { is_expected.to be_a_kind_of Periphery::JsonParser }
     end
 
     context 'with invalid value' do
-      let(:format) { :invalid }
+      before { periphery.format = :invalid }
 
       it { expect { parser }.to raise_error RuntimeError }
     end
