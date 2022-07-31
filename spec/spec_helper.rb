@@ -3,7 +3,6 @@
 ROOT = Pathname.new(File.expand_path('..', __dir__))
 $LOAD_PATH.unshift("#{ROOT}lib".to_s, "#{ROOT}spec".to_s)
 
-require 'bundler/setup'
 require 'danger'
 require 'pry'
 require 'rspec'

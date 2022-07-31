@@ -38,6 +38,7 @@ Dir.mktmpdir do |derived_data_path|
          '-project', XCODEPROJ_PATH,
          '-scheme', 'test',
          '-configuration', 'Debug',
+         '-destination', 'platform=macOS',
          '-derivedDataPath', derived_data_path)
   index_store_path = File.join(derived_data_path, 'Index', 'DataStore')
   periphery_command = [PERIPHERY_PATH, 'scan',
