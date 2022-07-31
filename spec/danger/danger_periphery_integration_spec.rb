@@ -5,10 +5,32 @@ describe Danger::DangerPeriphery, :slow do
 
   subject(:warnings) { dangerfile.status_report[:warnings] }
 
+  # rubocop:disable RSpec/BeforeAfterAll, RSpec/InstanceVariable
+  before(:all) do
+    @derived_data_path = Dir.mktmpdir
+    system('xcodebuild', 'build', '-quiet',
+           '-project', fixture('test.xcodeproj'),
+           '-scheme', 'test',
+           '-configuration', 'Debug',
+           '-derivedDataPath', @derived_data_path)
+  end
+
+  after(:all) { FileUtils.rm_r(@derived_data_path) }
+
   let(:dangerfile) { testing_dangerfile }
   let(:periphery) { dangerfile.periphery }
   let(:added_files) { [] }
   let(:modified_files) { [] }
+  let(:periphery_options) do
+    {
+      project: fixture('test.xcodeproj'),
+      targets: 'test',
+      schemes: 'test',
+      skip_build: true,
+      index_store_path: File.join(@derived_data_path, 'Index', 'DataStore')
+    }
+  end
+  # rubocop:enable RSpec/BeforeAfterAll, RSpec/InstanceVariable
 
   before do
     periphery.binary_path = binary('periphery')
@@ -21,7 +43,7 @@ describe Danger::DangerPeriphery, :slow do
       deleted_files: [],
       added_files: added_files
     )
-    periphery.scan(project: fixture('test.xcodeproj'), targets: 'test', schemes: 'test')
+    periphery.scan(periphery_options)
   end
 
   context 'when .swift files are not in diff' do
