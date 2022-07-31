@@ -109,16 +109,18 @@ describe Danger::DangerPeriphery do
   end
 
   describe '#postprocessor' do
+    subject(:scan) { periphery.scan(periphery_options) }
+
     before do
       allow(Kernel).to receive(:warn)
       periphery.postprocessor = postprocessor
-      periphery.scan(periphery_options)
     end
 
     context 'when returns nil' do
       let(:postprocessor) { ->(path, line, column, message) {} }
 
       it 'does not report warnings' do
+        scan
         expect(warnings).to match [/deprecated/]
       end
     end
@@ -127,6 +129,7 @@ describe Danger::DangerPeriphery do
       let(:postprocessor) { ->(_path, _line, _column, _message) { false } }
 
       it 'does not report warnings' do
+        scan
         expect(warnings).to match [/deprecated/]
       end
     end
@@ -135,6 +138,7 @@ describe Danger::DangerPeriphery do
       let(:postprocessor) { ->(_path, _line, _column, _message) { true } }
 
       it 'reports warnings' do
+        scan
         expect(warnings).to include "Function 'unusedMethod()' is unused"
       end
     end
@@ -145,8 +149,15 @@ describe Danger::DangerPeriphery do
       end
 
       it 'reports modified warnings' do
+        scan
         expect(warnings).to include "Foobar 'unusedMethod()' is unused"
       end
+    end
+
+    context 'when returns invalid value' do
+      let(:postprocessor) { ->(*_args) { :invalid } }
+
+      it { expect { scan }.to raise_error RuntimeError }
     end
   end
 
