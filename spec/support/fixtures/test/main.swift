@@ -1,7 +1,7 @@
 protocol RedundantProtocol {
 }
 
-class SomeClass: RedundantProtocol {
+public class SomeClass: RedundantProtocol {
     enum SomeEnum {
         case usedCase
         case unusedCase
