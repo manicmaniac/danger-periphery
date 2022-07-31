@@ -163,7 +163,7 @@ module Danger
       when :json
         Periphery::JsonParser.new
       else
-        raise ArgumentError, "#{format} is unsupported"
+        raise "#{@format} is unsupported"
       end
     end
   end

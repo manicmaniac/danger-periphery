@@ -166,4 +166,28 @@ describe Danger::DangerPeriphery do
       expect { periphery.process_warnings { |*_args| nil } }.to output(/NOTE:.*process_warnings/).to_stderr
     end
   end
+
+  describe '#format' do
+    subject(:parser) { periphery.send(:parser) }
+
+    before { periphery.format = format }
+
+    context 'with checkstyle' do
+      let(:format) { :checkstyle }
+
+      it { is_expected.to be_a_kind_of Periphery::CheckstyleParser }
+    end
+
+    context 'with json' do
+      let(:format) { :json }
+
+      it { is_expected.to be_a_kind_of Periphery::JsonParser }
+    end
+
+    context 'with invalid value' do
+      let(:format) { :invalid }
+
+      it { expect { parser }.to raise_error RuntimeError }
+    end
+  end
 end
