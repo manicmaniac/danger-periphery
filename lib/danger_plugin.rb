@@ -78,7 +78,7 @@ module Danger
     #                       suppressed, otherwise not.
     #
     # @return [void]
-    def scan(**options, &block)
+    def scan(options = {}, &block)
       output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES).merge(format: @format))
       files = files_in_diff
       parser.parse(output).each do |entry|

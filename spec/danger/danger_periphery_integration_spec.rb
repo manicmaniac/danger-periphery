@@ -23,12 +23,13 @@ describe Danger::DangerPeriphery, :slow do
   let(:added_files) { [] }
   let(:modified_files) { [] }
   let(:periphery_options) do
+    index_path = xcode_version >= 14 ? 'Index.noindex' : 'Index'
     {
       project: fixture('test.xcodeproj'),
       targets: 'test',
       schemes: 'test',
       skip_build: true,
-      index_store_path: File.join(@derived_data_path, 'Index', 'DataStore')
+      index_store_path: File.join(@derived_data_path, index_path, 'DataStore')
     }
   end
   # rubocop:enable RSpec/BeforeAfterAll, RSpec/InstanceVariable

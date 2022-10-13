@@ -2,7 +2,7 @@ name: Test
 on: [push]
 jobs:
   unit-test:
-    runs-on: macOS-11
+    runs-on: macOS-12
     steps:
       - uses: actions/checkout@v3
       - run: bundle install

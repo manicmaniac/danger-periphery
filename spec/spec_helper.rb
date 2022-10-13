@@ -81,7 +81,24 @@ module DangerPluginHelper
   end
 end
 
+module XcodeHelper
+  require 'rubygems/version'
+
+  class Version < Gem::Version
+    def <=>(other)
+      return super(Version.new(other.to_s)) unless other.is_a?(Version)
+
+      super
+    end
+  end
+
+  def xcode_version
+    Version.new(`xcodebuild -version`.match(/^Xcode (.*)$/)[1])
+  end
+end
+
 RSpec.configure do |config|
   config.filter_gems_from_backtrace 'bundler'
   config.include FixtureHelper
+  config.include XcodeHelper
 end
