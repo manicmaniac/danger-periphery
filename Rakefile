@@ -5,6 +5,7 @@ require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 
 RSpec::Core::RakeTask.new(:specs)
+Rake.application.lookup(:specs).enhance(%I[periphery:install])
 
 task default: :specs
 

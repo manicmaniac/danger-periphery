@@ -8,5 +8,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: bundle install
-      - run: bin/download-periphery
+      - run: bundle exec rake periphery:install
       - run: bundle exec danger
