@@ -23,8 +23,12 @@ namespace :periphery do
   task install: 'bin/periphery'
 end
 
+# Keep the next line for renovate.
+# @see renovate.json
+PERIPHERY_VERSION = '2.10.0'
+
 file 'bin/periphery' do |f|
   require 'periphery/installer'
 
-  Periphery::Installer.new('2.10.0').install(f.name, force: true)
+  Periphery::Installer.new(PERIPHERY_VERSION).install(f.name, force: true)
 end

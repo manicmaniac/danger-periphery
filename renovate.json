@@ -7,10 +7,10 @@
   "regexManagers": [
     {
       "fileMatch": [
-        "^bin/download-periphery$"
+        "^Rakefile$"
       ],
       "matchStrings": [
-        "VERSION\\s*=\\s*['\"](?<currentValue>.*)['\"]\\s*\n"
+        "PERIPHERY_VERSION\\s*=\\s*['\"](?<currentValue>.*)['\"]\\s*\n"
       ],
       "depNameTemplate": "peripheryapp/periphery",
       "datasourceTemplate": "github-releases"
