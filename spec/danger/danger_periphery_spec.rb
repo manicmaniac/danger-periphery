@@ -201,4 +201,21 @@ describe Danger::DangerPeriphery do
       it { expect { parser }.to raise_error RuntimeError }
     end
   end
+
+  describe '#install' do
+    subject(:install) { periphery.install(path: 'foo') }
+
+    let(:installer) { instance_spy(Periphery::Installer) }
+
+    before { allow(Periphery::Installer).to receive(:new).and_return installer }
+
+    it 'installs Periphery executable' do
+      install
+      expect(installer).to have_received(:install).with('foo', force: false).once
+    end
+
+    it 'changes the binary_path to the specified path' do
+      expect { install }.to change(periphery, :binary_path).to a_string_ending_with '/foo'
+    end
+  end
 end

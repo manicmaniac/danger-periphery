@@ -107,6 +107,18 @@ module Danger
       @postprocessor = postprocessor
     end
 
+    # Download and install Periphery executable binary.
+    #
+    # @param [String, Symbol] version The version of Periphery you want to install.
+    #                                 `:latest` is treated as special keyword that specifies the latest version.
+    # @param [String] path            The path to install Periphery including the filename itself.
+    # @param [Boolean] force          If `true`, an existing file will be overwritten. Otherwise an error occurs.
+    def install(version: :latest, path: 'periphery', force: false)
+      installer = Periphery::Installer.new(version)
+      installer.install(path, force: force)
+      self.binary_path = File.absolute_path(path)
+    end
+
     private
 
     def files_in_diff
