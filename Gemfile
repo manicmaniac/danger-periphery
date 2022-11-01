@@ -16,6 +16,5 @@ gem 'rspec'
 gem 'rubocop'
 gem 'rubocop-rake', require: false
 gem 'rubocop-rspec', require: false
-gem 'rubyzip'
 gem 'simplecov', require: false
 gem 'yard'

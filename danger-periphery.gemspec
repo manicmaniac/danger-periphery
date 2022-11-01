@@ -20,4 +20,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'danger-plugin-api', '~> 1.0'
+  spec.add_dependency 'rubyzip', '~> 2.0'
 end
