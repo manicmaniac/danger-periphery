@@ -17,3 +17,14 @@ desc 'Ensure that the plugin passes `danger plugins lint`'
 task :spec_docs do
   sh 'danger plugins lint'
 end
+
+namespace :periphery do
+  desc 'Download and install Periphery executable'
+  task install: 'bin/periphery'
+end
+
+file 'bin/periphery' do |f|
+  require 'periphery/installer'
+
+  Periphery::Installer.new('2.10.0').install(f.name, force: true)
+end
