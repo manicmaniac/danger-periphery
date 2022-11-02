@@ -70,6 +70,23 @@ periphery.scan do |violation|
 end
 ```
 
+### Install Periphery in Dangerfile
+
+Although I recommend you to install Periphery binary on your own, `danger-periphery` provides a method to install Periphery in Dangerfile.
+
+```ruby
+periphery.install
+periphery.scan
+```
+
+Note that `periphery.install` also changes `periphery.binary_path` so that you don't need to specify the installed file path.
+
+If you want to install the specific version of Periphery to the specific path with overwriting an existing file, add options like this.
+
+```ruby
+periphery.install version: '2.10.0', path: 'bin/periphery', force: true
+```
+
 ## Development
 
 1. Clone this repo
