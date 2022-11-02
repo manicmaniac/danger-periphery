@@ -3,6 +3,7 @@ PATH
   specs:
     danger-periphery (0.2.2)
       danger-plugin-api (~> 1.0)
+      rubyzip (~> 2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -187,7 +188,6 @@ DEPENDENCIES
   rubocop
   rubocop-rake
   rubocop-rspec
-  rubyzip
   simplecov
   yard
 
