@@ -11,6 +11,11 @@ module XcodeHelper
     end
   end
 
+  def index_store_path_for(derived_data_path)
+    index_dir = xcode_version >= 14 ? 'Index.noindex' : 'Index'
+    File.join(derived_data_path, index_dir, 'DataStore')
+  end
+
   def xcode_version
     Version.new(`xcodebuild -version`.match(/^Xcode (.*)$/)[1])
   end

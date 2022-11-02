@@ -5,34 +5,21 @@ describe Danger::DangerPeriphery, :slow do
 
   subject(:warnings) { dangerfile.status_report[:warnings] }
 
-  # rubocop:disable RSpec/BeforeAfterAll, RSpec/InstanceVariable
-  before(:all) do
-    @derived_data_path = Dir.mktmpdir
-    system('xcodebuild', 'build', '-quiet',
-           '-project', fixture('test.xcodeproj'),
-           '-scheme', 'test',
-           '-configuration', 'Debug',
-           '-destination', 'platform=macOS',
-           '-derivedDataPath', @derived_data_path)
-  end
-
-  after(:all) { FileUtils.rm_r(@derived_data_path) }
+  include_context 'when test.xcodeproj is indexed'
 
   let(:dangerfile) { testing_dangerfile }
   let(:periphery) { dangerfile.periphery }
   let(:added_files) { [] }
   let(:modified_files) { [] }
   let(:periphery_options) do
-    index_path = xcode_version >= 14 ? 'Index.noindex' : 'Index'
     {
       project: fixture('test.xcodeproj'),
       targets: 'test',
       schemes: 'test',
       skip_build: true,
-      index_store_path: File.join(@derived_data_path, index_path, 'DataStore')
+      index_store_path: index_store_path
     }
   end
-  # rubocop:enable RSpec/BeforeAfterAll, RSpec/InstanceVariable
 
   before do
     periphery.binary_path = binary('periphery')

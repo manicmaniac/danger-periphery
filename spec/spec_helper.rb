@@ -13,9 +13,9 @@ SimpleCov.start do
 end
 require 'danger_plugin'
 require 'support/helpers'
+require 'support/shared_examples'
 
 RSpec.configure do |config|
   config.filter_gems_from_backtrace 'bundler'
   config.include FixtureHelper
-  config.include XcodeHelper
 end
