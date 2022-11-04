@@ -9,7 +9,7 @@ module Periphery
     def parse(string)
       JSON.parse(string).map do |entry|
         path, line, column = parse_location(entry['location'])
-        message = compose_message(*entry.slice('name', 'kind', 'hints').values)
+        message = compose_message(*entry.slice('name', 'kind', 'hints', 'modules').values)
         ScanResult.new(path, line, column, message)
       end
     end
@@ -28,14 +28,14 @@ module Periphery
       raise ArgumentError, "#{location} is not in a valid format"
     end
 
-    def compose_message(name, kind, hints)
+    def compose_message(name, kind, hints, modules = [])
       return 'unused' unless name
 
       # Assumes hints contains only one item.
       # https://github.com/peripheryapp/periphery/blob/2.9.0/Sources/Frontend/Formatters/JsonFormatter.swift#L27
       # https://github.com/peripheryapp/periphery/blob/2.9.0/Sources/Frontend/Formatters/JsonFormatter.swift#L42
       hint = hints[0]
-      +"#{display_name(kind).capitalize} '#{name}' #{describe_hint(hint)}"
+      +"#{display_name(kind).capitalize} '#{name}' #{describe_hint(hint, modules)}"
     end
 
     def display_name(kind)
@@ -49,17 +49,13 @@ module Periphery
       end
     end
 
-    def describe_hint(hint)
+    def describe_hint(hint, modules)
       case hint
       when 'unused' then 'is unused'
       when 'assignOnlyProperty' then 'is assigned, but never used'
       when 'redundantProtocol' then "is redundant as it's never used as an existential type"
       when 'redundantConformance' then 'conformance is redundant'
-      # FIXME: There's no information about the name of module in JSON output,
-      #        unlike other formatters can output `outside of FooModule`.
-      #        This is known problem and may be fixed in future Periphery's release.
-      #        See the status of https://github.com/peripheryapp/periphery/pull/519
-      when 'redundantPublicAccessibility' then 'is declared public, but not used outside of the module'
+      when 'redundantPublicAccessibility' then "is declared public, but not used outside of #{modules.join(', ')}"
       else ''
       end
     end

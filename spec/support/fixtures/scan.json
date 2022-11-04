@@ -1,164 +1,173 @@
 [
   {
-    "location" : "\/path\/to\/main.swift:1:10",
-    "modifiers" : [
-
+    "accessibility": "internal",
+    "attributes": [
     ],
-    "kind" : "protocol",
-    "attributes" : [
-
-    ],
-    "accessibility" : "internal",
-    "hints" : [
+    "hints": [
       "redundantProtocol"
     ],
-    "name" : "RedundantProtocol",
-    "ids" : [
-      "s:4test17RedundantProtocolP"
-    ]
-  },
-  {
-    "ids" : [
+    "ids": [
       "s:4test17RedundantProtocolP"
     ],
-    "kind" : "protocol",
-    "accessibility" : "",
-    "hints" : [
+    "kind": "protocol",
+    "location": "/path/to/test/main.swift:1:10",
+    "modifiers": [
+    ],
+    "modules": [
+      "test"
+    ],
+    "name": "RedundantProtocol"
+  },
+  {
+    "accessibility": "",
+    "attributes": [
+    ],
+    "hints": [
       "redundantConformance"
     ],
-    "modifiers" : [
-
+    "ids": [
+      "s:4test17RedundantProtocolP"
     ],
-    "name" : "RedundantProtocol",
-    "attributes" : [
-
+    "kind": "protocol",
+    "location": "/path/to/test/main.swift:4:25",
+    "modifiers": [
     ],
-    "location" : "\/path\/to\/main.swift:4:25"
+    "name": "RedundantProtocol"
   },
   {
-    "kind" : "class",
-    "ids" : [
+    "accessibility": "public",
+    "attributes": [
+    ],
+    "hints": [
+      "redundantPublicAccessibility"
+    ],
+    "ids": [
       "s:4test9SomeClassC"
     ],
-    "attributes" : [
-
-    ],
-    "location" : "\/path\/to\/main.swift:4:14",
-    "modifiers" : [
+    "kind": "class",
+    "location": "/path/to/test/main.swift:4:14",
+    "modifiers": [
       "public"
     ],
-    "hints" : [
-      "redundantPublicAccessibility"
+    "modules": [
+      "test"
     ],
-    "accessibility" : "public",
-    "name" : "SomeClass"
+    "name": "SomeClass"
   },
   {
-    "modifiers" : [
-
+    "accessibility": "internal",
+    "attributes": [
     ],
-    "location" : "\/path\/to\/main.swift:7:14",
-    "accessibility" : "internal",
-    "attributes" : [
-
+    "hints": [
+      "unused"
     ],
-    "kind" : "enumelement",
-    "ids" : [
+    "ids": [
       "s:4test9SomeClassC0B4EnumO10unusedCaseyA2EmF"
     ],
-    "name" : "unusedCase",
-    "hints" : [
-      "unused"
-    ]
+    "kind": "enumelement",
+    "location": "/path/to/test/main.swift:7:14",
+    "modifiers": [
+    ],
+    "modules": [
+      "test"
+    ],
+    "name": "unusedCase"
   },
   {
-    "kind" : "var.instance",
-    "attributes" : [
-
+    "accessibility": "internal",
+    "attributes": [
     ],
-    "accessibility" : "internal",
-    "name" : "unusedProperty",
-    "ids" : [
+    "hints": [
+      "unused"
+    ],
+    "ids": [
       "s:4test9SomeClassC14unusedPropertySivp"
     ],
-    "hints" : [
-      "unused"
+    "kind": "var.instance",
+    "location": "/path/to/test/main.swift:10:9",
+    "modifiers": [
     ],
-    "modifiers" : [
-
+    "modules": [
+      "test"
     ],
-    "location" : "\/path\/to\/main.swift:10:9"
+    "name": "unusedProperty"
   },
   {
-    "name" : "assignOnlyProperty",
-    "ids" : [
-      "s:4test9SomeClassC18assignOnlyProperty33_9F9099C659B8A128A78BAA9A7C0E0368LLSivp"
+    "accessibility": "private",
+    "attributes": [
     ],
-    "hints" : [
+    "hints": [
       "assignOnlyProperty"
     ],
-    "kind" : "var.instance",
-    "attributes" : [
-
+    "ids": [
+      "s:4test9SomeClassC18assignOnlyProperty33_9F9099C659B8A128A78BAA9A7C0E0368LLSivp"
     ],
-    "accessibility" : "private",
-    "location" : "\/path\/to\/main.swift:11:17",
-    "modifiers" : [
+    "kind": "var.instance",
+    "location": "/path/to/test/main.swift:11:17",
+    "modifiers": [
       "private"
-    ]
+    ],
+    "modules": [
+      "test"
+    ],
+    "name": "assignOnlyProperty"
   },
   {
-    "kind" : "function.method.instance",
-    "accessibility" : "public",
-    "name" : "methodWithRedundantPublicAccessibility(_:)",
-    "hints" : [
+    "accessibility": "public",
+    "attributes": [
+    ],
+    "hints": [
       "redundantPublicAccessibility"
     ],
-    "location" : "\/path\/to\/main.swift:14:17",
-    "ids" : [
+    "ids": [
       "s:4test9SomeClassC38methodWithRedundantPublicAccessibilityyySiF"
     ],
-    "modifiers" : [
+    "kind": "function.method.instance",
+    "location": "/path/to/test/main.swift:14:17",
+    "modifiers": [
       "public"
     ],
-    "attributes" : [
-
-    ]
+    "modules": [
+      "test"
+    ],
+    "name": "methodWithRedundantPublicAccessibility(_:)"
   },
   {
-    "kind" : "var.parameter",
-    "name" : "unusedParameter",
-    "accessibility" : "internal",
-    "ids" : [
-      "methodWithRedundantPublicAccessibility(_ unusedParameter:)-unusedParameter-\/path\/to\/main.swift:14:58"
+    "accessibility": "internal",
+    "attributes": [
     ],
-    "modifiers" : [
-
-    ],
-    "hints" : [
+    "hints": [
       "unused"
     ],
-    "location" : "\/path\/to\/main.swift:14:58",
-    "attributes" : [
-
-    ]
+    "ids": [
+      "methodWithRedundantPublicAccessibility(_ unusedParameter:)-unusedParameter-/path/to/test/main.swift:14:58"
+    ],
+    "kind": "var.parameter",
+    "location": "/path/to/test/main.swift:14:58",
+    "modifiers": [
+    ],
+    "modules": [
+      "test"
+    ],
+    "name": "unusedParameter"
   },
   {
-    "location" : "\/path\/to\/main.swift:19:10",
-    "accessibility" : "internal",
-    "name" : "unusedMethod()",
-    "modifiers" : [
-
+    "accessibility": "internal",
+    "attributes": [
     ],
-    "hints" : [
+    "hints": [
       "unused"
     ],
-    "ids" : [
+    "ids": [
       "s:4test9SomeClassC12unusedMethodyyF"
     ],
-    "attributes" : [
-
+    "kind": "function.method.instance",
+    "location": "/path/to/test/main.swift:19:10",
+    "modifiers": [
     ],
-    "kind" : "function.method.instance"
+    "modules": [
+      "test"
+    ],
+    "name": "unusedMethod()"
   }
 ]
