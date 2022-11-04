@@ -28,7 +28,7 @@ module Periphery
       raise ArgumentError, "#{location} is not in a valid format"
     end
 
-    def compose_message(name, kind, hints, modules)
+    def compose_message(name, kind, hints, modules = [])
       return 'unused' unless name
 
       # Assumes hints contains only one item.
