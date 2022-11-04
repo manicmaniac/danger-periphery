@@ -11,10 +11,11 @@ require_relative '../spec/support/helpers/xcode_helper'
 FIXTURES_PATH = File.expand_path('../spec/support/fixtures', __dir__)
 XCODEPROJ_PATH = File.join(FIXTURES_PATH, 'test.xcodeproj')
 PERIPHERY_PATH = File.join(__dir__, 'periphery')
+SCAN_JSON_PATH = File.join(FIXTURES_PATH, 'scan.json')
 MOCK_PERIPHERY_PATH = File.join(FIXTURES_PATH, 'mock-periphery')
 
-def sanitize_path_occurrences(source)
-  source.gsub(FIXTURES_PATH, '#{__dir__}') # rubocop:disable Lint/InterpolationCheck
+def sanitize_path_occurrences(source, path)
+  source.gsub(FIXTURES_PATH, path)
 end
 
 def prettify_xml(string)
@@ -51,7 +52,10 @@ Dir.mktmpdir do |derived_data_path|
                        '--index-store-path', index_store_path_for(derived_data_path),
                        '--format']
   checkstyle_output = `#{periphery_command.shelljoin} checkstyle`
+  pretty_xml = prettify_xml(checkstyle_output)
   json_output = `#{periphery_command.shelljoin} json`
+  pretty_json = prettify_json(json_output)
+  File.write(SCAN_JSON_PATH, sanitize_path_occurrences(pretty_json, '/path/to'))
   File.write(MOCK_PERIPHERY_PATH, <<~RUBY)
     #!/usr/bin/env ruby
     # frozen_string_literal: true
@@ -64,11 +68,11 @@ Dir.mktmpdir do |derived_data_path|
 
     if format_equal?(:checkstyle)
       puts <<~XML
-    #{indent(4, sanitize_path_occurrences(prettify_xml(checkstyle_output)))}
+    #{indent(4, sanitize_path_occurrences(pretty_xml, '#{__dir__}'))}
       XML
     elsif format_equal?(:json)
       puts <<~JSON
-    #{indent(4, sanitize_path_occurrences(prettify_json(json_output)))}
+    #{indent(4, sanitize_path_occurrences(pretty_json, '#{__dir__}'))}
       JSON
     else
       raise "Neither :json nor :checkstyle format are specified; \#{ARGV}"
