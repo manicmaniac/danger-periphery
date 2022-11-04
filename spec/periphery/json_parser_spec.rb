@@ -27,20 +27,20 @@ describe Periphery::JsonParser do
     context 'with valid json' do
       let(:string) { File.read(fixture('scan.json')) }
 
-      path = 'main.swift'
+      path = 'test/main.swift'
       expected = [
         Periphery::ScanResult.new(path, 1, 10,
                                   ["Protocol 'RedundantProtocol' is redundant ",
                                    "as it's never used as an existential type"].join),
         Periphery::ScanResult.new(path, 4, 25, "Protocol 'RedundantProtocol' conformance is redundant"),
         Periphery::ScanResult.new(path, 4, 14,
-                                  "Class 'SomeClass' is declared public, but not used outside of the module"),
+                                  "Class 'SomeClass' is declared public, but not used outside of test"),
         Periphery::ScanResult.new(path, 7, 14, "Enum case 'unusedCase' is unused"),
         Periphery::ScanResult.new(path, 10, 9, "Property 'unusedProperty' is unused"),
         Periphery::ScanResult.new(path, 11, 17, "Property 'assignOnlyProperty' is assigned, but never used"),
         Periphery::ScanResult.new(path, 14, 17,
                                   ["Function 'methodWithRedundantPublicAccessibility(_:)' is declared public, ",
-                                   'but not used outside of the module'].join),
+                                   'but not used outside of test'].join),
         Periphery::ScanResult.new(path, 14, 58, "Parameter 'unusedParameter' is unused"),
         Periphery::ScanResult.new(path, 19, 10, "Function 'unusedMethod()' is unused")
       ]
@@ -75,9 +75,10 @@ describe Periphery::JsonParser do
   end
 
   describe '#compose_message' do
-    subject(:message) { parser.send(:compose_message, name, kind, hints) }
+    subject(:message) { parser.send(:compose_message, name, kind, hints, modules) }
 
     let(:name) { 'foo' }
+    let(:modules) { ['test'] }
 
     context 'with unused class' do
       let(:kind) { 'class' }
@@ -120,7 +121,7 @@ describe Periphery::JsonParser do
       let(:hints) { ['redundantPublicAccessibility'] }
 
       it 'returns human-readable message' do
-        expect(message).to eq "Class 'foo' is declared public, but not used outside of the module"
+        expect(message).to eq "Class 'foo' is declared public, but not used outside of test"
       end
     end
 
