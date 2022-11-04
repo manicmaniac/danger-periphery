@@ -6,6 +6,7 @@ require 'rexml/document'
 require 'rexml/formatters/pretty'
 require 'shellwords'
 require 'tempfile'
+require_relative '../spec/support/helpers/xcode_helper'
 
 FIXTURES_PATH = File.expand_path('../spec/support/fixtures', __dir__)
 XCODEPROJ_PATH = File.join(FIXTURES_PATH, 'test.xcodeproj')
@@ -34,19 +35,20 @@ def indent(depth, string)
 end
 
 Dir.mktmpdir do |derived_data_path|
+  include XcodeHelper
+
   system('xcodebuild', 'build', '-quiet',
          '-project', XCODEPROJ_PATH,
          '-scheme', 'test',
          '-configuration', 'Debug',
          '-destination', 'platform=macOS',
          '-derivedDataPath', derived_data_path)
-  index_store_path = File.join(derived_data_path, 'Index', 'DataStore')
   periphery_command = [PERIPHERY_PATH, 'scan',
                        '--project', XCODEPROJ_PATH,
                        '--targets', 'test',
                        '--schemes', 'test',
                        '--skip-build',
-                       '--index-store-path', index_store_path,
+                       '--index-store-path', index_store_path_for(derived_data_path),
                        '--format']
   checkstyle_output = `#{periphery_command.shelljoin} checkstyle`
   json_output = `#{periphery_command.shelljoin} json`
