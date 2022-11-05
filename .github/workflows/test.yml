@@ -7,7 +7,6 @@ jobs:
       fail-fast: false
       matrix:
         ruby-version:
-          - 2.6.9
           - 2.7.5
           - 3.0.4
           - 3.1.2
