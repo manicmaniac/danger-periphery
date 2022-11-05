@@ -1,13 +1,50 @@
 name: Test
 on: [push]
 jobs:
-  unit-test:
+  test:
     runs-on: macOS-12
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version:
+          - 2.7.5
+          - 3.0.4
+          - 3.1.2
     steps:
       - uses: actions/checkout@v3
-      - run: bundle install
-      - uses: paambaati/codeclimate-action@v3.2.0
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Install cc-test-reporter
+        run: |
+          curl -Lo cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64
+          chmod +x cc-test-reporter
+      - run: ./cc-test-reporter before-build
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - run: bundle exec rake
+      - name: Format coverage
+        run: |
+          # Workaround for https://github.com/codeclimate/test-reporter/issues/495
+          jq 'map_values(. | map_values(if type=="object" then map_values(.lines) else . end))' coverage/.resultset.json > coverage/workaround.resultset.json
+          ./cc-test-reporter format-coverage --input-type simplecov --output 'codeclimate-${{ matrix.ruby-version }}.json' coverage/workaround.resultset.json
+      - uses: actions/upload-artifact@v3
         with:
-          coverageCommand: bundle exec rake
+          name: coverages
+          path: codeclimate-${{ matrix.ruby-version }}.json
+  upload-coverage:
+    runs-on: ubuntu-20.04
+    needs: test
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: coverages
+      - name: Install cc-test-reporter
+        run: |
+          curl -Lo cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+          chmod +x cc-test-reporter
+      - name: Upload coverage
+        run: ./cc-test-reporter sum-coverage --output - codeclimate-*.json | ./cc-test-reporter upload-coverage --debug --input -
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}

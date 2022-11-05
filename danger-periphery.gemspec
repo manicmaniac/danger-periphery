@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.summary = spec.description
   spec.homepage = 'https://github.com/manicmaniac/danger-periphery'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.6.0'
+  spec.required_ruby_version = '>= 2.7.0'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.files = Dir['lib/**/*.rb']
