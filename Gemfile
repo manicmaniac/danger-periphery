@@ -6,6 +6,7 @@ gemspec
 
 gem 'bundler', '~> 2.0'
 gem 'danger'
+gem 'danger-danger_plugin_lint'
 gem 'danger-rubocop'
 gem 'guard'
 gem 'guard-rspec'
