@@ -102,6 +102,24 @@ module Danger
       @postprocessor = block
     end
 
+    # @deprecated Use {#scan} with block instead.
+    #
+    # A block to manipulate each warning before it is displayed.
+    #
+    # @param [Proc] postprocessor Block to process each warning just before showing it.
+    #                             The Proc is called like `postprocessor(path, line, column, message)`
+    #                             where `path` is a String that indicates the file path the warning points out,
+    #                             `line` and `column` are Integers that indicates the location in the file,
+    #                             `message` is a String message body of the warning.
+    #                             The Proc returns either of the following:
+    #                             1. an Array contains `path`, `line`, `column`, `message` in this order.
+    #                             2. true
+    #                             3. false or nil
+    #                             If it returns falsy value, the warning will be suppressed.
+    #                             If it returns `true`, the warning will be displayed as-is.
+    #                             Otherwise it returns an Array, the warning is newly created by the returned array
+    #                             and displayed.
+    # @return [void]
     def postprocessor=(postprocessor)
       deprecate_in_favor_of_scan
       @postprocessor = postprocessor
@@ -113,6 +131,7 @@ module Danger
     #                                 `:latest` is treated as special keyword that specifies the latest version.
     # @param [String] path            The path to install Periphery including the filename itself.
     # @param [Boolean] force          If `true`, an existing file will be overwritten. Otherwise an error occurs.
+    # @return [void]
     def install(version: :latest, path: 'periphery', force: false)
       installer = Periphery::Installer.new(version)
       installer.install(path, force: force)
