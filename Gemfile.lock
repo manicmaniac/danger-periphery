@@ -33,7 +33,7 @@ GEM
       no_proxy_fix
       octokit (~> 5.0)
       terminal-table (>= 1, < 4)
-    danger-danger_plugin_lint (0.1.0)
+    danger-danger_plugin_lint (0.2.0)
       danger-plugin-api (~> 1.0)
     danger-plugin-api (1.0.0)
       danger (> 2.0)
