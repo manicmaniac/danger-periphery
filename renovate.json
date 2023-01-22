@@ -4,6 +4,17 @@
     "config:base"
   ],
   "platformAutomerge": true,
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true
+    }
+  ],
   "rangeStrategy": "update-lockfile",
   "regexManagers": [
     {
