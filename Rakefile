@@ -26,7 +26,7 @@ end
 
 # Keep the next line for renovate.
 # @see renovate.json
-PERIPHERY_VERSION = '2.12.1'
+PERIPHERY_VERSION = '2.12.2'
 
 file 'bin/periphery' do |f|
   require 'periphery/installer'
