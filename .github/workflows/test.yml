@@ -25,11 +25,10 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       - run: bundle exec rake
+        env:
+          CC_TEST_REPORTER_ID: dummy # https://github.com/codeclimate/test-reporter/issues/495
       - name: Format coverage
-        run: |
-          # Workaround for https://github.com/codeclimate/test-reporter/issues/495
-          jq 'map_values(. | map_values(if type=="object" then map_values(.lines) else . end))' coverage/.resultset.json > coverage/workaround.resultset.json
-          ./cc-test-reporter format-coverage --input-type simplecov --output 'codeclimate-${{ matrix.ruby-version }}.json' coverage/workaround.resultset.json
+        run: ./cc-test-reporter format-coverage --input-type simplecov --output 'codeclimate-${{ matrix.ruby-version }}.json'
       - uses: actions/upload-artifact@v3
         with:
           name: coverages
