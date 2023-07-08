@@ -2,7 +2,7 @@ name: Lint
 on: pull_request
 jobs:
   lint:
-    runs-on: macOS-12
+    runs-on: macOS-13
     permissions:
       pull-requests: write
       statuses: write
