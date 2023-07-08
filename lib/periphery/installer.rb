@@ -3,6 +3,7 @@
 require 'fileutils'
 require 'net/http'
 require 'open-uri'
+require 'rubygems/version'
 require 'zip'
 
 module Periphery
@@ -28,7 +29,11 @@ module Periphery
     private
 
     def download_url
-      "https://github.com/peripheryapp/periphery/releases/download/#{version}/periphery-v#{version}.zip"
+      if Gem::Version.new(version) >= Gem::Version.new('2.14.0')
+        "https://github.com/peripheryapp/periphery/releases/download/#{version}/periphery-#{version}.zip"
+      else
+        "https://github.com/peripheryapp/periphery/releases/download/#{version}/periphery-v#{version}.zip"
+      end
     end
 
     def fetch_latest_version
