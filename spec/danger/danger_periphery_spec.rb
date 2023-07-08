@@ -100,7 +100,7 @@ describe Danger::DangerPeriphery do
     end
 
     context 'when the block modifies the given violation' do
-      let(:block) { ->(violation) { violation.message.gsub!(/Function/, 'Foobar') } }
+      let(:block) { ->(violation) { violation.message.gsub!('Function', 'Foobar') } }
 
       it 'reports modified warnings' do
         expect(warnings).to include "Foobar 'unusedMethod()' is unused"
@@ -145,7 +145,7 @@ describe Danger::DangerPeriphery do
 
     context 'when returns a modified array' do
       let(:postprocessor) do
-        ->(path, line, column, message) { [path, line, column, message.gsub(/Function/, 'Foobar')] }
+        ->(path, line, column, message) { [path, line, column, message.gsub('Function', 'Foobar')] }
       end
 
       it 'reports modified warnings' do

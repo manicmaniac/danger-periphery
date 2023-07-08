@@ -35,25 +35,33 @@ def indent(depth, string)
   string.lines.map { |line| (' ' * depth) + line }.join
 end
 
-Dir.mktmpdir do |derived_data_path|
-  include XcodeHelper
-
+def run_xcodebuild(derived_data_path)
   system('xcodebuild', 'build', '-quiet',
          '-project', XCODEPROJ_PATH,
          '-scheme', 'test',
          '-configuration', 'Debug',
          '-destination', 'platform=macOS',
          '-derivedDataPath', derived_data_path)
+end
+
+def run_periphery(derived_data_path, format)
   periphery_command = [PERIPHERY_PATH, 'scan',
                        '--project', XCODEPROJ_PATH,
                        '--targets', 'test',
                        '--schemes', 'test',
                        '--skip-build',
                        '--index-store-path', index_store_path_for(derived_data_path),
-                       '--format']
-  checkstyle_output = `#{periphery_command.shelljoin} checkstyle`
+                       '--format', format]
+  `#{periphery_command.shelljoin}`
+end
+
+Dir.mktmpdir do |derived_data_path|
+  include XcodeHelper
+
+  run_xcodebuild(derived_data_path)
+  checkstyle_output = run_periphery(derived_data_path, 'checkstyle')
   pretty_xml = prettify_xml(checkstyle_output)
-  json_output = `#{periphery_command.shelljoin} json`
+  json_output = run_periphery(derived_data_path, 'json')
   pretty_json = prettify_json(json_output)
   File.write(SCAN_JSON_PATH, sanitize_path_occurrences(pretty_json, '/path/to'))
   File.write(MOCK_PERIPHERY_PATH, <<~RUBY)
