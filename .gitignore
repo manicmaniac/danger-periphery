@@ -8,3 +8,4 @@ pkg
 project.xcworkspace
 xcuserdata
 /coverage/
+vendor/bundle/

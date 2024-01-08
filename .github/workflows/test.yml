@@ -31,17 +31,18 @@ jobs:
           CC_TEST_REPORTER_ID: dummy # https://github.com/codeclimate/test-reporter/issues/495
       - name: Format coverage
         run: ./cc-test-reporter format-coverage --input-type simplecov --output 'codeclimate-${{ matrix.ruby-version }}.json'
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: coverages
+          name: coverages-ruby-${{ matrix.ruby-version }}
           path: codeclimate-${{ matrix.ruby-version }}.json
   upload-coverage:
     runs-on: ubuntu-22.04
     needs: test
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: coverages
+          pattern: coverages-*
+          merge-multiple: true
       - name: Install cc-test-reporter
         run: |
           curl -Lo cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
