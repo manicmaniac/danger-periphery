@@ -14,12 +14,13 @@ describe Danger::DangerPeriphery, :slow do
   let(:periphery_options) do
     {
       project: fixture('test.xcodeproj'),
-      targets: 'test',
+      targets: targets,
       schemes: 'test',
       skip_build: true,
       index_store_path: index_store_path
     }
   end
+  let(:targets) { 'test' }
 
   before do
     periphery.binary_path = binary('periphery')
@@ -32,11 +33,11 @@ describe Danger::DangerPeriphery, :slow do
       deleted_files: [],
       added_files: added_files
     )
-    periphery.scan(periphery_options)
   end
 
   context 'when .swift files are not in diff' do
     it 'reports nothing' do
+      periphery.scan(periphery_options)
       expect(warnings).to be_empty
     end
   end
@@ -45,6 +46,7 @@ describe Danger::DangerPeriphery, :slow do
     let(:added_files) { ['test/main.swift'] }
 
     it 'reports unused code' do
+      periphery.scan(periphery_options)
       expect(warnings).to include "Function 'unusedMethod()' is unused"
     end
   end
@@ -53,7 +55,16 @@ describe Danger::DangerPeriphery, :slow do
     let(:modified_files) { ['test/main.swift'] }
 
     it 'reports unused code' do
+      periphery.scan(periphery_options)
       expect(warnings).to include "Function 'unusedMethod()' is unused"
+    end
+  end
+
+  context 'when multiple targets are analyzed' do
+    let(:targets) { ['test', 'unit-test'] }
+
+    it 'does not raise any error' do
+      expect { periphery.scan(periphery_options) }.not_to raise_error
     end
   end
 end

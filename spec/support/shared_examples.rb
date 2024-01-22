@@ -8,7 +8,7 @@ shared_context 'when test.xcodeproj is indexed' do
 
   before :all do
     @derived_data_path = Dir.mktmpdir
-    system('xcodebuild', 'build', '-quiet',
+    system('xcodebuild', 'build-for-testing', '-quiet',
            '-project', fixture('test.xcodeproj'),
            '-scheme', 'test',
            '-configuration', 'Debug',
