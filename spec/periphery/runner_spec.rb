@@ -61,7 +61,7 @@ describe Periphery::Runner do
     before do
       status = instance_double(Process::Status, success?: true)
       allow(Open3).to receive(:capture3).once.with(binary_path, 'version')
-        .and_return ["#{periphery_version}\n", '', status]
+                                        .and_return ["#{periphery_version}\n", '', status]
     end
 
     context 'with empty options' do

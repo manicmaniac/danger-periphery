@@ -61,7 +61,7 @@ describe Danger::DangerPeriphery, :slow do
   end
 
   context 'when multiple targets are analyzed' do
-    let(:targets) { ['test', 'unit-test'] }
+    let(:targets) { %w[test unit-test] }
 
     it 'does not raise any error' do
       expect { periphery.scan(periphery_options) }.not_to raise_error
