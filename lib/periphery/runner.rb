@@ -28,5 +28,13 @@ module Periphery
         new_options << value&.to_s if value
       end
     end
+
+    def version
+      arguments = [binary_path, 'version']
+      stdout, stderr, status = Open3.capture3(*arguments)
+      raise "error: #{arguments} existed with status code #{status.exitstatus}. #{stderr}" unless status.success?
+
+      stdout.strip
+    end
   end
 end

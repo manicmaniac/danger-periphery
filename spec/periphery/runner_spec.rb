@@ -128,4 +128,22 @@ describe Periphery::Runner do
       end
     end
   end
+
+  describe '#version' do
+    context 'when periphery succeeds' do
+      it 'returns the correct version' do
+        status = instance_double(Process::Status, success?: true)
+        allow(Open3).to receive(:capture3).once.with(binary_path, 'version').and_return ["2.18.0\n", '', status]
+        expect(runner.version).to eq '2.18.0'
+      end
+    end
+
+    context 'when periphery fails' do
+      it 'raises an error' do
+        status = instance_double(Process::Status, success?: false, exitstatus: 42)
+        allow(Open3).to receive(:capture3).once.with(binary_path, 'version').and_return ['', 'error', status]
+        expect { runner.version }.to raise_error(/error/)
+      end
+    end
+  end
 end
