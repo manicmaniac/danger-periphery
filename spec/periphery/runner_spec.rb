@@ -56,6 +56,14 @@ describe Periphery::Runner do
   describe '#scan_arguments' do
     subject(:scan_arguments) { runner.scan_arguments(options) }
 
+    let(:periphery_version) { '2.18.0' }
+
+    before do
+      status = instance_double(Process::Status, success?: true)
+      allow(Open3).to receive(:capture3).once.with(binary_path, 'version')
+                                        .and_return ["#{periphery_version}\n", '', status]
+    end
+
     context 'with empty options' do
       let(:options) { {} }
 
@@ -96,8 +104,18 @@ describe Periphery::Runner do
         }
       end
 
-      it 'returns correct arguments' do
-        expect(scan_arguments).to eq %w[--project test.xcodeproj --targets test1,test2]
+      context 'with Periphery >= 2.18.0' do
+        it 'returns space-separated arguments' do
+          expect(scan_arguments).to eq %w[--project test.xcodeproj --targets test1 test2]
+        end
+      end
+
+      context 'with Periphery < 2.18.0' do
+        let(:periphery_version) { '2.17.0' }
+
+        it 'returns comma-separated arguments' do
+          expect(scan_arguments).to eq %w[--project test.xcodeproj --targets test1,test2]
+        end
       end
     end
 
@@ -125,6 +143,24 @@ describe Periphery::Runner do
 
       it 'returns correct arguments' do
         expect(scan_arguments).to eq %w[--project test.xcodeproj --targets test --clean-build]
+      end
+    end
+  end
+
+  describe '#version' do
+    context 'when periphery succeeds' do
+      it 'returns the correct version' do
+        status = instance_double(Process::Status, success?: true)
+        allow(Open3).to receive(:capture3).once.with(binary_path, 'version').and_return ["2.18.0\n", '', status]
+        expect(runner.version).to eq '2.18.0'
+      end
+    end
+
+    context 'when periphery fails' do
+      it 'raises an error' do
+        status = instance_double(Process::Status, success?: false, exitstatus: 42)
+        allow(Open3).to receive(:capture3).once.with(binary_path, 'version').and_return ['', 'error', status]
+        expect { runner.version }.to raise_error(/error/)
       end
     end
   end
