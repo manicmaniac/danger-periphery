@@ -5,3 +5,21 @@ require:
 AllCops:
   TargetRubyVersion: 2.7
   NewCops: enable
+
+Metrics/AbcSize:
+  Max: 21
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 6
+
+RSpec/NestedGroups:
+  Max: 4
