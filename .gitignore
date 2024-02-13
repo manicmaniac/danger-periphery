@@ -9,3 +9,4 @@ project.xcworkspace
 xcuserdata
 /coverage/
 vendor/bundle/
+doc/
