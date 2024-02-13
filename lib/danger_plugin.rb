@@ -62,14 +62,13 @@ module Danger
     #                       suppressed, otherwise not.
     #
     # @return [void]
-    def scan(options = {}, &block)
+    def scan(options = {})
       output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES).merge(format: @format))
       files = files_in_diff
       parser.parse(output).each do |entry|
         next unless files.include?(entry.path)
 
-        entry = postprocess(entry, &block)
-        next unless entry
+        next if block_given? && !yield(entry)
 
         warn(entry.message, file: entry.path, line: entry.line)
       end
@@ -97,10 +96,6 @@ module Danger
         renamed_files_hash[modified_file] || modified_file
       end
       (post_rename_modified_files - git.deleted_files) + git.added_files
-    end
-
-    def postprocess(entry, &block)
-      entry if !block || block.call(entry)
     end
 
     def parser
