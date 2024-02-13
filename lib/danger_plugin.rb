@@ -55,8 +55,9 @@ module Danger
     #                       5. Override some options listed in {OPTION_OVERRIDES}.
     #                       Run +$ periphery help scan+ for available options.
     #
-    # @param [Proc] block   Block to process each warning just before showing it.
-    #                       The Proc receives 1 {Periphery::ScanResult} instance as argument.
+    # @yield [entry]        Block to process each warning just before showing it.
+    # @yieldparam [Periphery::ScanResult] entry
+    # @yieldreturn [Boolean, Periphery::ScanResult]
     #                       If the Proc returns falsy value, the warning corresponding to the given ScanResult will be
     #                       suppressed, otherwise not.
     #
