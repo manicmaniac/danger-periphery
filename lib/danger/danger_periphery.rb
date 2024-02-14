@@ -23,6 +23,12 @@ module Danger
     # @return [String]
     attr_accessor :binary_path
 
+    # A flag to force Periphery report problems about all files.
+    # @return [Boolean] +true+ if it reports problems in all files.
+    #                   Otherwise +false+, it reports about only changed files in this pull request.
+    #                   By default +false+ is set.
+    attr_accessor :scan_all_files
+
     # For internal use only.
     #
     # @return [Symbol]
@@ -63,9 +69,9 @@ module Danger
     # @return [void]
     def scan(options = {})
       output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES).merge(format: @format))
-      files = files_in_diff
+      files = files_in_diff unless @scan_all_files
       parser.parse(output).each do |entry|
-        next unless files.include?(entry.path)
+        next unless @scan_all_files || files.include?(entry.path)
 
         next if block_given? && !yield(entry)
 
