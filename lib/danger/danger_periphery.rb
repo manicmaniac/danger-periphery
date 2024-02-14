@@ -35,7 +35,6 @@ module Danger
 
     def initialize(dangerfile)
       super(dangerfile)
-      @postprocessor = ->(_path, _line, _column, _message) { true }
       @format = :checkstyle
     end
 
