@@ -108,6 +108,35 @@ describe Danger::DangerPeriphery do
     end
   end
 
+  describe '#scan_all_files' do
+    before do
+      allow(periphery.git).to receive_messages(
+        renamed_files: [],
+        modified_files: [],
+        deleted_files: [],
+        added_files: []
+      )
+      periphery.scan_all_files = scan_all_files
+      periphery.scan
+    end
+
+    context 'with false' do
+      let(:scan_all_files) { false }
+
+      it 'scans all files but report about only changed files' do
+        expect(warnings).to be_empty
+      end
+    end
+
+    context 'with true' do
+      let(:scan_all_files) { true }
+
+      it 'scans all files and report about them' do
+        expect(warnings).not_to be_empty
+      end
+    end
+  end
+
   describe '#format' do
     subject(:parser) { periphery.send(:parser) }
 
