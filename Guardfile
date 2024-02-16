@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 module ::Guard
+  class DangerPluginsLint < Plugin # :nodoc:
+    def run_all
+      command = 'bundle exec danger plugins lint'
+      UI.info(command)
+      system(command)
+    end
+
+    def run_on_changes(_paths)
+      run_all
+    end
+  end
+
   class Periphery < Plugin # :nodoc:
     def initialize(options = {})
       opts = options.dup
@@ -41,6 +53,10 @@ end
 guard :rubocop do
   watch(/.+\.rb$/)
   watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
+end
+
+guard :danger_plugins_lint do
+  watch(%r{lib/.+\.rb$})
 end
 
 guard :periphery, project: 'spec/support/fixtures/test.xcodeproj', targets: 'test', schemes: 'test' do
