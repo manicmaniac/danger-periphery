@@ -45,6 +45,14 @@ periphery.scan(
 )
 ```
 
+By default, `danger-periphery` scans all files in the specified targets and reports problems only in added, modified and renamed files.
+You can make `danger-periphery` report problems in all files by setting `scan_all_files` to true.
+
+```ruby
+periphery.scan_all_files = true
+periphery.scan
+```
+
 ## Advanced Usage
 
 ### Skip building for faster analysis
