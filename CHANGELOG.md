@@ -1,5 +1,7 @@
 ## master
 
+## 0.3.1
+
 - Introduce option to treat all warnings as errors by @manicmaniac in #200
 
 ## 0.3.0
