@@ -137,6 +137,39 @@ describe Danger::DangerPeriphery do
     end
   end
 
+  describe '#warning_as_error' do
+    subject(:errors) { dangerfile.status_report[:errors] }
+
+    before do
+      periphery.warning_as_error = warning_as_error
+      periphery.scan
+    end
+
+    context 'with false' do
+      let(:warning_as_error) { false }
+
+      it 'reports violations as warnings' do
+        expect(warnings).not_to be_empty
+      end
+
+      it 'does not report any errors' do
+        expect(errors).to be_empty
+      end
+    end
+
+    context 'with true' do
+      let(:warning_as_error) { true }
+
+      it 'reports violations as errors' do
+        expect(errors).not_to be_empty
+      end
+
+      it 'does not warn anything' do
+        expect(warnings).to be_empty
+      end
+    end
+  end
+
   describe '#format' do
     subject(:parser) { periphery.send(:parser) }
 

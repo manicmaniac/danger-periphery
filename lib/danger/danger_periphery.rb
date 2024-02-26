@@ -29,6 +29,12 @@ module Danger
     #                   By default +false+ is set.
     attr_accessor :scan_all_files
 
+    # A flag to treat warnings as errors.
+    # @return [Boolean] +true+ if this plugin reports all violations as errors.
+    #                   Otherwise +false+, it reports violations as warnings.
+    #                   By default +false+ is set.
+    attr_accessor :warning_as_error
+
     # For internal use only.
     #
     # @return [Symbol]
@@ -42,6 +48,7 @@ module Danger
     def initialize(dangerfile)
       super(dangerfile)
       @format = :checkstyle
+      @warning_as_error = false
     end
 
     # Scans Swift files.
@@ -75,7 +82,7 @@ module Danger
 
         next if block_given? && !yield(entry)
 
-        warn(entry.message, file: entry.path, line: entry.line)
+        report(entry.message, file: entry.path, line: entry.line)
       end
     end
 
@@ -93,6 +100,12 @@ module Danger
     end
 
     private
+
+    def report(*args, **kwargs)
+      return fail(*args, **kwargs) if warning_as_error
+
+      warn(*args, **kwargs)
+    end
 
     def files_in_diff
       # Taken from https://github.com/ashfurrow/danger-ruby-swiftlint/blob/5184909aab00f12954088684bbf2ce5627e08ed6/lib/danger_plugin.rb#L214-L216
