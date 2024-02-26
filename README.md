@@ -53,6 +53,13 @@ periphery.scan_all_files = true
 periphery.scan
 ```
 
+You can force `danger-periphery` treat all warnings as errors by changing `warning_as_error` flag.
+
+```ruby
+periphery.warning_as_error = true
+periphery.scan
+```
+
 ## Advanced Usage
 
 ### Skip building for faster analysis
