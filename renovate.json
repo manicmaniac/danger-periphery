@@ -15,7 +15,6 @@
       "automerge": true
     }
   ],
-  "rangeStrategy": "update-lockfile",
   "regexManagers": [
     {
       "fileMatch": [
