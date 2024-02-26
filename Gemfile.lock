@@ -189,22 +189,22 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
-  danger
-  danger-danger_plugin_lint
+  danger (~> 9.0)
+  danger-danger_plugin_lint (~> 0.2)
   danger-periphery!
-  danger-rubocop
-  guard
-  guard-rspec
-  guard-rubocop
-  listen
-  pry
-  rake
-  rspec
-  rubocop
-  rubocop-rake
-  rubocop-rspec
-  simplecov
-  yard
+  danger-rubocop (~> 0.12)
+  guard (~> 2.18)
+  guard-rspec (~> 4.7)
+  guard-rubocop (~> 1.5)
+  listen (~> 3.9)
+  pry (~> 0.14)
+  rake (~> 13.1)
+  rspec (~> 3.13)
+  rubocop (~> 1.60)
+  rubocop-rake (~> 0.6)
+  rubocop-rspec (~> 2.26)
+  simplecov (~> 0.22)
+  yard (~> 0.9)
 
 BUNDLED WITH
    2.3.6
