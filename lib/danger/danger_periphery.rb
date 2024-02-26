@@ -102,7 +102,7 @@ module Danger
     private
 
     def report(*args, **kwargs)
-      return fail(*args, **kwargs) if warning_as_error
+      return self.fail(*args, **kwargs) if warning_as_error
 
       warn(*args, **kwargs)
     end
