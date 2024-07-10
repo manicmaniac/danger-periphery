@@ -17,6 +17,6 @@ gem 'rake', '~> 13.1'
 gem 'rspec', '~> 3.13'
 gem 'rubocop', '~> 1.60', require: false
 gem 'rubocop-rake', '~> 0.6', require: false
-gem 'rubocop-rspec', '~> 2.26', require: false
+gem 'rubocop-rspec', '~> 3.0', require: false
 gem 'simplecov', '~> 0.22', require: false
 gem 'yard', '~> 0.9', require: false
