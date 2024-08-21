@@ -2,12 +2,12 @@ name: Lint
 on: pull_request
 jobs:
   lint:
-    runs-on: macOS-13
+    runs-on: macOS-14
     permissions:
       pull-requests: write
       statuses: write
     env:
-      DEVELOPER_DIR: '/Applications/Xcode_14.3.1.app/Contents/Developer'
+      DEVELOPER_DIR: '/Applications/Xcode_15.4.app/Contents/Developer'
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
