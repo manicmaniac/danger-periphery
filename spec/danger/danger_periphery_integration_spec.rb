@@ -24,7 +24,7 @@ describe Danger::DangerPeriphery, :slow do
 
   before do
     periphery.binary_path = binary('periphery')
-    next skip "periphery is not installed" unless File.exist?(periphery.binary_path)
+    next skip 'periphery is not installed' unless File.exist?(periphery.binary_path)
 
     json = File.read(fixture('github_pr.json'))
     allow(periphery.github).to receive(:pr_json).and_return json
