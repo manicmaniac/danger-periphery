@@ -46,7 +46,7 @@ module Danger
     }.freeze
 
     def initialize(dangerfile)
-      super(dangerfile)
+      super
       @format = :checkstyle
       @warning_as_error = false
     end
