@@ -15,7 +15,7 @@ module Periphery
       arguments = [binary_path, 'scan'] + scan_arguments(options)
 
       if options[:build_args]
-        arguments << "--"
+        arguments << '--'
         arguments += Array(options[:build_args])
       end
 
@@ -34,17 +34,15 @@ module Periphery
         next if key == :build_args
 
         value = nil if value.is_a?(TrueClass)
+        args << "--#{key.to_s.tr('_', '-')}"
         if value.is_a?(Array)
           if Gem::Version.new(version) >= Gem::Version.new('2.18.0')
-            args << "--#{key.to_s.tr('_', '-')}"
             args.push(*value.map(&:to_s))
           else
-            args << "--#{key.to_s.tr('_', '-')}"
             args << value.join(',')
           end
-        else
-          args << "--#{key.to_s.tr('_', '-')}"
-          args << value&.to_s if value
+        elsif value
+          args << value&.to_s
         end
       end
 
