@@ -14,11 +14,6 @@ module Periphery
     def scan(options)
       arguments = [binary_path, 'scan'] + scan_arguments(options)
 
-      if options[:build_args]
-        arguments << '--'
-        arguments += Array(options[:build_args])
-      end
-
       stdout, stderr, status = Open3.capture3(*arguments)
       raise "error: #{arguments} exited with status code #{status.exitstatus}. #{stderr}" unless status.success?
 
@@ -27,7 +22,6 @@ module Periphery
 
     def scan_arguments(options)
       args = []
-
       options.each do |key, value|
         next unless value
 
@@ -45,7 +39,7 @@ module Periphery
           args << value&.to_s
         end
       end
-
+      args += ['--', options[:build_args]] if options[:build_args]
       args
     end
 

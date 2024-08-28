@@ -145,6 +145,20 @@ describe Periphery::Runner do
         expect(scan_arguments).to eq %w[--project test.xcodeproj --targets test --clean-build]
       end
     end
+
+    context 'with `build_args` option' do
+      let(:options) do
+        {
+          project: 'test.xcodeproj',
+          targets: 'test',
+          build_args: '-sdk iphonesimulator'
+        }
+      end
+
+      it 'returns arguments with an argument terminator' do
+        expect(scan_arguments).to eq ['--project', 'test.xcodeproj', '--targets', 'test', '--', '-sdk iphonesimulator']
+      end
+    end
   end
 
   describe '#version' do
