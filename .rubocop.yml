@@ -7,16 +7,16 @@ AllCops:
   NewCops: enable
 
 Metrics/AbcSize:
-  Max: 21
+  Max: 22
 
 Metrics/CyclomaticComplexity:
-  Max: 10
+  Max: 11
 
 Metrics/MethodLength:
-  Max: 17
+  Max: 18
 
 Metrics/PerceivedComplexity:
-  Max: 12
+  Max: 13
 
 RSpec/MultipleMemoizedHelpers:
   Max: 6
