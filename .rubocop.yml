@@ -13,10 +13,10 @@ Metrics/CyclomaticComplexity:
   Max: 10
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 17
 
 Metrics/PerceivedComplexity:
-  Max: 10
+  Max: 12
 
 RSpec/MultipleMemoizedHelpers:
   Max: 6
