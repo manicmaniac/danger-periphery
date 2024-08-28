@@ -1,5 +1,8 @@
 ## master
 
+- Add support for passing custom `xcodebuild` arguments via `build_args` in `scan` method by @Xopoko in #242
+- Add Ruby 3.3 to test matrix by @manicmaniac in #239
+
 ## 0.3.1
 
 - Introduce option to treat all warnings as errors by @manicmaniac in #200
