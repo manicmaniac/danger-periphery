@@ -1,5 +1,7 @@
 ## master
 
+## 0.4.0
+
 - Add support for passing custom `xcodebuild` arguments via `build_args` in `scan` method by @Xopoko in #242
 - Add Ruby 3.3 to test matrix by @manicmaniac in #239
 
