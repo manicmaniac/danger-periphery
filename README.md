@@ -36,12 +36,15 @@ periphery.binary_path = "bin/periphery"
 You can pass command line options to `periphery.scan` like the following.
 See `periphery scan -h` for available options.
 
+Note that `build_args` option is a special option that does not exist in Periphery but the arguments are passed down to `periphery` after an argument terminator (`--`).
+
 ```ruby
 periphery.scan(
   project: "Foo.xcodeproj",
   schemes: ["foo", "bar"],
   targets: "foo",
-  clean_build: true
+  clean_build: true,
+  build_args: "-sdk iphonesimulator"
 )
 ```
 
