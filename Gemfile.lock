@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    danger-periphery (0.3.1)
+    danger-periphery (0.4.0)
       danger-plugin-api (~> 1.0)
       rubyzip (~> 2.0)
 
