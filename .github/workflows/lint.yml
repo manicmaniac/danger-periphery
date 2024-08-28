@@ -10,6 +10,8 @@ jobs:
       DEVELOPER_DIR: '/Applications/Xcode_15.4.app/Contents/Developer'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # https://github.com/danger/danger/issues/1103
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
