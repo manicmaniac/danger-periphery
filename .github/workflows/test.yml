@@ -37,7 +37,7 @@ jobs:
           name: coverages-ruby-${{ matrix.ruby-version }}
           path: codeclimate-${{ matrix.ruby-version }}.json
   upload-coverage:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: test
     steps:
       - uses: actions/download-artifact@v4
