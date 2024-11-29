@@ -76,8 +76,11 @@ module Danger
     # @return [void]
     def scan(options = {})
       output = Periphery::Runner.new(binary_path).scan(options.merge(OPTION_OVERRIDES).merge(format: @format))
+      lines_with_angle_bracket = output.split("\n").select do |line|
+        line.include?('<') && line.include?('>')
+      end.join("\n")
       files = files_in_diff unless @scan_all_files
-      parser.parse(output).each do |entry|
+      parser.parse(lines_with_angle_bracket).each do |entry|
         next unless @scan_all_files || files.include?(entry.path)
 
         next if block_given? && !yield(entry)
