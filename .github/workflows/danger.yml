@@ -21,10 +21,10 @@ jobs:
           path: topic
           set-safe-directory: false
       - uses: ruby/setup-ruby@v1
-        working-directory: default
         with:
           ruby-version: '3.3'
           bundler-cache: true
+          working-directory: default
       - run: bundle exec danger --dangerfile=../default/Dangerfile
         working-directory: topic
         env:
