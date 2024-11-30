@@ -47,7 +47,6 @@ module Periphery
       arguments = [binary_path, 'version']
       stdout, stderr, status = Open3.capture3(*arguments)
       raise "error: #{arguments} existed with status code #{status.exitstatus}. #{stderr}" unless status.success?
-
       stdout.strip
     end
   end
