@@ -30,4 +30,4 @@ jobs:
         env:
           BUNDLE_GEMFILE: ../default/Gemfile
           DANGER_DO_NOT_POST_INVALID_DANGERFILE_ERROR: ''
-          DAGNER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
