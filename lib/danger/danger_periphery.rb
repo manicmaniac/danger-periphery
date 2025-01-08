@@ -86,6 +86,13 @@ module Danger
       end
     end
 
+    # The version of underlying Periphery executable.
+    #
+    # @return [string]
+    def version
+      Periphery::Runner.new(binary_path).version
+    end
+
     # Download and install Periphery executable binary.
     #
     # @param [String, Symbol] version The version of Periphery you want to install.

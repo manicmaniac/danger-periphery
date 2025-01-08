@@ -39,6 +39,16 @@ See `periphery scan -h` for available options.
 Note that `build_args` option is a special option that does not exist in Periphery but the arguments are passed down to `periphery` after an argument terminator (`--`).
 
 ```ruby
+# For Periphery >= 3.0.0
+periphery.scan(
+  project: "Foo.xcodeproj",
+  schemes: ["foo", "bar"],
+  clean_build: true,
+  exclude_targets: ["bar"],
+  build_args: "-sdk iphonesimulator"
+)
+
+# For Periphery < 3.0.0
 periphery.scan(
   project: "Foo.xcodeproj",
   schemes: ["foo", "bar"],
@@ -86,6 +96,16 @@ To enable this feature, you need to give `index_store_path` to the generated ind
 ```ruby
 # Dangerfile
 
+# For Periphery >= 3.0.0
+periphery.scan(
+  project: "Foo.xcodeproj",
+  schemes: ["foo", "bar"],
+  skip_build: true,
+  exclude_targets: ["bar"],
+  index_store_path: 'DerivedData/Index.noindex/DataStore'
+)
+
+# For Periphery < 3.0.0
 periphery.scan(
   project: "Foo.xcodeproj",
   schemes: "foo",
