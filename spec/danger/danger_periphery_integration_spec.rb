@@ -8,22 +8,23 @@ describe Danger::DangerPeriphery, :slow do
   include_context 'when test.xcodeproj is indexed'
 
   let(:dangerfile) { testing_dangerfile }
-  let(:periphery) { dangerfile.periphery }
+  let(:periphery) { dangerfile.periphery.tap { |p| p.binary_path = binary('periphery') } }
   let(:added_files) { [] }
   let(:modified_files) { [] }
   let(:periphery_options) do
-    {
+    options = {
       project: fixture('test.xcodeproj'),
-      targets: targets,
       schemes: 'test',
       skip_build: true,
       index_store_path: index_store_path
     }
+    # `--targets` option has disappeared since Periphery >= 3.0.0.
+    options[:targets] = targets if Gem::Version.new(periphery.version) < Gem::Version.new('3.0.0')
+    options
   end
   let(:targets) { 'test' }
 
   before do
-    periphery.binary_path = binary('periphery')
     next skip 'periphery is not installed' unless File.exist?(periphery.binary_path)
 
     json = File.read(fixture('github_pr.json'))
