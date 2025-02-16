@@ -1,9 +1,20 @@
 # frozen_string_literal: true
 
-describe Periphery::Runner do
-  subject(:runner) { described_class.new(binary_path) }
+require 'tempfile'
 
-  let(:binary_path) { binary('periphery') }
+describe Periphery::Runner do
+  subject(:runner) { described_class.new(executable_file.path) }
+
+  let(:mock_periphery) { '' }
+  let!(:executable_file) { Tempfile.new }
+
+  before do
+    executable_file.write(mock_periphery)
+    File.chmod(0o700, executable_file.path)
+    executable_file.close
+  end
+
+  after { executable_file.unlink }
 
   describe '#scan' do
     subject(:scan) { runner.scan(options) }
@@ -30,25 +41,37 @@ describe Periphery::Runner do
     end
 
     context 'when periphery succeeds' do
+      let(:mock_periphery) do
+        <<~SHELL
+          #!/bin/sh
+          echo warning:
+        SHELL
+      end
+
       it 'returns scan result' do
-        status = instance_double(Process::Status, success?: true)
-        allow(Open3).to receive(:capture3).once.with(*command).and_return ['warning:', '', status]
         expect(scan).to include 'warning:'
       end
     end
 
     context 'when periphery fails' do
+      let(:mock_periphery) do
+        <<~SHELL
+          #!/bin/sh
+          echo foo >&2
+          exit 42
+        SHELL
+      end
+
       it 'raises an error' do
-        status = instance_double(Process::Status, success?: false, exitstatus: 42)
-        allow(Open3).to receive(:capture3).once.with(*command).and_return ['', 'foo', status]
         expect { scan }.to raise_error(RuntimeError, /42.*foo/)
       end
     end
 
     context 'when periphery executable is missing' do
+      before { executable_file.unlink }
+
       it 'raises an error' do
-        allow(Open3).to receive(:capture3).once.with(*command).and_raise(Errno::ENOENT, '/path/to/periphery')
-        expect { scan }.to raise_error(Errno::ENOENT, %r{/path/to/periphery})
+        expect { scan }.to raise_error(Errno::ENOENT)
       end
     end
   end
@@ -57,11 +80,11 @@ describe Periphery::Runner do
     subject(:scan_arguments) { runner.scan_arguments(options) }
 
     let(:periphery_version) { '2.18.0' }
-
-    before do
-      status = instance_double(Process::Status, success?: true)
-      allow(Open3).to receive(:capture3).once.with(binary_path, 'version')
-                                        .and_return ["#{periphery_version}\n", '', status]
+    let(:mock_periphery) do
+      <<~SHELL
+        #!/bin/sh
+        echo #{periphery_version}
+      SHELL
     end
 
     context 'with empty options' do
@@ -163,17 +186,28 @@ describe Periphery::Runner do
 
   describe '#version' do
     context 'when periphery succeeds' do
+      let(:mock_periphery) do
+        <<~SHELL
+          #!/bin/sh
+          echo 2.18.0
+        SHELL
+      end
+
       it 'returns the correct version' do
-        status = instance_double(Process::Status, success?: true)
-        allow(Open3).to receive(:capture3).once.with(binary_path, 'version').and_return ["2.18.0\n", '', status]
         expect(runner.version).to eq '2.18.0'
       end
     end
 
     context 'when periphery fails' do
+      let(:mock_periphery) do
+        <<~SHELL
+          #!/bin/sh
+          echo error >&2
+          exit 42
+        SHELL
+      end
+
       it 'raises an error' do
-        status = instance_double(Process::Status, success?: false, exitstatus: 42)
-        allow(Open3).to receive(:capture3).once.with(binary_path, 'version').and_return ['', 'error', status]
         expect { runner.version }.to raise_error(/error/)
       end
     end
