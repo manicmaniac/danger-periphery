@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'open3'
 require 'rubygems/version'
 
 module Periphery
@@ -53,22 +54,21 @@ module Periphery
     private
 
     def capture_output(arguments)
-      IO.pipe do |out_r, out_w|
-        IO.pipe do |err_r, err_w|
-          stdout = StringIO.new
-          stderr = StringIO.new
-          pid = spawn(*arguments, in: :close, out: out_w, err: err_w)
-          out_w.close
-          err_w.close
-          threads = [
-            tee(out_r, verbose ? [stdout, $stdout] : [stdout]),
-            tee(err_r, verbose ? [stderr, $stderr] : [stderr])
-          ]
-          _, status = Process.wait2(pid)
+      out = StringIO.new
+      err = StringIO.new
+      status = Open3.popen3(*arguments, in: :close) do |_, stdout, stderr, wait_thread|
+        threads = []
+        begin
+          threads << tee(stdout, verbose ? [out, $stdout] : [out])
+          threads << tee(stderr, verbose ? [err, $stderr] : [err])
+          status = wait_thread.value
           threads.each(&:join)
-          [stdout, stderr, status]
+          status
+        ensure
+          threads.each(&:kill)
         end
       end
+      [out, err, status]
     end
 
     def tee(in_io, out_ios)
