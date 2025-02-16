@@ -5,17 +5,17 @@ require 'rubygems/version'
 
 module Periphery
   class Runner # :nodoc:
-    attr_reader :binary_path, :verbose
+    attr_reader :binary_path, :pid, :verbose
 
-    def initialize(binary_path)
+    def initialize(binary_path, verbose: false)
       @binary_path = binary_path || 'periphery'
-      @verbose = false
+      @verbose = verbose
     end
 
     def scan(options)
       arguments = [binary_path, 'scan'] + scan_arguments(options)
       stdout, stderr, status = capture_output(arguments)
-      raise "error: #{arguments} exited with status code #{status.exitstatus}. #{stderr.string}" unless status.success?
+      validate_subprocess_status!(arguments, status, stderr)
 
       stdout.string
     end
@@ -46,7 +46,7 @@ module Periphery
     def version
       arguments = [binary_path, 'version']
       stdout, stderr, status = capture_output(arguments)
-      raise "error: #{arguments} existed with status code #{status.exitstatus}. #{stderr.string}" unless status.success?
+      validate_subprocess_status!(arguments, status, stderr)
 
       stdout.string.strip
     end
@@ -57,6 +57,7 @@ module Periphery
       out = StringIO.new
       err = StringIO.new
       status = Open3.popen3(*arguments, in: :close) do |_, stdout, stderr, wait_thread|
+        @pid = wait_thread.pid
         threads = []
         begin
           threads << tee(stdout, verbose ? [out, $stdout] : [out])
@@ -66,9 +67,19 @@ module Periphery
           status
         ensure
           threads.each(&:kill)
+          @pid = nil
         end
       end
       [out, err, status]
+    end
+
+    def validate_subprocess_status!(arguments, status, stderr)
+      case status.success?
+      when false
+        raise "error: #{arguments} exited with status code #{status.exitstatus}. #{stderr.string}"
+      when nil
+        raise "error: #{arguments} was terminated by SIG#{Signal.signame(status.termsig)}"
+      end
     end
 
     def tee(in_io, out_ios)
