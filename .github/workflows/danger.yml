@@ -1,5 +1,7 @@
 name: danger
-on: pull_request_target
+on:
+  - pull_request
+  - pull_request_target
 jobs:
   danger:
     runs-on: ubuntu-latest
@@ -9,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.base.sha }}
           path: default
       - uses: actions/checkout@v4
         with:
