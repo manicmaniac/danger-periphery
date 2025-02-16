@@ -20,7 +20,7 @@ jobs:
           set-safe-directory: false
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'
+          ruby-version: '3.4'
           bundler-cache: true
           working-directory: default
       - run: bundle exec danger --dangerfile=../default/Dangerfile
