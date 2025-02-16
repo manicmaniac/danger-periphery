@@ -3,10 +3,11 @@
 require 'tempfile'
 
 describe Periphery::Runner do
-  subject(:runner) { described_class.new(executable_file.path) }
+  subject(:runner) { described_class.new(executable_file.path, verbose: verbose) }
 
   let(:mock_periphery) { '' }
   let!(:executable_file) { Tempfile.new }
+  let(:verbose) { false }
 
   before do
     executable_file.write(mock_periphery)
@@ -29,7 +30,7 @@ describe Periphery::Runner do
 
     let(:command) do
       [
-        binary_path,
+        executable_file.path,
         'scan',
         '--project',
         fixture('test.xcodeproj'),
@@ -67,11 +68,67 @@ describe Periphery::Runner do
       end
     end
 
+    context 'when periphery is killed by signal' do
+      let(:mock_periphery) do
+        <<~RUBY
+          #!#{RbConfig.ruby}
+          loop {}
+        RUBY
+      end
+
+      before do
+        Thread.new do
+          sleep(0.1)
+          Process.kill('TERM', runner.pid)
+        end
+      end
+
+      it 'raises error with signal name' do
+        expect { scan }.to raise_error(RuntimeError, /SIGTERM/)
+      end
+    end
+
     context 'when periphery executable is missing' do
       before { executable_file.unlink }
 
       it 'raises an error' do
         expect { scan }.to raise_error(Errno::ENOENT)
+      end
+    end
+
+    context 'when verbose is true' do
+      let(:verbose) { true }
+      let(:mock_periphery) do
+        <<~RUBY
+          #!#{RbConfig.ruby}
+          puts('stdout')
+          $stderr.puts('stderr')
+        RUBY
+      end
+
+      it 'prints stdout and stderr' do
+        expect { scan }
+          .to output(/stdout/).to_stdout
+          .and output(/stderr/).to_stderr
+      end
+    end
+
+    context 'when verbose is true and periphery fails' do
+      let(:verbose) { true }
+      let(:mock_periphery) do
+        <<~RUBY
+          #!#{RbConfig.ruby}
+          puts('stdout')
+          $stderr.puts('stderr')
+          exit(42)
+        RUBY
+      end
+
+      it 'prints stdout and stderr before raising RuntimeError' do
+        expect { scan }
+          .to output(/stdout/).to_stdout
+          .and output(/stderr/).to_stderr
+          .and raise_error(RuntimeError, /42/)
       end
     end
   end
@@ -209,6 +266,26 @@ describe Periphery::Runner do
 
       it 'raises an error' do
         expect { runner.version }.to raise_error(/error/)
+      end
+    end
+
+    context 'when periphery is killed by signal' do
+      let(:mock_periphery) do
+        <<~RUBY
+          #!#{RbConfig.ruby}
+          loop {}
+        RUBY
+      end
+
+      before do
+        Thread.new do
+          sleep(0.1)
+          Process.kill('TERM', runner.pid)
+        end
+      end
+
+      it 'raises error with signal name' do
+        expect { runner.version }.to raise_error(RuntimeError, /SIGTERM/)
       end
     end
   end

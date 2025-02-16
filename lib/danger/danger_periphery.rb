@@ -35,6 +35,16 @@ module Danger
     #                   By default +false+ is set.
     attr_accessor :warning_as_error
 
+    # A flag to enable verbose output.
+    # @return [Boolean] +true+ if this plugin prints all outputs from Periphery.
+    #                   Otherwise returns +false+ and prints only errors.
+    #                   Defaults to +false+.
+    #                   Note that regardless of this value, this plugin always overrides certain options,
+    #                   such as +--disable-update-check+, +--format+ and +--quiet+.
+    # @see OPTION_OVERRIDES
+    # @see format=
+    attr_accessor :verbose
+
     # For internal use only.
     #
     # @return [Symbol]

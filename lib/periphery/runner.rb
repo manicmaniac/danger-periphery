@@ -5,19 +5,19 @@ require 'rubygems/version'
 
 module Periphery
   class Runner # :nodoc:
-    attr_reader :binary_path
+    attr_reader :binary_path, :pid, :verbose
 
-    def initialize(binary_path)
+    def initialize(binary_path, verbose: false)
       @binary_path = binary_path || 'periphery'
+      @verbose = verbose
     end
 
     def scan(options)
       arguments = [binary_path, 'scan'] + scan_arguments(options)
+      stdout, stderr, status = capture_output(arguments)
+      validate_subprocess_status!(arguments, status, stderr)
 
-      stdout, stderr, status = Open3.capture3(*arguments)
-      raise "error: #{arguments} exited with status code #{status.exitstatus}. #{stderr}" unless status.success?
-
-      stdout
+      stdout.string
     end
 
     def scan_arguments(options)
@@ -45,10 +45,50 @@ module Periphery
 
     def version
       arguments = [binary_path, 'version']
-      stdout, stderr, status = Open3.capture3(*arguments)
-      raise "error: #{arguments} existed with status code #{status.exitstatus}. #{stderr}" unless status.success?
+      stdout, stderr, status = capture_output(arguments)
+      validate_subprocess_status!(arguments, status, stderr)
 
-      stdout.strip
+      stdout.string.strip
+    end
+
+    private
+
+    def capture_output(arguments)
+      out = StringIO.new
+      err = StringIO.new
+      status = Open3.popen3(*arguments, in: :close) do |_, stdout, stderr, wait_thread|
+        @pid = wait_thread.pid
+        threads = []
+        begin
+          threads << tee(stdout, verbose ? [out, $stdout] : [out])
+          threads << tee(stderr, verbose ? [err, $stderr] : [err])
+          status = wait_thread.value
+          threads.each(&:join)
+          status
+        ensure
+          threads.each(&:kill)
+          @pid = nil
+        end
+      end
+      [out, err, status]
+    end
+
+    def validate_subprocess_status!(arguments, status, stderr)
+      case status.success?
+      when false
+        raise "error: #{arguments} exited with status code #{status.exitstatus}. #{stderr.string}"
+      when nil
+        raise "error: #{arguments} was terminated by SIG#{Signal.signame(status.termsig)}"
+      end
+    end
+
+    def tee(in_io, out_ios)
+      Thread.new do
+        until in_io.eof?
+          data = in_io.readpartial(1024)
+          out_ios.each { |io| io.write(data) }
+        end
+      end
     end
   end
 end
