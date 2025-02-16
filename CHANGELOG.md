@@ -1,5 +1,9 @@
 ## master
 
+- Remove --targets option for Periphery >= 3.0.0 by @manicmaniac in #271
+- Add Ruby 3.4 to test matrix by @manicmaniac in #282
+- Add verbose flag to print the entire outputs from Periphery by @manicmaniac in #286
+
 ## 0.4.0
 
 - Add support for passing custom `xcodebuild` arguments via `build_args` in `scan` method by @Xopoko in #242
