@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    danger-periphery (0.4.0)
+    danger-periphery (0.5.0)
       danger-plugin-api (~> 1.0)
       rubyzip (~> 2.0)
 
@@ -71,7 +71,6 @@ GEM
     faraday-retry (1.0.3)
     ffi (1.17.1)
     ffi (1.17.1-arm64-darwin)
-    ffi (1.17.1-x86_64-darwin)
     formatador (1.1.0)
     git (1.19.1)
       addressable (~> 2.8)
@@ -171,7 +170,7 @@ GEM
       rubocop (~> 1.72, >= 1.72.1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    rubyzip (2.3.2)
+    rubyzip (2.4.1)
     sawyer (0.9.2)
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
