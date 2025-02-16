@@ -12,7 +12,13 @@ Gem::Specification.new do |spec|
   spec.homepage = 'https://github.com/manicmaniac/danger-periphery'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 2.7.0'
-  spec.metadata['rubygems_mfa_required'] = 'true'
+  spec.metadata = {
+    'bug_tracker_uri' => 'https://github.com/manicmaniac/danger-periphery/issues',
+    'changelog_uri' => "https://raw.githubusercontent.com/manicmaniac/danger-periphery/refs/heads/#{spec.version}/CHANGELOG.md",
+    'documentation_uri' => "https://www.rubydoc.info/gems/danger-periphery/#{spec.version}",
+    'homepage_uri' => spec.homepage,
+    'rubygems_mfa_required' => 'true'
+  }
 
   spec.files = Dir['lib/**/*.rb']
   spec.require_paths = ['lib']
