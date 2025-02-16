@@ -150,6 +150,19 @@ periphery.scan do |violation|
 end
 ```
 
+### Enable verbose output
+
+You can enable verbose output by setting the `verbose` option to `true`. When enabled, `danger-periphery` will print all output from Periphery in real-time, instead of only errors.
+
+By default, verbose output is disabled.
+
+```ruby
+periphery.verbose = true
+periphery.scan
+```
+
+Even when `verbose` is enabled, `danger-periphery` automatically overrides certain Periphery options, such as `--disable-update-check`, `--format`, and `--quiet`, to ensure proper integration.
+
 ### Install Periphery in Dangerfile
 
 Although I recommend you to install Periphery binary on your own, `danger-periphery` provides a method to install Periphery in Dangerfile.
