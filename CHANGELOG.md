@@ -1,5 +1,7 @@
 ## master
 
+## 0.5.0
+
 - Remove --targets option for Periphery >= 3.0.0 by @manicmaniac in #271
 - Add Ruby 3.4 to test matrix by @manicmaniac in #282
 - Add verbose flag to print the entire outputs from Periphery by @manicmaniac in #286
