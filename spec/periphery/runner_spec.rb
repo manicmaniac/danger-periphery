@@ -42,10 +42,10 @@ describe Periphery::Runner do
 
     context 'when periphery succeeds' do
       let(:mock_periphery) do
-        <<~SHELL
-          #!/bin/sh
-          echo warning:
-        SHELL
+        <<~RUBY
+          #!#{RbConfig.ruby}
+          puts('warning:')
+        RUBY
       end
 
       it 'returns scan result' do
@@ -55,11 +55,11 @@ describe Periphery::Runner do
 
     context 'when periphery fails' do
       let(:mock_periphery) do
-        <<~SHELL
-          #!/bin/sh
-          echo foo >&2
-          exit 42
-        SHELL
+        <<~RUBY
+          #!#{RbConfig.ruby}
+          $stderr.puts('foo')
+          exit(42)
+        RUBY
       end
 
       it 'raises an error' do
@@ -81,10 +81,10 @@ describe Periphery::Runner do
 
     let(:periphery_version) { '2.18.0' }
     let(:mock_periphery) do
-      <<~SHELL
-        #!/bin/sh
-        echo #{periphery_version}
-      SHELL
+      <<~RUBY
+        #!#{RbConfig.ruby}
+        puts(#{periphery_version.dump})
+      RUBY
     end
 
     context 'with empty options' do
@@ -187,10 +187,10 @@ describe Periphery::Runner do
   describe '#version' do
     context 'when periphery succeeds' do
       let(:mock_periphery) do
-        <<~SHELL
-          #!/bin/sh
-          echo 2.18.0
-        SHELL
+        <<~RUBY
+          #!#{RbConfig.ruby}
+          puts('2.18.0')
+        RUBY
       end
 
       it 'returns the correct version' do
@@ -200,11 +200,11 @@ describe Periphery::Runner do
 
     context 'when periphery fails' do
       let(:mock_periphery) do
-        <<~SHELL
-          #!/bin/sh
-          echo error >&2
-          exit 42
-        SHELL
+        <<~RUBY
+          #!#{RbConfig.ruby}
+          $stderr.puts('error')
+          exit(42)
+        RUBY
       end
 
       it 'raises an error' do
