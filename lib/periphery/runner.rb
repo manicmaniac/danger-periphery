@@ -2,6 +2,7 @@
 
 require 'open3'
 require 'rubygems/version'
+require 'stringio'
 
 module Periphery
   class Runner # :nodoc:
