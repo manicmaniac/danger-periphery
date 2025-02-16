@@ -3,10 +3,11 @@
 require 'tempfile'
 
 describe Periphery::Runner do
-  subject(:runner) { described_class.new(executable_file.path, verbose: verbose) }
+  subject(:runner) { described_class.new(executable_file.path, on_spawn: on_spawn, verbose: verbose) }
 
   let(:mock_periphery) { '' }
   let!(:executable_file) { Tempfile.new }
+  let(:on_spawn) { nil }
   let(:verbose) { false }
 
   before do
@@ -76,11 +77,8 @@ describe Periphery::Runner do
         RUBY
       end
 
-      before do
-        Thread.new do
-          sleep(0.1)
-          Process.kill('TERM', runner.pid)
-        end
+      let(:on_spawn) do
+        ->(pid) { Process.kill('TERM', pid) }
       end
 
       it 'raises error with signal name' do
@@ -276,12 +274,8 @@ describe Periphery::Runner do
           loop {}
         RUBY
       end
-
-      before do
-        Thread.new do
-          sleep(0.1)
-          Process.kill('TERM', runner.pid)
-        end
+      let(:on_spawn) do
+        ->(pid) { Process.kill('TERM', pid) }
       end
 
       it 'raises error with signal name' do

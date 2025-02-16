@@ -5,10 +5,11 @@ require 'rubygems/version'
 
 module Periphery
   class Runner # :nodoc:
-    attr_reader :binary_path, :pid, :verbose
+    attr_reader :binary_path, :verbose
 
-    def initialize(binary_path, verbose: false)
+    def initialize(binary_path, on_spawn: nil, verbose: false)
       @binary_path = binary_path || 'periphery'
+      @on_spawn = on_spawn
       @verbose = verbose
     end
 
@@ -57,7 +58,7 @@ module Periphery
       out = StringIO.new
       err = StringIO.new
       status = Open3.popen3(*arguments, in: :close) do |_, stdout, stderr, wait_thread|
-        @pid = wait_thread.pid
+        @on_spawn&.call(wait_thread.pid)
         threads = []
         begin
           threads << tee(stdout, verbose ? [out, $stdout] : [out])
@@ -67,7 +68,6 @@ module Periphery
           status
         ensure
           threads.each(&:kill)
-          @pid = nil
         end
       end
       [out, err, status]
