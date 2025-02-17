@@ -32,7 +32,7 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: dummy # https://github.com/codeclimate/test-reporter/issues/495
       - name: Format coverage
-        run: ./cc-test-reporter format-coverage --input-type simplecov --output 'codeclimate-${{ matrix.ruby-version }}.json'
+        run: ./cc-test-reporter format-coverage --input-type lcov --output 'codeclimate-${{ matrix.ruby-version }}.json'
       - uses: actions/upload-artifact@v4
         with:
           name: coverages-ruby-${{ matrix.ruby-version }}
