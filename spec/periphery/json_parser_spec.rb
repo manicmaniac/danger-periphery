@@ -138,38 +138,40 @@ describe Periphery::JsonParser do
   describe '#display_name' do
     subject(:display_name) { parser.send(:display_name, kind) }
 
-    context 'with valid kinds' do
-      table = {
-        'class' => 'class',
-        'protocol' => 'protocol',
-        'struct' => 'struct',
-        'enum' => 'enum',
-        'enumelement' => 'enum case',
-        'typealias' => 'typealias',
-        'associatedtype' => 'associatedtype',
-        'function.constructor' => 'initializer',
-        'extension' => 'extension',
-        'extension.enum' => 'extension',
-        'extension.class' => 'extension',
-        'extension.struct' => 'extension',
-        'extension.protocol' => 'extension',
-        'function.method.class' => 'function',
-        'function.method.static' => 'function',
-        'function.method.instance' => 'function',
-        'function.free' => 'function',
-        'function.operator' => 'function',
-        'function.subscript' => 'function',
-        'var.static' => 'property',
-        'var.instance' => 'property',
-        'var.class' => 'property',
-        'var.global' => 'property',
-        'var.local' => 'property',
-        'var.parameter' => 'parameter',
-        'generic_type_param' => 'generic type parameter'
-      }
+    table = {
+      'class' => 'class',
+      'protocol' => 'protocol',
+      'struct' => 'struct',
+      'enum' => 'enum',
+      'enumelement' => 'enum case',
+      'typealias' => 'typealias',
+      'associatedtype' => 'associatedtype',
+      'function.constructor' => 'initializer',
+      'extension' => 'extension',
+      'extension.enum' => 'extension',
+      'extension.class' => 'extension',
+      'extension.struct' => 'extension',
+      'extension.protocol' => 'extension',
+      'function.method.class' => 'function',
+      'function.method.static' => 'function',
+      'function.method.instance' => 'function',
+      'function.free' => 'function',
+      'function.operator' => 'function',
+      'function.subscript' => 'function',
+      'var.static' => 'property',
+      'var.instance' => 'property',
+      'var.class' => 'property',
+      'var.global' => 'property',
+      'var.local' => 'property',
+      'var.parameter' => 'parameter',
+      'generic_type_param' => 'generic type parameter'
+    }
 
-      it 'returns human-readable name' do
-        expect(table.keys.map { |kind| parser.send(:display_name, kind) }).to eq table.values
+    table.each do |key, value|
+      context "with #{key.dump}" do
+        let(:kind) { key }
+
+        it { is_expected.to eq value }
       end
     end
 
