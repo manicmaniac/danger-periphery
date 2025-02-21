@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.7.0'
   spec.metadata = {
     'bug_tracker_uri' => 'https://github.com/manicmaniac/danger-periphery/issues',
-    'changelog_uri' => "https://raw.githubusercontent.com/manicmaniac/danger-periphery/refs/heads/#{spec.version}/CHANGELOG.md",
+    'changelog_uri' => 'https://raw.githubusercontent.com/manicmaniac/danger-periphery/refs/heads/master/CHANGELOG.md',
     'documentation_uri' => "https://www.rubydoc.info/gems/danger-periphery/#{spec.version}",
     'homepage_uri' => spec.homepage,
     'rubygems_mfa_required' => 'true'
