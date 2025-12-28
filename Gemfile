@@ -12,6 +12,7 @@ gem 'guard', '~> 2.18', require: false
 gem 'guard-rspec', '~> 4.7', require: false
 gem 'guard-rubocop', '~> 1.5', require: false
 gem 'listen', '~> 3.9', require: false
+gem 'openssl', '~> 4.0'
 gem 'pry', '~> 0.14'
 gem 'rake', '~> 13.1'
 gem 'rspec', '~> 3.13'
