@@ -21,23 +21,17 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
-      - name: Install cc-test-reporter
-        run: |
-          curl -Lo cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64
-          chmod +x cc-test-reporter
-      - run: ./cc-test-reporter before-build
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - uses: qltysh/qlty-action/install@v2
       - run: bundle exec rake
-        env:
-          CC_TEST_REPORTER_ID: dummy # https://github.com/codeclimate/test-reporter/issues/495
       - name: Format coverage
-        run: ./cc-test-reporter format-coverage --input-type lcov --output 'codeclimate-${{ matrix.ruby-version }}.json'
+        run: qlty coverage transform coverage/.resultset.json --output 'codeclimate-${{ matrix.ruby-version }}.jsonl'
       - uses: actions/upload-artifact@v4
         with:
           name: coverages-ruby-${{ matrix.ruby-version }}
-          path: codeclimate-${{ matrix.ruby-version }}.json
+          path: codeclimate-${{ matrix.ruby-version }}.jsonl
   upload-coverage:
+    permissions:
+      id-token: write
     runs-on: ubuntu-24.04
     if: always()
     needs: test
@@ -45,15 +39,13 @@ jobs:
       - name: Check test matrix status
         if: ${{ needs.test.result != 'success' }}
         run: exit 1
+      - uses: actions/checkout@v5
       - uses: actions/download-artifact@v5
         with:
           pattern: coverages-*
           merge-multiple: true
-      - name: Install cc-test-reporter
-        run: |
-          curl -Lo cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-          chmod +x cc-test-reporter
-      - name: Upload coverage
-        run: ./cc-test-reporter sum-coverage --output - codeclimate-*.json | ./cc-test-reporter upload-coverage --debug --input -
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - uses: qltysh/qlty-action/coverage@v2
+        with:
+          oidc: true
+          files: codeclimate-*.jsonl
+          skip-errors: false
