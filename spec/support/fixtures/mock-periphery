@@ -8,7 +8,7 @@ def format_equal?(format)
 end
 
 if format_equal?(:checkstyle)
-  puts <<~XML
+  puts(<<~XML)
     <?xml version="1.0" encoding="UTF-8"?>
     <checkstyle version="4.3">
       <file name="#{__dir__}/test/main.swift">
@@ -25,7 +25,7 @@ if format_equal?(:checkstyle)
     </checkstyle>
   XML
 elsif format_equal?(:json)
-  puts <<~JSON
+  puts(<<~JSON)
     [
       {
         "accessibility": "internal",
