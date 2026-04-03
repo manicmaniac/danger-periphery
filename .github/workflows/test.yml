@@ -49,3 +49,24 @@ jobs:
           oidc: true
           files: codeclimate-*.jsonl
           skip-errors: false
+  compatibility-test:
+    runs-on: macOS-14
+    strategy:
+      fail-fast: false
+      matrix:
+        periphery-version:
+          - '3.3.0'
+          - '3.2.0'
+          - '3.1.0'
+          - '3.0.3'
+    env:
+      DEVELOPER_DIR: '/Applications/Xcode_15.4.app/Contents/Developer'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+      - run: bundle exec rake
+        env:
+          PERIPHERY_VERSION: ${{ matrix.periphery-version }}

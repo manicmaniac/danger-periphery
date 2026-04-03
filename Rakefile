@@ -31,5 +31,6 @@ PERIPHERY_VERSION = '3.3.0'
 file 'bin/periphery' do |f|
   require 'periphery/installer'
 
-  Periphery::Installer.new(PERIPHERY_VERSION).install(f.name, force: true)
+  periphery_version = ENV.fetch('PERIPHERY_VERSION', PERIPHERY_VERSION)
+  Periphery::Installer.new(periphery_version).install(f.name, force: true)
 end
