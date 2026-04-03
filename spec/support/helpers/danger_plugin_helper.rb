@@ -6,8 +6,8 @@ module DangerPluginHelper
   def self.included(_module)
     return if `git remote -v` != ''
 
-    puts 'You cannot run tests without setting a local git remote on this repo'
-    puts "It's a weird side-effect of Danger's internals."
+    warn "You cannot run tests without setting a local git remote on this repo\n" \
+         "It's a weird side-effect of Danger's internals."
     exit(0)
   end
 

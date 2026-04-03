@@ -23,3 +23,7 @@ RSpec/MultipleMemoizedHelpers:
 
 RSpec/NestedGroups:
   Max: 4
+
+RSpec:
+  Exclude:
+    - spec/support/fixtures/*
