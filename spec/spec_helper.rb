@@ -25,5 +25,6 @@ require 'support/shared_examples'
 
 RSpec.configure do |config|
   config.filter_gems_from_backtrace 'bundler'
+  config.filter_run_excluding macos: true unless RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
   config.include FixtureHelper
 end
