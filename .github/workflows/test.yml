@@ -2,7 +2,7 @@ name: test
 on: [push]
 jobs:
   test:
-    runs-on: macOS-15
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -13,8 +13,6 @@ jobs:
           - '3.2'
           - '3.3'
           - '3.4'
-    env:
-      DEVELOPER_DIR: '/Applications/Xcode_16.4.app/Contents/Developer'
     steps:
       - uses: actions/checkout@v6
       - uses: ruby/setup-ruby@v1

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Danger::DangerPeriphery, :slow do
+describe Danger::DangerPeriphery, :macos, :slow do
   include DangerPluginHelper
 
   subject(:warnings) { dangerfile.status_report[:warnings] }
