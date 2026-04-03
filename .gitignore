@@ -10,3 +10,4 @@ xcuserdata
 /coverage/
 vendor/bundle/
 doc/
+Gemfile.lock
