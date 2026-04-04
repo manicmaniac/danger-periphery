@@ -53,6 +53,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - periphery-version: 3.5.1
+            os: macOS-26
+            xcode-version: '26.3'
           - periphery-version: 3.4.0
             os: macOS-26
             xcode-version: '26.3'
