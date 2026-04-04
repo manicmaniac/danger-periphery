@@ -48,17 +48,28 @@ jobs:
           files: codeclimate-*.jsonl
           skip-errors: false
   compatibility-test:
-    runs-on: macOS-15
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        periphery-version:
-          - '3.3.0'
-          - '3.2.0'
-          - '3.1.0'
-          - '3.0.3'
+        include:
+          - periphery-version: 3.4.0
+            os: macOS-26
+            xcode-version: '26.3'
+          - periphery-version: 3.3.0
+            os: macOS-15
+            xcode-version: '16.4'
+          - periphery-version: 3.2.0
+            os: macOS-15
+            xcode-version: '16.4'
+          - periphery-version: 3.1.0
+            os: macOS-15
+            xcode-version: '16.4'
+          - periphery-version: 3.0.3
+            os: macOS-15
+            xcode-version: '16.4'
     env:
-      DEVELOPER_DIR: '/Applications/Xcode_16.4.app/Contents/Developer'
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer
     steps:
       - uses: actions/checkout@v6
       - uses: ruby/setup-ruby@v1
