@@ -73,7 +73,7 @@ describe Danger::DangerPeriphery, :macos, :slow do
 
     it 'reports unused code' do
       periphery.scan(periphery_options)
-      expect(warnings).to include "Function 'unusedMethod()' is unused"
+      expect(warnings).to include expected_message
     end
   end
 
