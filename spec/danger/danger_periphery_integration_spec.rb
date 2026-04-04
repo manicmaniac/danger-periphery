@@ -47,15 +47,29 @@ describe Danger::DangerPeriphery, :macos, :slow do
 
   context 'when .swift files are added' do
     let(:added_files) { ['test/main.swift'] }
+    let(:expected_message) do
+      if Gem::Version.new(periphery.version) < Gem::Version.new('3.4.0')
+        "Function 'unusedMethod()' is unused"
+      else
+        "Unused function 'unusedMethod()'"
+      end
+    end
 
     it 'reports unused code' do
       periphery.scan(periphery_options)
-      expect(warnings).to include "Function 'unusedMethod()' is unused"
+      expect(warnings).to include expected_message
     end
   end
 
   context 'when .swift files are modified' do
     let(:modified_files) { ['test/main.swift'] }
+    let(:expected_message) do
+      if Gem::Version.new(periphery.version) < Gem::Version.new('3.4.0')
+        "Function 'unusedMethod()' is unused"
+      else
+        "Unused function 'unusedMethod()'"
+      end
+    end
 
     it 'reports unused code' do
       periphery.scan(periphery_options)
