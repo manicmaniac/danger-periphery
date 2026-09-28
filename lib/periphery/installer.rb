@@ -18,7 +18,7 @@ module Periphery
         entry = Zip::File.open_buffer(src).get_entry('periphery')
         entry.restore_permissions = true
         FileUtils.rm_f(dest_path) if force
-        entry.extract(dest_path)
+        entry.extract(File.basename(dest_path), destination_directory: File.dirname(dest_path))
       end
     end
 
