@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   DESC
   spec.homepage = 'https://github.com/manicmaniac/danger-periphery'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.7.0'
+  spec.required_ruby_version = '>= 3.0.0'
   spec.metadata = {
     'bug_tracker_uri' => 'https://github.com/manicmaniac/danger-periphery/issues',
     'changelog_uri' => 'https://raw.githubusercontent.com/manicmaniac/danger-periphery/refs/heads/master/CHANGELOG.md',
@@ -27,5 +27,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'danger-plugin-api', '~> 1.0'
-  spec.add_dependency 'rubyzip', '~> 2.0'
+  spec.add_dependency 'rubyzip', '~> 3.4'
 end
