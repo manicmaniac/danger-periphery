@@ -1,5 +1,8 @@
 ## master
 
+## 0.5.1
+- Support rubyzip 3.4+ to address CVE-2026-85396 by @ainame in #368
+
 ## 0.5.0
 
 - Remove --targets option for Periphery >= 3.0.0 by @manicmaniac in #271
