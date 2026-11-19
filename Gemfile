@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'bundler', '~> 2.0'
+gem 'bundler', '~> 4.0'
 gem 'danger', '~> 9.0'
 gem 'danger-danger_plugin_lint', '~> 0.2', require: false
 gem 'danger-rubocop', '~> 0.12', require: false
